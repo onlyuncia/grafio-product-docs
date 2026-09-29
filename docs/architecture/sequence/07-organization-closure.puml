@@ -1,0 +1,42 @@
+@startuml
+title Последовательность — контролируемое закрытие организации
+autonumber
+
+actor "Владелец организации" as Owner
+boundary "Клиентское приложение" as UI
+control "Организации и кабинеты" as Org
+control "Идентификация и доступ" as Access
+queue "Redis / очередь" as Queue
+control "Worker закрытия" as Worker
+database "PostgreSQL" as DB
+database "Хранилище секретов / raw" as Storage
+control "Аудит" as Audit
+
+Owner -> UI : Подтверждает закрытие и при необходимости\nзапрашивает выгрузку
+UI -> Org : POST /organization/closure
+Org -> DB : Зафиксировать closure requested
+Org -> Queue : Поставить закрытие и, при необходимости, экспорт
+Org -> Audit : Зафиксировать запрос закрытия
+Org --> UI : 202 Accepted: jobId
+Queue -> Worker : Получить задание закрытия
+Worker -> Access : Завершить сессии и отозвать ключи
+Worker -> Storage : Отозвать токены WB, остановить новые загрузки
+Worker -> DB : Определить сроки хранения и зависимости
+
+alt Есть удерживающая зависимость
+  Worker -> DB : Статус blocked и список препятствий
+  Worker -> Audit : Зафиксировать блокировку
+else До точки невозврата
+  Worker -> DB : Статус retention, доступна отмена
+  opt Владелец отменяет закрытие
+    Owner -> UI : Отменяет закрытие
+    UI -> Org : POST /organization/closure/cancel
+    Org -> DB : Вернуть статус active
+    Org -> Audit : Зафиксировать отмену
+  end
+else Срок хранения завершён
+  Worker -> Storage : Удалить данные по политике хранения
+  Worker -> DB : Статус closed
+  Worker -> Audit : Зафиксировать завершение закрытия
+end
+@enduml

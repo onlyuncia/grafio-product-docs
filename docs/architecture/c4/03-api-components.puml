@@ -1,0 +1,44 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+LAYOUT_WITH_LEGEND()
+title C4 — уровень 3. Компоненты серверного API Grafio
+
+Container_Ext(web, "Клиентское веб-приложение", "React", "Клиентское рабочее пространство.")
+Container_Ext(adminWeb, "Admin Console", "React", "Внутренний интерфейс Grafio.")
+Container_Ext(worker, "Асинхронный worker", "Node.js / BullMQ", "Исполняет длительные операции.")
+ContainerDb_Ext(db, "PostgreSQL", "Транзакционные и версионные данные.")
+ContainerQueue_Ext(queue, "Redis", "Очередь фоновых заданий.")
+
+Container_Boundary(api, "Сервер приложений — модульный монолит") {
+  Component(access, "Идентификация и доступ", "Fastify module", "Аутентификация, роли, области доступа, 2FA, сессии и ключи.")
+  Component(organization, "Организации и кабинеты", "Fastify module", "Организация, юрлица, подключение WB и ссылка на секрет.")
+  Component(reporting, "Расчёт и отчётность", "Fastify module", "Опубликованные отчёты, качество, детализация, версии и недельная аналитика.")
+  Component(cases, "Контроль расчётов", "Fastify module", "Кейсы, доказательства, комментарии, задачи и результат расследования.")
+  Component(methodology, "Методика и Admin Console", "Fastify module", "Расследования, черновики правил, проверки, публикация и пересчёт.")
+  Component(plans, "Планы", "Fastify module", "Черновики, версии, активация и факт–план.")
+  Component(dashboard, "Мой дашборд", "Fastify module", "Листы, виджеты и пользовательский layout.")
+  Component(audit, "Аудит и фоновые операции", "Fastify module", "Корреляция действий, журнал аудита и чтение статуса jobId.")
+}
+
+Rel(web, access, "Вход и безопасность", "JSON/HTTPS")
+Rel(web, organization, "Контекст организации и WB-кабинеты", "JSON/HTTPS")
+Rel(web, reporting, "Отчёты и аналитика", "JSON/HTTPS")
+Rel(web, cases, "Кейсы и доказательства", "JSON/HTTPS")
+Rel(web, plans, "Планы", "JSON/HTTPS")
+Rel(web, dashboard, "Листы и виджеты", "JSON/HTTPS")
+Rel(adminWeb, methodology, "Расследования и правила", "JSON/HTTPS")
+Rel(access, db, "Пользователи, доступ и сессии", "SQL")
+Rel(organization, db, "Организации и кабинеты", "SQL")
+Rel(reporting, db, "Версии отчётов и показатели", "SQL")
+Rel(cases, db, "Кейсы и задачи", "SQL")
+Rel(methodology, db, "Правила и версии методики", "SQL")
+Rel(plans, db, "Планы и версии", "SQL")
+Rel(dashboard, db, "Листы и виджеты", "SQL")
+Rel(audit, db, "События аудита", "SQL")
+Rel(methodology, queue, "Ставит пересчёт", "Redis")
+Rel(organization, queue, "Ставит проверку и загрузку", "Redis")
+Rel(audit, queue, "Читает состояние заданий", "Redis")
+Rel(worker, reporting, "Публикует результат фонового расчёта", "Внутренний контракт")
+
+@enduml

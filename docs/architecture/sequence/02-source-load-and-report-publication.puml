@@ -1,0 +1,41 @@
+@startuml
+title Последовательность — загрузка WB, качество и публикация отчёта
+autonumber
+
+actor "Планировщик / пользователь" as Trigger
+control "Сервер приложений" as API
+queue "Redis / очередь" as Queue
+control "Worker загрузки" as Worker
+entity "Wildberries API" as WB
+database "Raw-хранилище" as Raw
+database "PostgreSQL" as DB
+control "Уведомления и аудит" as Audit
+
+Trigger -> API : Запускает загрузку кабинета
+API -> Queue : Создать идемпотентное RequestSourceLoad
+API --> Trigger : 202 Accepted: jobId, correlationId
+Queue -> Worker : Получить задание
+Worker -> WB : Запросить финансовые данные периода
+
+alt WB вернул данные
+  WB --> Worker : Страница raw-операций
+  loop Пока есть следующая страница
+    Worker -> Raw : Неизменно сохранить ответ, хеш и параметры
+    Worker -> WB : Запросить следующую страницу
+    WB --> Worker : Следующая страница
+  end
+  Worker -> DB : Нормализовать операции, проверить схему,\nдубли, полноту и контрольные суммы
+  Worker -> DB : Рассчитать показатели и сверку
+  alt Публикация допустима
+    Worker -> DB : Создать новую версию отчёта и опубликовать
+    Worker -> Audit : Зафиксировать ReportVersionPublished
+  else Есть ограничение качества
+    Worker -> DB : Создать ограниченную либо непубликуемую версию\nи сигналы качества
+    Worker -> Audit : Зафиксировать QualityIssueDetected
+  end
+else WB недоступен или ответ невалиден
+  Worker -> Queue : Запланировать безопасный повтор
+  Worker -> DB : Сохранить состояние загрузки и причину
+  Worker -> Audit : Зафиксировать SourceLoadFailed
+end
+@enduml

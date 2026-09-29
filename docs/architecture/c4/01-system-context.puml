@@ -1,0 +1,16 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+LAYOUT_WITH_LEGEND()
+title C4 — уровень 1. Контекст системы Grafio
+
+Person(client, "Владелец / финансист / аналитик", "Просматривает финансовый результат, исследует отклонения, ведёт планы и личный дашборд.")
+Person(admin, "Администратор Grafio", "Исследует системные проблемы и публикует версии методики.")
+System(grafio, "Grafio", "Сервис недельной финансовой аналитики продавца WB: отчёты, качество данных, кейсы, планы, команда и безопасность.")
+System_Ext(wb, "Wildberries API", "Источник финансовых операций и данных кабинета.")
+
+Rel(client, grafio, "Работает с отчётами, кейсами, планами, дашбордом и доступом", "HTTPS")
+Rel(admin, grafio, "Работает во внутренней Admin Console", "HTTPS + MFA")
+Rel(grafio, wb, "Запрашивает финансовые данные кабинета", "HTTPS API")
+
+@enduml

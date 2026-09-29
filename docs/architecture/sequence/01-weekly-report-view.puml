@@ -1,0 +1,35 @@
+@startuml
+title Последовательность — просмотр недельного финансового отчёта
+autonumber
+
+actor "Финансист / аналитик" as User
+boundary "Клиентское приложение" as UI
+control "Идентификация и доступ" as Access
+control "Расчёт и отчётность" as Reports
+database "PostgreSQL" as DB
+
+User -> UI : Выбирает организацию, кабинет и завершённую неделю
+UI -> Access : Проверка токена, роли и области доступа
+Access --> UI : Доступ разрешён
+UI -> Reports : GET /reports/weekly
+Reports -> DB : Найти последнюю опубликованную\nверсию в выбранной области
+DB --> Reports : Версия, показатели, качество, методика
+Reports --> UI : Отчёт или ограниченный отчёт
+
+alt Показатель доступен
+  User -> UI : Открывает статью или точку графика
+  UI -> Reports : GET /metrics/{metricCode}/details
+  Reports -> DB : Получить разрешённые товары и операции
+  DB --> Reports : Страница детализации
+  Reports --> UI : Детализация
+else Показатель не рассчитан
+  UI -> User : Причина и состояние показателя\nбез подмены нулём
+end
+
+opt Пользователь открывает историю
+  UI -> Reports : GET /versions или /comparison
+  Reports -> DB : Получить версии и различия
+  DB --> Reports : История и объяснение изменения
+  Reports --> UI : Версии отчёта
+end
+@enduml

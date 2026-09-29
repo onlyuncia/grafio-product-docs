@@ -1,0 +1,38 @@
+@startuml
+title Последовательность — создание и активация версии плана
+autonumber
+
+actor "Владелец / аналитик" as User
+boundary "Клиентское приложение" as UI
+control "Планы" as Plans
+control "Идентификация и доступ" as Access
+database "PostgreSQL" as DB
+control "Расчёт и отчётность" as Reports
+control "Аудит" as Audit
+
+User -> UI : Вводит область, период и целевые показатели
+UI -> Access : Проверить право планирования в области
+Access --> UI : Доступ разрешён
+UI -> Plans : POST /plans
+Plans -> DB : Создать черновик плана и версию
+Plans --> UI : План draft
+User -> UI : Изменяет цели или правило сравнения
+UI -> Plans : PATCH /plans/{planId}
+Plans -> DB : Сохранить новую редакцию черновика
+
+User -> UI : Активирует версию
+UI -> Plans : POST /versions/{planVersionId}/activate
+Plans -> Reports : Проверить совместимость области,\nединицы и версии методики
+Reports --> Plans : Результат проверки
+alt Совместимо
+  Plans -> DB : Активировать версию, прежнюю пометить superseded
+  Plans -> Audit : Зафиксировать PlanVersionActivated
+  Plans --> UI : Активный план
+  UI -> Plans : GET /plans/{planId}/fact
+  Plans -> Reports : Получить совместимый факт
+  Reports --> Plans : Значения факта
+  Plans --> UI : Срез «план — факт»
+else Несовместимо
+  Plans --> UI : 422: причина несовместимости
+end
+@enduml

@@ -1,0 +1,31 @@
+@startuml
+left to right direction
+actor "Владелец организации" as Owner
+actor "Сотрудник" as Employee
+actor "Wildberries API" as WB
+rectangle "Grafio: организация и безопасность" {
+  usecase "Подключить\nкабинет WB" as UO1
+  usecase "Проверить\nтокен и доступ" as UO2
+  usecase "Загрузить\nпервый отчёт" as UO3
+  usecase "Пригласить\nсотрудника" as UO4
+  usecase "Назначить роль\nи область" as UO5
+  usecase "Настроить 2FA" as UO6
+  usecase "Отозвать доступ\nи завершить сессии" as UO7
+  usecase "Закрыть\nорганизацию" as UO8
+  usecase "Получить выгрузку\nи применить хранение" as UO9
+  UO1 .> UO2 : <<include>>
+  UO1 .> UO3 : <<include>>
+  UO4 .> UO5 : <<include>>
+  UO5 .> UO6 : <<extend>>
+  UO8 .> UO9 : <<include>>
+  UO8 .> UO7 : <<include>>
+}
+Owner --> UO1
+Owner --> UO4
+Owner --> UO5
+Owner --> UO7
+Owner --> UO8
+Employee --> UO6
+WB --> UO2
+WB --> UO3
+@enduml

@@ -1,0 +1,27 @@
+@startuml
+left to right direction
+actor "Администратор Grafio" as Admin
+actor "Клиентская команда" as Client
+rectangle "Grafio: Admin Console" {
+  usecase "Получить запрос\nклиента" as UA1
+  usecase "Исследовать\nкейс и операции" as UA2
+  usecase "Подготовить\nпроект правила" as UA3
+  usecase "Выполнить\nконтроль и сверку" as UA4
+  usecase "Опубликовать\nверсию методики" as UA5
+  usecase "Пересчитать историю" as UA6
+  usecase "Применить правило\nвперёд с даты" as UA7
+  usecase "Передать клиенту\nрезультат" as UA8
+  UA2 .> UA1 : <<include>>
+  UA3 .> UA2 : <<include>>
+  UA5 .> UA3 : <<include>>
+  UA5 .> UA4 : <<include>>
+  UA6 .> UA5 : <<extend>>
+  UA7 .> UA5 : <<extend>>
+  UA8 .> UA5 : <<include>>
+}
+Client --> UA1
+Client --> UA8
+Admin --> UA2
+Admin --> UA3
+Admin --> UA5
+@enduml

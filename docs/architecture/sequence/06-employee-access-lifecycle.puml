@@ -1,0 +1,35 @@
+@startuml
+title Последовательность — выдача и отзыв доступа сотрудника
+autonumber
+
+actor "Владелец организации" as Owner
+boundary "Клиентское приложение" as UI
+control "Идентификация и доступ" as Access
+database "PostgreSQL" as DB
+control "Аудит" as Audit
+actor "Сотрудник" as Employee
+
+Owner -> UI : Приглашает сотрудника, задаёт роль и область
+UI -> Access : POST /team/invitations
+Access -> DB : Сохранить invitation pending
+Access -> Audit : Зафиксировать приглашение
+Access --> UI : 202 Accepted
+Employee -> UI : Переходит по ссылке приглашения
+UI -> Access : POST /team/invitations/{id}/accept
+Access -> DB : Создать membership active\nс ролью и областью
+Access -> Audit : Зафиксировать выдачу доступа
+Access --> UI : Доступ активен
+
+opt Владелец меняет область или роль
+  Owner -> UI : Изменяет права
+  UI -> Access : PATCH /team/memberships/{id}
+  Access -> DB : Сохранить обновлённое членство
+  Access -> Audit : Зафиксировать изменение доступа
+end
+
+Owner -> UI : Отзывает доступ
+UI -> Access : DELETE /team/memberships/{id}
+Access -> DB : Отозвать членство, ключи и активные сессии
+Access -> Audit : Зафиксировать отзыв доступа
+Access --> UI : 204 No Content
+@enduml

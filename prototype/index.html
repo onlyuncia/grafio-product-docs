@@ -1,0 +1,820 @@
+<!doctype html>
+<html lang="ru" data-theme="lifted">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Grafio — прототип недельного отчёта</title>
+  <link rel="stylesheet" href="styles.css?v=20260927-studio-charts">
+</head>
+<body>
+  <svg class="svg-sprite" aria-hidden="true">
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3 20 7v5c0 5-3.5 8-8 9-4.5-1-8-4-8-9V7z"/><path d="m9 12 2 2 4-4"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/></symbol>
+    <symbol id="i-doc" viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M9 11h6M9 15h6M15 3v4h4"/></symbol>
+    <symbol id="i-file-chart" viewBox="0 0 24 24"><path d="M6 3h9l3 3v15H6z"/><path d="M15 3v4h4"/><path d="M9.5 17v-3M12 17v-6M14.5 17v-4"/></symbol>
+    <symbol id="i-bars" viewBox="0 0 24 24"><path d="M6 20V11M12 20V4M18 20v-6"/></symbol>
+    <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="m16 17 5-5-5-5M21 12H9"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v11M8 10.5l4 4 4-4"/><path d="M4 19h16"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/><path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16"/><path d="M16 16h5v5"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.51a2 2 0 0 1 1-1.74l.15-.08a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+    <symbol id="i-panel" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16"/></symbol>
+    <symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></symbol>
+    <symbol id="i-building" viewBox="0 0 24 24"><path d="M4 21V5l8-3 8 3v16M8 8h1M8 12h1M8 16h1M15 8h1M15 12h1M15 16h1M3 21h18"/></symbol>
+    <symbol id="i-compare" viewBox="0 0 24 24"><path d="m8 3-4 4 4 4"/><path d="M4 7h16"/><path d="m16 21 4-4-4-4"/><path d="M20 17H4"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m4 12 5 5L20 6"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 22 20H2z"/><path d="M12 9v5M12 17h.01"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.2l2.7 5.5 6 .9-4.3 4.2 1 6-5.4-2.8-5.4 2.8 1-6L3.3 9.6l6-.9z"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V12l3.2 2"/></symbol>
+    <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/></symbol>
+    <symbol id="i-chevron-down" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></symbol>
+    <symbol id="i-landmark" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7"/><path d="M5 10v8M9 10v8M15 10v8M19 10v8M3 18h18M2 22h20"/></symbol>
+    <symbol id="i-rotate-ccw" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></symbol>
+    <symbol id="i-package-check" viewBox="0 0 24 24"><path d="m16 16 2 2 4-4"/><path d="M21 10.5V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"/><path d="m7.5 4.27 9 5.15M3.3 7 12 12l8.7-5M12 22V12"/></symbol>
+    <symbol id="i-receipt" viewBox="0 0 24 24"><path d="M4 2v20l2-2 2 2 2-2 2 2 2-2 2 2 2-2 2 2V2l-2 2-2-2-2 2-2-2-2 2-2-2-2 2Z"/><path d="M16 8h-6M16 12h-6M13 16h-3"/></symbol>
+    <symbol id="i-store" viewBox="0 0 24 24"><path d="m2 7 4.4-4.4A2 2 0 0 1 7.8 2h8.4a2 2 0 0 1 1.4.6L22 7"/><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><path d="M15 22v-4a2 2 0 0 0-2-2h-2a2 2 0 0 0-2 2v4M2 7h20"/><path d="M22 7v3a2 2 0 0 1-4 0V7M14 7v3a2 2 0 0 1-4 0V7M6 7v3a2 2 0 0 1-4 0V7"/></symbol>
+    <symbol id="i-boxes" viewBox="0 0 24 24"><path d="m7.5 4.27 4.5 2.6 4.5-2.6L12 1.7zM12 6.87v5.2M7.5 4.27v5.2l4.5 2.6 4.5-2.6v-5.2"/><path d="m3 14.27 4.5 2.6 4.5-2.6-4.5-2.57zM7.5 16.87v5.2M3 14.27v5.2l4.5 2.6 4.5-2.6v-5.2"/><path d="m12 14.27 4.5 2.6 4.5-2.6-4.5-2.57zM16.5 16.87v5.2M12 14.27v5.2l4.5 2.6 4.5-2.6v-5.2"/></symbol>
+    <symbol id="i-banknote" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><circle cx="12" cy="12" r="2"/><path d="M6 12h.01M18 12h.01"/></symbol>
+    <symbol id="i-target" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><path d="M12 2v3M22 12h-3M12 22v-3M2 12h3"/></symbol>
+    <symbol id="i-layout" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M9 9v11"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 19V5M4 19h16"/><path d="m7 15 3-4 3 2 4-6"/></symbol>
+    <symbol id="i-grip" viewBox="0 0 24 24"><circle cx="8" cy="7" r="1"/><circle cx="16" cy="7" r="1"/><circle cx="8" cy="12" r="1"/><circle cx="16" cy="12" r="1"/><circle cx="8" cy="17" r="1"/><circle cx="16" cy="17" r="1"/></symbol>
+    <symbol id="i-maximize" viewBox="0 0 24 24"><path d="M8 3H3v5M16 3h5v5M21 16v5h-5M3 16v5h5"/><path d="M3 3l6 6M21 3l-6 6M21 21l-6-6M3 21l6-6"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4z"/></symbol>
+    <symbol id="i-undo" viewBox="0 0 24 24"><path d="m9 7-5 5 5 5"/><path d="M4 12h8a7 7 0 0 1 7 7"/></symbol>
+    <symbol id="i-redo" viewBox="0 0 24 24"><path d="m15 7 5 5-5 5"/><path d="M20 12h-8a7 7 0 0 0-7 7"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M6 6l1 15h10l1-15M10 10v7M14 10v7"/></symbol>
+    <symbol id="i-ruler" viewBox="0 0 24 24"><path d="m4 15 11-11 5 5-11 11H4z"/><path d="m13 6 2 2M10 9l2 2M7 12l2 2"/></symbol>
+    <symbol id="i-filter" viewBox="0 0 24 24"><path d="M3 5h18l-7 8v6l-4 2v-8z"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.2 9.2a3 3 0 0 1 5.6 1.3c0 2-2.8 2.4-2.8 4.2M12 17.6h.01"/></symbol>
+    <symbol id="i-save" viewBox="0 0 24 24"><path d="M5 3h11l3 3v15H5z"/><path d="M8 3v6h7V3M8 21v-7h8v7"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10.5 13.5a4 4 0 0 0 5.7 0l2.6-2.6a4 4 0 0 0-5.7-5.7l-1.3 1.3"/><path d="M13.5 10.5a4 4 0 0 0-5.7 0l-2.6 2.6a4 4 0 0 0 5.7 5.7l1.3-1.3"/></symbol>
+    <symbol id="i-map" viewBox="0 0 24 24"><path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3zM9 3v15M15 6v15"/></symbol>
+    <symbol id="i-sticky" viewBox="0 0 24 24"><path d="M5 3h14v12l-6 6H5z"/><path d="M13 21v-6h6"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 17v5"/><path d="M5 17h14v-1.8a2 2 0 0 0-1.1-1.8l-1.8-.9A2 2 0 0 1 15 10.8V6h1a2 2 0 0 0 0-4H8a2 2 0 0 0 0 4h1v4.8a2 2 0 0 1-1.1 1.7l-1.8.9A2 2 0 0 0 5 15.2Z"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 6h16M4 12h16M4 18h16"/></symbol>
+    <symbol id="i-chevron-left" viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></symbol>
+    <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="m9 18 6-6-6-6"/></symbol>
+    <symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></symbol>
+    <symbol id="i-sparkles" viewBox="0 0 24 24"><path d="m12 3 1.2 3.8L17 8l-3.8 1.2L12 13l-1.2-3.8L7 8l3.8-1.2zM19 14l.8 2.2L22 17l-2.2.8L19 20l-.8-2.2L16 17l2.2-.8zM5 13l.7 1.8 1.8.7-1.8.7L5 18l-.7-1.8-1.8-.7 1.8-.7z"/></symbol>
+    <!-- Иконки аккаунта (§12.7) — те же контуры, что рисует lucide в frontend/src/pages/account. -->
+    <symbol id="i-camera" viewBox="0 0 24 24"><path d="M13.997 4a2 2 0 0 1 1.76 1.05l.486.9A2 2 0 0 0 18.003 7H20a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2h1.997a2 2 0 0 0 1.759-1.048l.489-.904A2 2 0 0 1 10.004 4z"/><circle cx="12" cy="13" r="3"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></symbol>
+    <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M10.733 5.076a10.744 10.744 0 0 1 11.205 6.575 1 1 0 0 1 0 .696 10.747 10.747 0 0 1-1.444 2.49"/><path d="M14.084 14.158a3 3 0 0 1-4.242-4.242"/><path d="M17.479 17.499a10.75 10.75 0 0 1-15.417-5.151 1 1 0 0 1 0-.696 10.75 10.75 0 0 1 4.446-5.143"/><path d="m2 2 20 20"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+    <symbol id="i-credit-card" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></symbol>
+    <symbol id="i-paintbrush" viewBox="0 0 24 24"><path d="M9 8c-1.8 2.7-4 3.5-6.6 4a.5.5 0 0 0-.3.8l7.3 8.9a1 1 0 0 0 1.2.2C12.7 20.4 16 16.8 16 15"/><path d="m14.6 17.9-10.7-2.9"/><path d="M18.4 2.6a1 1 0 1 1 3 3L17.4 9.6a.5.5 0 0 0 0 .7l.9.9a2.4 2.4 0 0 1 0 3.5l-.9.9a.5.5 0 0 1-.7 0L8.4 7.3a.5.5 0 0 1 0-.7l.9-.9a2.4 2.4 0 0 1 3.4 0l1 1a.5.5 0 0 0 .7 0z"/></symbol>
+    <symbol id="i-crown" viewBox="0 0 24 24"><path d="M11.6 3.3a.5.5 0 0 1 .9 0l3 5.6a1 1 0 0 0 1.5.3l4.3-3.7a.5.5 0 0 1 .8.5l-2.8 10.3a1 1 0 0 1-1 .7H5.8a1 1 0 0 1-1-.7L2 6a.5.5 0 0 1 .8-.5l4.3 3.7a1 1 0 0 0 1.5-.3z"/><path d="M5 21h14"/></symbol>
+  </svg>
+
+  <div class="app-shell mode-overview" id="appShell">
+    <aside class="sidebar glass" aria-label="Основная навигация">
+      <div class="brand">
+        <svg class="g-logo" viewBox="7 2 42 46" aria-hidden="true">
+          <g fill="currentColor">
+            <circle cx="19" cy="5" r="3.2"/><circle cx="28" cy="5" r="3.2"/><circle cx="37" cy="5" r="3.2"/>
+            <circle cx="10" cy="13" r="3.2"/><circle cx="46" cy="13" r="3.2"/>
+            <circle cx="10" cy="21" r="3.2"/>
+            <circle cx="10" cy="29" r="3.2"/><circle cx="28" cy="29" r="3.2"/><circle cx="37" cy="29" r="3.2"/><circle cx="46" cy="29" r="3.2"/>
+            <circle cx="10" cy="37" r="3.2"/><circle cx="46" cy="37" r="3.2"/>
+            <circle cx="19" cy="45" r="3.2"/><circle cx="28" cy="45" r="3.2"/><circle cx="37" cy="45" r="3.2"/>
+          </g>
+        </svg>
+        <span class="brand-separator"></span>
+        <span class="brand-name">GRAFIO</span>
+      </div>
+
+      <nav class="nav-main">
+        <button class="nav-item is-active" data-view="report" data-tooltip="Недельный отчёт"><span class="nav-icon"><svg><use href="#i-grid"/></svg></span><span class="nav-label">Недельный отчёт</span><kbd>⌘1</kbd></button>
+        <button class="nav-item" data-view="dashboard" data-tooltip="Мой дашборд"><span class="nav-icon"><svg><use href="#i-layout"/></svg></span><span class="nav-label">Мой дашборд</span><kbd>⌘2</kbd></button>
+        <button class="nav-item" data-view="rnp" data-tooltip="РНП"><span class="nav-icon"><svg><use href="#i-file-chart"/></svg></span><span class="nav-label">РНП</span><kbd>⌘3</kbd></button>
+        <button class="nav-item" data-view="products" data-tooltip="Товары"><span class="nav-icon"><svg><use href="#i-box"/></svg></span><span class="nav-label">Товары</span><kbd>⌘4</kbd></button>
+        <button class="nav-item" data-view="studio" data-tooltip="Студия"><span class="nav-icon"><svg><use href="#i-bars"/></svg></span><span class="nav-label">Студия</span><kbd>⌘5</kbd></button>
+        <button class="nav-item" data-view="admin" data-tooltip="Контроль расчётов"><span class="nav-icon"><svg><use href="#i-shield"/></svg></span><span class="nav-label">Контроль расчётов</span><kbd>⌘6</kbd></button>
+        <button class="nav-item" data-view="plans" data-tooltip="Планы"><span class="nav-icon"><svg><use href="#i-target"/></svg></span><span class="nav-label">Планы</span><kbd>⌘7</kbd></button>
+      </nav>
+
+      <nav class="nav-footer">
+        <button class="nav-item" id="logoutButton" data-tooltip="Выйти"><span class="nav-icon"><svg><use href="#i-logout"/></svg></span><span class="nav-label">Выйти</span></button>
+        <!-- §4.1: обычный пользователь не видит перехода в Admin Console — вход остаётся только
+             за этим малозаметным demo-control и за Ctrl/⌘+Shift+A. -->
+        <button class="demo-control" id="adminConsoleButton" type="button" aria-label="Открыть Admin Console" data-tooltip="Открыть Admin Console · Ctrl+Shift+A" data-tooltip-side="top"><span class="nav-icon"><svg><use href="#i-crown"/></svg></span><span class="nav-label">DEMO · Admin Console</span></button>
+        <div class="profile">
+          <span class="avatar">А</span>
+          <span class="profile-copy"><strong>Аналитик</strong><small>analyst@grafio.ru</small></span>
+          <span class="profile-actions">
+            <button class="profile-action" id="accountButton" aria-label="Аккаунт" data-tooltip="Аккаунт"><svg><use href="#i-user"/></svg></button>
+            <button class="profile-action" id="settingsButton" aria-label="Настройки" data-tooltip="Настройки"><svg><use href="#i-settings"/></svg></button>
+          </span>
+        </div>
+      </nav>
+    </aside>
+
+    <main class="workspace">
+      <header class="toolbar glass" data-section="report">
+        <button class="icon-button sidebar-trigger" id="sidebarCollapse" aria-label="Свернуть боковую панель" data-tooltip="Свернуть панель" data-tooltip-side="bottom"><svg><use href="#i-panel"/></svg></button>
+        <span class="divider"></span>
+        <strong class="toolbar-title" id="toolbarTitle">НЕДЕЛЬНЫЙ ОТЧЁТ</strong>
+        <span class="divider title-divider"></span>
+        <div class="dashboard-toolbar-tools" id="dashboardToolbarTools" aria-label="Инструменты дашборда">
+          <div class="dashboard-view-tools">
+            <button class="tool-button" id="dashboardEditToggle" data-tooltip="Редактировать дашборд" data-tooltip-side="bottom"><svg><use href="#i-pencil"/></svg><span>Настроить</span></button>
+            <button class="icon-button" id="dashboardPresentation" data-tooltip="Режим презентации" data-tooltip-side="bottom" aria-label="Режим презентации"><svg><use href="#i-maximize"/></svg></button>
+            <button class="icon-button dashboard-minimap-toggle" id="dashboardMinimap" data-tooltip="Миникарта" data-tooltip-side="bottom" aria-label="Миникарта"><svg><use href="#i-map"/></svg></button>
+            <button class="icon-button dashboard-grid-toggle" id="dashboardGridToggle" data-tooltip="Скрыть сетку" data-tooltip-side="bottom" aria-label="Скрыть сетку"><svg><use href="#i-grid"/></svg></button>
+            <button class="icon-button" id="dashboardQuickNote" data-tooltip="Добавить заметку" data-tooltip-side="bottom" aria-label="Добавить заметку"><svg><use href="#i-sticky"/></svg></button>
+          </div>
+          <div class="dashboard-edit-tools" aria-hidden="true">
+            <button class="tool-button primary-tool" id="dashboardDone"><svg><use href="#i-check"/></svg><span>Готово</span></button>
+            <span class="divider dashboard-inner-divider"></span>
+            <button class="icon-button" id="dashboardUndo" data-tooltip="Отменить · Ctrl+Z" data-tooltip-side="bottom" aria-label="Отменить"><svg viewBox="0 0 24 24"><use href="#i-undo"/></svg></button>
+            <button class="icon-button" id="dashboardRedo" data-tooltip="Повторить · Ctrl+Shift+Z" data-tooltip-side="bottom" aria-label="Повторить"><svg viewBox="0 0 24 24"><use href="#i-redo"/></svg></button>
+            <button class="icon-button" id="dashboardReset" data-tooltip="Сбросить к стандарту" data-tooltip-side="bottom" aria-label="Сбросить к стандарту"><svg><use href="#i-rotate-ccw"/></svg></button>
+            <button class="icon-button" id="dashboardDeleteAll" data-tooltip="Удалить все виджеты" data-tooltip-side="bottom" aria-label="Удалить все виджеты"><svg><use href="#i-trash"/></svg></button>
+            <span class="divider dashboard-inner-divider"></span>
+            <button class="icon-button" id="dashboardRuler" data-tooltip="Инструмент линейка" data-tooltip-side="bottom" aria-label="Инструмент линейка"><svg><use href="#i-ruler"/></svg></button>
+            <button class="icon-button dashboard-minimap-toggle" id="dashboardEditMinimap" data-tooltip="Миникарта" data-tooltip-side="bottom" aria-label="Миникарта"><svg><use href="#i-map"/></svg></button>
+            <button class="icon-button dashboard-grid-toggle" id="dashboardEditGrid" data-tooltip="Скрыть сетку" data-tooltip-side="bottom" aria-label="Скрыть сетку"><svg><use href="#i-grid"/></svg></button>
+            <span class="divider dashboard-inner-divider"></span>
+            <button class="tool-button" id="dashboardAddWidget" aria-haspopup="menu" aria-expanded="false"><svg><use href="#i-plus"/></svg><span>Добавить</span></button>
+          </div>
+          <span class="divider dashboard-filter-divider"></span>
+        </div>
+        <!-- Инструментарий библиотеки переехал в тулбар — как «Метрики» и «Экспорт» РНП:
+             раздел фиксированный, а полоса над карточками спорила бы с его заголовком. -->
+        <div class="studio-toolbar-tools" id="studioToolbarTools" aria-label="Инструменты библиотеки виджетов">
+          <label class="kpi-search studio-search"><svg><use href="#i-search"/></svg><input id="studioSearch" type="search" placeholder="Поиск виджета" aria-label="Поиск виджета"></label>
+          <nav class="studio-tabs" id="studioTabs" aria-label="Показ виджетов">
+            <button type="button" class="studio-tab is-active" data-studio-tab="all" aria-pressed="true">Все<span id="studioTabCountAll"></span></button>
+            <button type="button" class="studio-tab" data-studio-tab="archived" aria-pressed="false">Архив<span id="studioTabCountArchived"></span></button>
+          </nav>
+          <div class="field-select studio-sort" data-studio-sort>
+            <button class="field-select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false"><span>Сначала новые</span><svg><use href="#i-chevron-down"/></svg></button>
+            <div class="field-select-popover" role="listbox" aria-label="Сортировка виджетов">
+              <button type="button" role="option" aria-selected="true" data-value="newest">Сначала новые<svg><use href="#i-check"/></svg></button>
+              <button type="button" role="option" aria-selected="false" data-value="oldest">Сначала старые<svg><use href="#i-check"/></svg></button>
+              <button type="button" role="option" aria-selected="false" data-value="name">По названию<svg><use href="#i-check"/></svg></button>
+            </div>
+          </div>
+          <div class="segmented studio-view-toggle" id="studioViewToggle" role="group" aria-label="Способ показа">
+            <button type="button" class="is-active" data-studio-view="grid" aria-pressed="true" data-tooltip="Сетка разделов"><svg><use href="#i-grid"/></svg></button>
+            <button type="button" data-studio-view="list" aria-pressed="false" data-tooltip="Список"><svg><use href="#i-bars"/></svg></button>
+          </div>
+        </div>
+        <span class="divider studio-tools-divider"></span>
+        <button class="tool-button menu-trigger mode-trigger" id="modeTrigger" data-menu="mode" aria-haspopup="menu" aria-expanded="false"><svg><use href="#i-grid"/></svg><span id="modeValue">Обзор недели</span><svg class="chevron-down"><use href="#i-chevron-down"/></svg></button>
+        <span class="divider mode-divider"></span>
+        <button class="tool-button menu-trigger" data-menu="company" aria-haspopup="menu" aria-expanded="false"><svg><use href="#i-building"/></svg><span>Все юридические лица</span><svg class="chevron-down"><use href="#i-chevron-down"/></svg></button>
+        <!-- Площадка — фильтр сетки подключений, а не второй выбор кабинета: в оригинале она
+             живёт в полосе фильтров (ReportFilters.tsx:60 «Все маркетплейсы», группировка
+             WB/OZON). Раздел фиксированный, поэтому контрол встал в тулбар сразу за
+             юридическим лицом и сделан тем же контролом, что и оно: .menu-trigger + общее .context-menu. -->
+        <button class="tool-button menu-trigger settings-market-trigger" id="settingsMarketTrigger" type="button" data-menu="market" aria-haspopup="menu" aria-expanded="false"><svg><use href="#i-store"/></svg><span>Все маркетплейсы</span><svg class="chevron-down"><use href="#i-chevron-down"/></svg></button>
+        <button class="tool-button menu-trigger" data-menu="account" aria-haspopup="menu" aria-expanded="false"><span class="mp-mark">WB</span><span>Основной кабинет</span><svg class="chevron-down"><use href="#i-chevron-down"/></svg></button>
+        <span class="divider report-context-divider"></span>
+        <button class="tool-button calendar-trigger period-trigger" id="periodTrigger" data-calendar="range" data-from="2026-04-27" data-to="2026-05-03" aria-haspopup="dialog" aria-expanded="false"><svg><use href="#i-calendar"/></svg><span id="periodValue">27 апр. – 3 мая</span><svg class="chevron-down"><use href="#i-chevron-down"/></svg></button>
+        <button class="tool-button rnp-metrics-trigger" type="button" id="rnpMetricsToolbarButton" aria-expanded="false" aria-controls="rnpMetricsSheet" data-tooltip="Состав и порядок строк таблицы" data-tooltip-side="bottom"><svg><use href="#i-plus"/></svg><span>Метрики</span><b id="rnpMetricsToolbarCount">10</b></button>
+        <button class="tool-button rnp-export-trigger" id="rnpExportButton" data-tooltip="Экспорт таблицы" data-tooltip-side="bottom" aria-haspopup="menu" aria-expanded="false"><svg><use href="#i-download"/></svg><span>Экспорт</span></button>
+        <button class="tool-button" id="versionButton"><span class="version-dot"></span><span>Версия 3</span></button>
+        <span class="toolbar-spacer"></span>
+        <button class="tool-button primary-tool studio-create-button" id="studioCreateButton" type="button" aria-haspopup="dialog" aria-expanded="false"><svg><use href="#i-plus"/></svg><span class="studio-create-label">Новый виджет</span></button>
+        <button class="tool-button primary-tool settings-create-button" id="settingsCreateButton" type="button" aria-haspopup="dialog" aria-expanded="false"><svg><use href="#i-plus"/></svg><span class="settings-create-label">Добавить маркетплейс</span></button>
+        <!-- Демо-состояние списка товаров: тот же правый угол тулбара, что и «Состояние»
+             недельного отчёта, но показывается только в «Товарах» (CSS .is-products). -->
+        <div class="products-state-control" id="productsToolbarState">
+          <span>Состояние</span>
+          <div class="segmented" role="group" aria-label="Демонстрационное состояние списка">
+            <button type="button" data-products-screen="normal" aria-pressed="true">Данные</button>
+            <button type="button" data-products-screen="loading" aria-pressed="false">Загрузка</button>
+            <button type="button" data-products-screen="empty" aria-pressed="false">Пусто</button>
+          </div>
+        </div>
+        <div class="scenario-control">
+          <span>Состояние</span>
+          <button class="scenario-trigger" id="scenarioTrigger" aria-haspopup="listbox" aria-expanded="false"><span id="scenarioValue">Обычная неделя</span><svg><use href="#i-chevron-down"/></svg></button>
+        </div>
+        <!-- §4.1: «Команда» — единственный контрол тулбара, который живёт во всех разделах,
+             поэтому он инициализируется иконкой без подписи и со своим tooltip. -->
+        <button class="tool-button team-toolbar-button" id="teamPanelButton" type="button" aria-haspopup="dialog" aria-expanded="false" aria-controls="teamPanel" data-tooltip="Команда" data-tooltip-side="bottom"><svg><use href="#i-users"/></svg><b id="teamToolbarCount" class="is-hidden">0</b></button>
+      </header>
+
+      <section class="canvas view" id="reportView" aria-label="Недельный отчёт">
+        <div class="report-grid">
+          <section class="weekly-analytics weekly-analytics-overview" aria-labelledby="weeklyAnalyticsTitle">
+            <header class="weekly-analytics-heading">
+              <div><span class="eyebrow">НЕДЕЛЬНАЯ АНАЛИТИКА</span><h2 id="weeklyAnalyticsTitle">Графики по неделям</h2><p>Абсолютные значения, доли, история и детализация используют один период отчёта</p></div>
+              <nav class="weekly-analytics-tabs" id="weeklyAnalyticsTabs" aria-label="Разделы недельной аналитики"></nav>
+            </header>
+            <div class="weekly-analytics-context is-hidden" id="weeklyAnalyticsContext" role="status"></div>
+          </section>
+
+          <div class="quality-strip card" id="qualityStrip">
+            <div class="quality-summary"><span class="status-light good"></span><span class="quality-summary-copy"><span class="quality-kind">СОСТОЯНИЕ ОТЧЁТА</span><span class="quality-value"><strong>Отчёт готов</strong><small>Обновлён сегодня в 08:42</small></span></span></div>
+            <span class="status-chip good">Финансы: данные полные</span>
+            <span class="status-chip muted">Реклама: выключена</span>
+            <span class="status-chip good" id="reconciliationChip">Сверка 0 ₽</span>
+            <span class="status-chip">Правила v3</span>
+          </div>
+
+          <div class="notice card is-hidden" id="scenarioNotice"><svg><use href="#i-alert"/></svg><div><strong id="noticeTitle"></strong><p id="noticeText"></p></div><button id="noticeAction">Открыть</button></div>
+
+          <div class="kpi-grid">
+            <article class="kpi card"><span class="kpi-label">ВЫРУЧКА</span><span class="kpi-icon" aria-hidden="true"><svg><use href="#i-landmark"/></svg></span><span class="kpi-unit">В РУБЛЯХ</span><strong>1 877 774 ₽</strong><small class="positive">+48,5% к прошлой неделе</small></article>
+            <article class="kpi card"><span class="kpi-label">ВОЗВРАТЫ</span><span class="kpi-icon" aria-hidden="true"><svg><use href="#i-rotate-ccw"/></svg></span><span class="kpi-unit">В РУБЛЯХ</span><strong>487 340 ₽</strong><small>26,0% выручки</small></article>
+            <article class="kpi card"><span class="kpi-label">ВЫКУПЫ</span><span class="kpi-icon" aria-hidden="true"><svg><use href="#i-package-check"/></svg></span><span class="kpi-unit">В РУБЛЯХ</span><strong>1 390 434 ₽</strong><small class="positive">+18,6% к прошлой неделе</small></article>
+            <article class="kpi card"><span class="kpi-label">РАСХОДЫ</span><span class="kpi-icon" aria-hidden="true"><svg><use href="#i-receipt"/></svg></span><span class="kpi-unit">В РУБЛЯХ</span><strong>643 453 ₽</strong><small>46,3% выкупов</small></article>
+            <article class="kpi card"><span class="kpi-label">СЕБЕСТОИМОСТЬ</span><span class="kpi-icon" aria-hidden="true"><svg><use href="#i-boxes"/></svg></span><span class="kpi-unit">В РУБЛЯХ</span><strong>422 106 ₽</strong><small>30,4% выкупов</small></article>
+            <article class="kpi card"><span class="kpi-label">МАРЖА</span><span class="kpi-icon" aria-hidden="true"><svg><use href="#i-banknote"/></svg></span><span class="kpi-unit">В РУБЛЯХ</span><strong>324 875 ₽</strong><small class="positive">Маржинальность 23,4%</small></article>
+          </div>
+
+          <section class="weekly-analytics weekly-analytics-content" aria-label="Графики недельной аналитики">
+            <div class="weekly-analytics-grid" id="weeklyAnalyticsGrid">
+              <div class="analytics-row" data-analytics-row="structure">
+                <article class="structure-card card" data-analytics-chart="structure">
+                  <header class="card-header">
+                    <div><h2>Структура расходов по выкупам</h2><p id="structureDescription">Маржинальность, себестоимость и расходы формируют 100% выкупов</p></div>
+                    <div class="segmented" role="group" aria-label="Единица отображения"><button class="is-active" data-unit="percent">%</button><button data-unit="money">₽</button></div>
+                  </header>
+                  <div class="legend" id="chartLegend"></div>
+                  <div class="stack-chart" id="stackChart" aria-label="Накопительная диаграмма структуры расходов по выкупам"></div>
+                </article>
+                <aside class="analytics-changes card" aria-label="Что изменилось в структуре расходов">
+                  <header><span>НЕДЕЛЯ К НЕДЕЛЕ</span><h3>Что изменилось</h3></header>
+                  <div class="analytics-change-list insights">
+                    <button class="analytics-change-item insight" data-category="margin"><i style="background:var(--margin)"></i><span><strong>Маржинальность +5,1 п.п.</strong><small>Рост маржи опередил рост себестоимости</small></span></button>
+                    <button class="analytics-change-item insight" data-category="logistics"><i style="background:var(--logistics)"></i><span><strong>Логистика −3,1 п.п.</strong><small>Основное изменение — группа «Платья»</small></span></button>
+                    <button class="analytics-change-item insight" data-category="commission"><i style="background:var(--commission)"></i><span><strong>Комиссия без изменений</strong><small>17,4% выкупов, изменение менее 0,1 п.п.</small></span></button>
+                  </div>
+                </aside>
+              </div>
+              <div class="weekly-analytics-generated" id="weeklyAnalyticsGenerated"></div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="canvas view dashboard-view is-hidden" id="dashboardView" aria-label="Мой дашборд">
+        <div class="dashboard-stage-wrap">
+          <div class="dashboard-stage" id="dashboardStage">
+            <div class="dashboard-canvas" id="dashboardCanvas" tabindex="0" aria-label="Свободный canvas пользовательского дашборда"></div>
+          </div>
+        </div>
+        <div class="dashboard-empty-state" id="dashboardEmptyState" aria-hidden="true"></div>
+        <div class="sheet-context-menu copy-source-menu glass" id="copySourceMenu" role="menu" aria-label="С какого листа копировать виджеты" aria-hidden="true"></div>
+        <!-- Развилка «Добавить» — нововведение мокапа: в оригинале AddWidgetPanel знает только
+             «Свой виджет»/«Быстрый KPI»/«Заметка», а графики живут исключительно в Студии. Здесь
+             график можно положить на лист прямо с канваса, поэтому кнопка спрашивает, что именно. -->
+        <div class="sheet-context-menu glass" id="dashboardAddMenu" role="menu" aria-label="Что добавить на лист" aria-hidden="true">
+          <button type="button" role="menuitem" data-add-widget="kpi"><svg><use href="#i-target"/></svg><span>KPI-виджеты</span></button>
+          <span class="menu-sep"></span>
+          <button type="button" role="menuitem" data-add-widget="chart"><svg><use href="#i-chart"/></svg><span>Графики</span></button>
+        </div>
+        <div class="dashboard-minimap glass" id="dashboardMinimapPanel" aria-hidden="true"><header data-floating-drag-handle><span>МИНИКАРТА</span><button id="dashboardMinimapClose" aria-label="Закрыть миникарту"><svg viewBox="0 0 24 24"><use href="#i-close"/></svg></button></header><svg class="dashboard-minimap-map" id="dashboardMinimapMap" viewBox="0 0 192 128" role="img" aria-label="Карта объектов и видимой области canvas"></svg></div>
+        <div class="dashboard-ruler-readout glass" id="dashboardRulerReadout" aria-hidden="true">Линейка включена · потяните по canvas</div>
+      </section>
+
+      <section class="canvas view fixed-view is-hidden" id="rnpView" aria-label="РНП">
+        <div class="fixed-page">
+          <div class="rnp-context card">
+            <div class="rnp-context-row">
+              <span class="status-chip good" id="rnpDataChip"><span class="status-light good"></span><span id="rnpDataChipText">Данные полные</span></span>
+              <span class="rnp-context-line" id="rnpContextLine"></span>
+            </div>
+            <span class="rnp-status-note" id="rnpStatusNote"></span>
+          </div>
+          <div class="kpi-grid" id="rnpKpiGrid"></div>
+          <article class="card rnp-card">
+            <header class="card-header">
+              <div><h2>РНП по дням</h2><p id="rnpTableNote"></p></div>
+              <div class="rnp-card-tools">
+                <span class="status-chip" id="rnpPeriodChip">27 апр. – 3 мая</span>
+                <button class="tool-button" type="button" id="rnpMetricsButton" aria-expanded="false" aria-controls="rnpMetricsSheet" data-tooltip="Состав и порядок строк таблицы" data-tooltip-side="bottom"><svg><use href="#i-panel"/></svg><span>Метрики</span><b id="rnpMetricsButtonCount">10</b></button>
+              </div>
+            </header>
+            <div class="rnp-scroll" id="rnpScroll"><table class="rnp-table" id="rnpTable"></table></div>
+          </article>
+          <div class="plans-context card" id="rnpPlanSummary"></div>
+        </div>
+      </section>
+
+      <section class="canvas view fixed-view is-hidden" id="productsView" aria-label="Товары">
+        <div class="fixed-page">
+          <header class="plans-heading">
+            <div><span class="eyebrow" id="productsEyebrow">ДЕМО-КАТАЛОГ</span><h1>Товары</h1><p id="productsSubtitle"></p></div>
+          </header>
+
+          <div class="plans-context card is-tiles" id="productsCounters"></div>
+
+          <article class="card fixed-card products-card" id="productsTableCard">
+            <header class="card-header">
+              <div><h2>Товары</h2><p id="productsTableNote"></p></div>
+              <div class="fixed-card-tools">
+                <!-- Полоса вкладок живёт в шапке, а не на сетке: вертикальный рельс у правого
+                     края лежал поверх последнего столбца и мешал глазеть по таблице. -->
+                <nav class="products-dock-tabs" aria-label="Панели таблицы товаров">
+                  <button class="products-dock-tab" type="button" data-products-dock="columns" aria-expanded="false" aria-controls="productsDockPanel" data-tooltip="Столбцы: состав, порядок, ширины"><svg><use href="#i-layout"/></svg><span>Столбцы</span></button>
+                  <button class="products-dock-tab" type="button" data-products-dock="filters" aria-expanded="false" aria-controls="productsDockPanel" data-tooltip="Фильтры по столбцам"><svg><use href="#i-filter"/></svg><span>Фильтры</span><b id="productsDockFilterCount" class="is-hidden">0</b></button>
+                  <button class="products-dock-tab" type="button" data-products-dock="settings" aria-expanded="false" aria-controls="productsDockPanel" data-tooltip="Настройки таблицы и представлений"><svg><use href="#i-settings"/></svg><span>Настройки</span></button>
+                  <button class="products-dock-tab" type="button" data-products-dock="help" aria-expanded="false" aria-controls="productsDockPanel" data-tooltip="Описания столбцов"><svg><use href="#i-help"/></svg><span>Помощь</span></button>
+                </nav>
+                <span class="products-selection" id="productsSelection"></span><span class="status-chip" id="productsPeriodChip"></span>
+              </div>
+            </header>
+            <!-- Слой сетки: скролл, подвал и док. Док обязан считаться от верхнего края
+                 таблицы, а не от карточки — иначе панель, выехавшая справа, легла бы на
+                 вкладки шапки и перехватывала их клики. -->
+            <div class="products-body">
+              <div class="fixed-scroll products-scroll" id="productsScroll"><table class="products-table" id="productsTable"></table></div>
+              <footer class="products-foot" id="productsFoot"></footer>
+              <div class="products-dock" id="productsDock">
+                <aside class="products-dock-panel glass" id="productsDockPanel" aria-label="Настройка таблицы товаров" aria-hidden="true">
+                  <header>
+                    <div><span class="drawer-kicker">ТАБЛИЦА ТОВАРОВ</span><strong id="productsDockTitle">Столбцы</strong><small id="productsDockNote"></small></div>
+                    <button class="icon-button" id="productsDockClose" aria-label="Закрыть" data-tooltip="Закрыть"><svg><use href="#i-close"/></svg></button>
+                  </header>
+                  <label class="kpi-search"><svg><use href="#i-search"/></svg><input id="productsDockSearch" type="search" placeholder="Поиск по столбцам" aria-label="Поиск по панели"></label>
+                  <div class="products-dock-body" id="productsDockBody"></div>
+                  <footer id="productsDockFoot"></footer>
+                </aside>
+              </div>
+            </div>
+            <div class="products-filter-pop glass" id="productsFilterPop" role="dialog" aria-label="Фильтр по столбцу" aria-hidden="true"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="canvas view fixed-view is-hidden" id="productView" aria-label="Карточка товара">
+        <div class="fixed-page">
+          <div class="products-back-row">
+            <button class="secondary-button" id="productBack" type="button"><svg><use href="#i-chevron-left"/></svg><span>Назад к товарам</span></button>
+            <span class="products-back-note" id="productBackNote"></span>
+          </div>
+          <article class="card product-header-card" id="productHeader"></article>
+          <div class="kpi-grid" id="productKpiGrid"></div>
+          <div class="products-grid">
+            <article class="card products-panel" id="productCostPanel"></article>
+            <article class="card products-panel" id="productPlanPanel"></article>
+          </div>
+          <article class="card fixed-card products-trend-card">
+            <header class="card-header">
+              <div><h2>Динамика выкупов</h2><p id="productTrendNote"></p></div>
+              <div class="fixed-card-tools"><span class="status-chip" id="productTrendChip"></span></div>
+            </header>
+            <div class="products-trend" id="productTrend"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="canvas view fixed-view is-hidden" id="studioView" aria-label="Студия">
+        <div class="fixed-page">
+          <header class="plans-heading">
+            <div><span class="eyebrow">БИБЛИОТЕКА ВИДЖЕТОВ</span><h1>Студия</h1><p id="studioSubtitle"></p></div>
+          </header>
+
+          <div id="studioContent"></div>
+        </div>
+      </section>
+
+      <section class="canvas view fixed-view is-hidden" id="settingsView" aria-label="Настройки">
+        <div class="fixed-page">
+          <header class="plans-heading">
+            <div><span class="eyebrow">ПОДКЛЮЧЕНИЕ ДАННЫХ</span><h1>Настройки</h1><p id="settingsSubtitle"></p></div>
+          </header>
+
+          <div id="settingsContent"></div>
+        </div>
+      </section>
+
+      <section class="canvas view fixed-view is-hidden" id="accountView" aria-label="Аккаунт">
+        <div class="fixed-page">
+          <header class="plans-heading">
+            <div><span class="eyebrow">ПРОФИЛЬ ПОЛЬЗОВАТЕЛЯ</span><h1>Аккаунт</h1><p id="accountSubtitle"></p></div>
+          </header>
+
+          <!-- §8.1: порядок вкладок по документу — «Организация» вторая. В AccountPage.tsx
+               следом за профилем идёт «Безопасность»; здесь требование документа важнее
+               порядка оригинала, содержимое вкладок осталось нативным.
+               Полоса — тот же примитив, что вкладки дока товаров: своя стиля вкладкам не нужен. -->
+          <nav class="products-dock-tabs account-tabs" id="accountTabs" role="tablist" aria-label="Разделы аккаунта">
+            <button class="products-dock-tab is-active" type="button" role="tab" data-account-tab="profile" aria-selected="true" aria-controls="accountContent"><svg><use href="#i-user"/></svg><span>Профиль</span></button>
+            <button class="products-dock-tab" type="button" role="tab" data-account-tab="organization" aria-selected="false" aria-controls="accountContent"><svg><use href="#i-building"/></svg><span>Организация</span></button>
+            <button class="products-dock-tab" type="button" role="tab" data-account-tab="security" aria-selected="false" aria-controls="accountContent"><svg><use href="#i-shield"/></svg><span>Безопасность</span></button>
+            <button class="products-dock-tab" type="button" role="tab" data-account-tab="subscription" aria-selected="false" aria-controls="accountContent"><svg><use href="#i-credit-card"/></svg><span>Подписка</span></button>
+            <button class="products-dock-tab" type="button" role="tab" data-account-tab="appearance" aria-selected="false" aria-controls="accountContent"><svg><use href="#i-paintbrush"/></svg><span>Оформление</span></button>
+          </nav>
+
+          <div class="account-panel" id="accountContent" role="tabpanel" tabindex="-1"></div>
+        </div>
+      </section>
+
+      <!-- Очередь и карточка кейса полностью собираются в app.js: состояния (§3.3) и фильтры
+           (§3.1) живут в памяти страницы, поэтому статичная разметка здесь только расходилась
+           бы с данными. -->
+      <section class="canvas view is-hidden" id="adminView" aria-label="Контроль расчётов">
+        <div class="admin-grid">
+          <aside class="queue card" id="adminQueue" aria-label="Очередь проблем"></aside>
+          <article class="case card" id="adminCase" aria-label="Кейс контроля расчётов"></article>
+        </div>
+      </section>
+
+      <section class="canvas view is-hidden" id="plansView" aria-label="Планы">
+        <div class="plans-page" id="plansPage">
+          <header class="plans-heading">
+            <div><span class="eyebrow">УПРАВЛЕНЧЕСКИЕ ЦЕЛИ</span><h1>Планы</h1><p>Цели по недельным и месячным периодам</p></div>
+            <button class="primary-button plans-create-button" id="newPlanButton"><svg><use href="#i-target"/></svg><span>Создать план</span></button>
+          </header>
+          <div class="plans-context card">
+            <div class="plans-context-item"><span>ЮРИДИЧЕСКОЕ ЛИЦО</span><strong id="plansCompanyValue">Все юридические лица</strong></div>
+            <div class="plans-context-item"><span>ОБЛАСТЬ</span><strong>2 кабинета WB</strong></div>
+            <div class="plans-context-item"><span>АКТИВНЫЙ ПЕРИОД</span><strong>Май 2026</strong></div>
+            <span class="status-chip good"><span class="status-light good"></span>План активен</span>
+          </div>
+          <div id="plansContent"></div>
+        </div>
+      </section>
+
+      <!-- KPI-редактор живёт вне «Моего дашборда», потому что он общий: §6.1 отдаёт ту же
+           панель ещё и «Студии» (создание и правка виджета). Спрятанной вместе с дашбордом
+           она бы туда не переехала, поэтому слои лежат на уровне workspace, а смещения в CSS
+           пересчитаны на разницу между краем .canvas и краем .workspace. -->
+      <div class="kpi-editor-scrim" id="kpiEditorScrim" aria-hidden="true"></div>
+      <div class="kpi-preview-area" id="kpiPreviewArea" aria-hidden="true">
+        <div class="kpi-preview-frame" id="kpiPreviewFrame">
+          <div class="kpi-preview-dots" id="kpiPreviewDots"></div>
+          <div class="kpi-preview-stack" id="kpiPreviewStack"></div>
+        </div>
+        <p class="kpi-preview-hint" id="kpiPreviewHint" aria-hidden="true"></p>
+      </div>
+      <aside class="dashboard-kpi-settings glass" id="dashboardKpiSettings" aria-hidden="true" aria-label="Настройка KPI">
+        <header><div><span>ВИДЖЕТ KPI</span><strong id="kpiSettingsTitle">Добавить показатель</strong><small id="kpiSettingsHint">Выберите метрику для карточки</small></div><button id="kpiSettingsClose" aria-label="Закрыть"><svg viewBox="0 0 24 24"><use href="#i-close"/></svg></button></header>
+        <label class="kpi-search"><svg><use href="#i-search"/></svg><input id="kpiMetricSearch" type="search" placeholder="Найти метрику"></label>
+        <div class="kpi-metric-filter" id="kpiMetricFilter" role="group" aria-label="Показ метрик">
+          <button type="button" data-kpi-filter="all" aria-pressed="true">Все<span></span></button>
+          <button type="button" data-kpi-filter="fav" aria-pressed="false">Избранное<span></span></button>
+          <button type="button" data-kpi-filter="recent" aria-pressed="false">Недавние<span></span></button>
+        </div>
+        <div class="kpi-metric-list" id="kpiMetricList" role="listbox" aria-label="Метрика KPI"></div>
+        <label class="kpi-label-field"><span>Название на карточке</span><input id="kpiCustomTitle" type="text" placeholder="Название метрики"></label>
+        <footer><button class="secondary-button" id="kpiSettingsCancel">Отмена</button><button class="primary-button" id="kpiSettingsApply">Добавить KPI</button></footer>
+      </aside>
+      <!-- Панель графиков — близнец панели KPI, а не её второй облик: тот же класс, те же
+           сегменты «Все/Избранное/Недавние», то же поле названия и тот же слой предпросмотра
+           (#kpiPreviewArea), потому что открыта всегда только одна из двух. Разный только
+           список: у метрик есть единицы измерения и кластеры, у графика их нет. -->
+      <aside class="dashboard-kpi-settings glass" id="dashboardChartSettings" aria-hidden="true" aria-label="Настройка графиков">
+        <header><div><span>ВИДЖЕТ ГРАФИКА</span><strong id="chartSettingsTitle">Добавить график</strong><small id="chartSettingsHint">Выберите график для карточки</small></div><button id="chartSettingsClose" aria-label="Закрыть"><svg viewBox="0 0 24 24"><use href="#i-close"/></svg></button></header>
+        <label class="kpi-search"><svg><use href="#i-search"/></svg><input id="chartMetricSearch" type="search" placeholder="Найти график"></label>
+        <div class="kpi-metric-filter" id="chartMetricFilter" role="group" aria-label="Показ графиков">
+          <button type="button" data-chart-filter="all" aria-pressed="true">Все<span></span></button>
+          <button type="button" data-chart-filter="fav" aria-pressed="false">Избранное<span></span></button>
+          <button type="button" data-chart-filter="recent" aria-pressed="false">Недавние<span></span></button>
+        </div>
+        <div class="kpi-metric-list" id="chartMetricList" role="listbox" aria-label="Графики"></div>
+        <label class="kpi-label-field"><span>Название на карточке</span><input id="chartCustomTitle" type="text" placeholder="Название графика"></label>
+        <footer><button class="secondary-button" id="chartSettingsCancel">Отмена</button><button class="primary-button" id="chartSettingsApply">Добавить график</button></footer>
+      </aside>
+
+      <div class="sheet-context-menu glass" id="studioCardMenu" role="menu" aria-label="Действия с виджетом" aria-hidden="true"></div>
+      <div class="sheet-context-menu copy-source-menu glass" id="studioSheetMenu" role="menu" aria-label="На какой лист добавить виджет" aria-hidden="true"></div>
+
+      <!-- Один слой под три меню кейса (§3.2): назначение, смена статуса и «⋯». Отдельные
+           поповеры умножили бы число слоёв, которые обязан закрывать Esc и смена раздела. -->
+      <div class="sheet-context-menu glass admin-action-menu" id="adminActionMenu" role="menu" aria-label="Действия по кейсу" aria-hidden="true"></div>
+
+      <div class="modal-backdrop is-hidden" id="studioDeleteModal" role="dialog" aria-modal="true" aria-labelledby="studioDeleteTitle">
+        <div class="modal card studio-delete-modal">
+          <header><div><span class="drawer-kicker">СТУДИЯ</span><h2 id="studioDeleteTitle">Удалить виджет?</h2><p id="studioDeleteNote"></p></div><button class="icon-button" id="studioDeleteClose" aria-label="Закрыть" data-tooltip="Закрыть"><svg><use href="#i-close"/></svg></button></header>
+          <footer><button class="secondary-button" id="studioDeleteCancel">Отмена</button><button class="primary-button danger-button" id="studioDeleteConfirm">Удалить</button></footer>
+        </div>
+      </div>
+
+      <div class="modal-backdrop is-hidden" id="settingsModal" role="dialog" aria-modal="true" aria-labelledby="settingsModalTitle">
+        <div class="modal card settings-modal">
+          <header><div><span class="drawer-kicker">НАСТРОЙКИ</span><h2 id="settingsModalTitle">Подключить маркетплейс</h2><p id="settingsModalNote"></p></div><button class="icon-button" id="settingsModalClose" aria-label="Закрыть" data-tooltip="Закрыть"><svg><use href="#i-close"/></svg></button></header>
+          <div class="settings-form" id="settingsForm"></div>
+          <div class="settings-perms is-hidden" id="settingsPerms" role="status"></div>
+          <footer><button class="secondary-button is-hidden" id="settingsTestButton" type="button">Проверить ключ</button><button class="primary-button" id="settingsSaveButton" type="button" disabled>Подключить</button></footer>
+        </div>
+      </div>
+
+      <div class="modal-backdrop is-hidden" id="settingsDeleteModal" role="dialog" aria-modal="true" aria-labelledby="settingsDeleteTitle">
+        <div class="modal card settings-delete-modal">
+          <header><div><span class="drawer-kicker">НАСТРОЙКИ</span><h2 id="settingsDeleteTitle">Удаление аккаунта</h2><p id="settingsDeleteNote"></p></div><button class="icon-button" id="settingsDeleteClose" aria-label="Закрыть" data-tooltip="Закрыть"><svg><use href="#i-close"/></svg></button></header>
+          <div class="settings-delete-body">
+            <span>Будут удалены:</span>
+            <ul><li>Все заказы, продажи и финансовые отчёты</li><li>Товары и история себестоимости</li><li>Рекламная статистика и аналитика</li></ul>
+          </div>
+          <footer><button class="secondary-button" id="settingsDeleteCancel">Отмена</button><button class="primary-button danger-button" id="settingsDeleteConfirm">Удалить</button></footer>
+        </div>
+      </div>
+
+      <!-- §12.8: подтверждение выхода — рамка тех же классов, что два существующих
+           подтверждения. Кикера раздела нет: выход лежит в футере сайдбара, а не в разделе.
+           Оригинал завершает сеанс без подтверждения — здесь оно требуется документом. -->
+      <div class="modal-backdrop is-hidden" id="logoutModal" role="dialog" aria-modal="true" aria-labelledby="logoutTitle">
+        <div class="modal card logout-modal">
+          <header><div><h2 id="logoutTitle">Выйти из аккаунта?</h2><p>Тема, сетка холста и избранные метрики останутся на этом устройстве. Демо-вход вернёт в «Недельный отчёт».</p></div><button class="icon-button" id="logoutClose" aria-label="Закрыть" data-tooltip="Закрыть"><svg><use href="#i-close"/></svg></button></header>
+          <footer><button class="secondary-button" id="logoutCancel">Отмена</button><button class="primary-button" id="logoutConfirm">Выйти</button></footer>
+        </div>
+      </div>
+
+      <aside class="rnp-metrics-sheet glass" id="rnpMetricsSheet" aria-hidden="true" aria-label="Метрики таблицы РНП">
+        <header>
+          <div><span class="drawer-kicker">ТАБЛИЦА РНП</span><strong>Метрики</strong><small id="rnpMetricsCount"></small></div>
+          <button class="icon-button" id="rnpMetricsClose" aria-label="Закрыть" data-tooltip="Закрыть"><svg><use href="#i-close"/></svg></button>
+        </header>
+        <label class="kpi-search"><svg><use href="#i-search"/></svg><input id="rnpMetricsSearch" type="search" placeholder="Найти метрику" aria-label="Поиск метрики"></label>
+        <div class="kpi-metric-filter" id="rnpMetricsFilter" role="group" aria-label="Показ метрик">
+          <button type="button" data-rnp-filter="all" aria-pressed="true">Все<span></span></button>
+          <button type="button" data-rnp-filter="fav" aria-pressed="false">Избранное<span></span></button>
+          <button type="button" data-rnp-filter="recent" aria-pressed="false">Недавние<span></span></button>
+        </div>
+        <div class="rnp-metrics-body">
+          <section class="rnp-metrics-block">
+            <h4>Порядок в таблице<small>строку тянут зажатием</small></h4>
+            <div class="rnp-metrics-order" id="rnpMetricsOrder"></div>
+          </section>
+          <section class="rnp-metrics-block">
+            <h4>Каталог метрик</h4>
+            <div class="rnp-metrics-catalog" id="rnpMetricsCatalog"></div>
+          </section>
+        </div>
+        <footer><span id="rnpMetricsFoot"></span><span class="rnp-metrics-actions"><button class="secondary-button" type="button" id="rnpMetricsDefault">По умолчанию</button><button class="secondary-button" type="button" id="rnpMetricsReset">Сбросить</button></span></footer>
+      </aside>
+
+      <aside class="detail-drawer glass" id="detailDrawer" aria-hidden="true">
+        <header><div><span class="drawer-kicker">ДЕТАЛИЗАЦИЯ СТАТЬИ</span><h2 id="drawerTitle">Прямая логистика</h2><p id="drawerSubtitle">247 498 ₽ · 17,8% выкупов</p></div><button class="icon-button" id="drawerClose" aria-label="Закрыть" data-tooltip="Закрыть"><svg><use href="#i-close"/></svg></button></header>
+        <div class="drawer-tabs"><button class="is-active">Товары</button><button>Операции</button></div>
+        <div class="drawer-trend" id="drawerTrend" aria-label="Динамика выбранной статьи по неделям"></div>
+        <table><thead><tr><th>Товар</th><th>Операций</th><th>Сумма</th><th>Δ нед.</th></tr></thead><tbody id="drawerRows"></tbody></table>
+        <footer><span>Показано 4 из 126 товаров</span><button>Открыть все операции</button></footer>
+      </aside>
+
+      <div class="modal-backdrop is-hidden" id="versionModal" role="dialog" aria-modal="true" aria-labelledby="versionTitle">
+        <div class="modal card">
+          <header><div><span class="drawer-kicker">СРАВНЕНИЕ ВЕРСИЙ</span><h2 id="versionTitle">Что изменилось после пересчёта</h2><p>Неделя 27 апреля – 3 мая · правило хранения v3</p></div><button class="icon-button" id="versionClose" aria-label="Закрыть" data-tooltip="Закрыть"><svg><use href="#i-close"/></svg></button></header>
+          <div class="version-summary"><div><span>Исходная версия v2</span><strong>Маржа 337 455 ₽</strong><small>Опубликована 4 мая, 08:42</small></div><svg><use href="#i-chevron"/></svg><div><span>Исправленная версия v3</span><strong>Маржа 324 875 ₽</strong><small>Опубликована 6 мая, 11:15</small></div></div>
+          <table><thead><tr><th>Показатель</th><th>Версия 2</th><th>Версия 3</th><th>Изменение</th></tr></thead><tbody><tr><td>Хранение</td><td>0 ₽</td><td>12 580 ₽</td><td class="negative">+12 580 ₽ расходов</td></tr><tr><td>Маржа</td><td>337 455 ₽</td><td>324 875 ₽</td><td class="negative">−12 580 ₽</td></tr><tr><td>Маржинальность</td><td>24,3%</td><td>23,4%</td><td class="negative">−0,9 п.п.</td></tr><tr><td>Сверка</td><td class="negative">+12 580 ₽</td><td class="positive">0 ₽</td><td>Исправлена</td></tr></tbody></table>
+          <div class="modal-note"><svg><use href="#i-bell"/></svg><span>Клиенты уведомлены: пересчитаны три недели с 13 апреля по 3 мая.</span></div>
+          <footer><button class="secondary-button" id="versionDone">Закрыть</button><button class="primary-button">Открыть исходный отчёт</button></footer>
+        </div>
+      </div>
+
+      <div class="context-menu glass" id="contextMenu" role="menu" aria-hidden="true"></div>
+      <div class="context-menu glass rnp-export-menu" id="rnpExportMenu" role="menu" aria-hidden="true">
+        <header class="popover-header"><span>ЭКСПОРТ</span><strong>Таблица РНП</strong></header>
+        <div class="popover-options">
+          <button type="button" role="menuitem" data-export="all"><svg class="menu-mark" aria-hidden="true"><use href="#i-download"/></svg><span class="popover-copy"><strong>Вся таблица</strong><small>Все дни периода целиком</small></span></button>
+        </div>
+        <div class="rnp-export-group"><span>Выбранные недели<b id="rnpExportCount"></b></span><div class="rnp-export-weeks" id="rnpExportWeeks" role="group" aria-label="Недели для экспорта"></div><button class="secondary-button" type="button" id="rnpExportSelected"><svg><use href="#i-download"/></svg><span>Экспортировать выбранные</span></button></div>
+        <div class="rnp-export-group"><span>Формат</span><div class="segmented rnp-export-formats" role="group" aria-label="Формат экспорта"><button class="is-active" type="button" data-format="png" aria-pressed="true">PNG</button><button type="button" data-format="svg" aria-pressed="false">SVG</button><button type="button" data-format="pdf" aria-pressed="false">PDF</button><button type="button" data-format="xlsx" aria-pressed="false">Excel</button></div></div>
+      </div>
+      <div class="date-picker glass" id="datePicker" role="dialog" aria-modal="false" aria-label="Выбор даты" aria-hidden="true">
+        <header class="date-picker-header"><button class="calendar-nav" id="datePrev" type="button" aria-label="Предыдущий месяц"><svg><use href="#i-chevron"/></svg></button><div><span class="drawer-kicker">КАЛЕНДАРЬ</span><strong id="datePickerTitle">Выберите период</strong></div><button class="calendar-nav next" id="dateNext" type="button" aria-label="Следующий месяц"><svg><use href="#i-chevron"/></svg></button></header>
+        <div class="calendar-months" id="calendarMonths"></div>
+        <footer class="date-picker-footer" id="datePickerPresets"><span>Быстрый выбор</span><div><button type="button" data-preset="week">Прошлая неделя</button><button type="button" data-preset="month">Этот месяц</button><button type="button" data-preset="30">Последние 30 дней</button></div></footer>
+      </div>
+      <div class="select-popover" id="scenarioPopover" role="listbox" aria-label="Демонстрационное состояние">
+        <header class="popover-header"><span>СОСТОЯНИЕ ОТЧЁТА</span><strong>Демонстрационный сценарий</strong></header>
+        <div class="popover-options">
+          <button role="option" aria-selected="true" data-value="normal"><span class="popover-copy"><strong>Обычная неделя</strong><small>Отчёт рассчитан без замечаний</small></span><svg class="menu-check"><use href="#i-check"/></svg></button>
+          <button role="option" aria-selected="false" data-value="reconciliation"><span class="popover-copy"><strong>Расхождение</strong><small>Контрольная сумма требует проверки</small></span><svg class="menu-check"><use href="#i-check"/></svg></button>
+          <button role="option" aria-selected="false" data-value="unknown"><span class="popover-copy"><strong>Новая операция</strong><small>Найдена неизвестная статья WB</small></span><svg class="menu-check"><use href="#i-check"/></svg></button>
+          <button role="option" aria-selected="false" data-value="version"><span class="popover-copy"><strong>Методика обновлена</strong><small>Доступна новая версия расчёта</small></span><svg class="menu-check"><use href="#i-check"/></svg></button>
+        </div>
+        <footer class="popover-footer">Сценарий меняет только демонстрационный отчёт</footer>
+      </div>
+      <div class="tooltip" id="tooltip" role="tooltip"></div>
+      <div class="bottom-panel" aria-label="Листы пользовательского дашборда">
+        <button class="sheet-collapse" id="sheetCollapse" aria-label="Скрыть листы" data-tooltip="Скрыть листы" data-tooltip-side="top"><svg><use href="#i-chevron-down"/></svg></button>
+        <div class="sheet-chrome glass" id="sheetChrome">
+          <div class="sheet-cluster"><button class="sheet-icon-button add-sheet" aria-label="Новый лист" data-tooltip="Новый лист" data-tooltip-side="top"><svg><use href="#i-plus"/></svg></button><button class="sheet-icon-button" id="allSheetsButton" aria-label="Все листы" aria-haspopup="menu" aria-expanded="false" data-tooltip="Все листы" data-tooltip-side="top"><svg><use href="#i-menu"/></svg></button></div>
+          <span class="bottom-divider"></span>
+          <div class="sheet-scroll" id="sheetScroll"><div class="sheet-tabs" id="sheetTabs"><button class="sheet-tab is-active" data-sheet="main"><svg><rect x="3" y="3" width="18" height="18" rx="3"/></svg><span>Основной</span></button></div></div>
+          <span class="bottom-divider"></span>
+          <div class="sheet-cluster"><button class="sheet-icon-button" id="sheetsScrollLeft" aria-label="Прокрутить влево"><svg><use href="#i-chevron-left"/></svg></button><button class="sheet-icon-button" id="sheetsScrollRight" aria-label="Прокрутить вправо"><svg><use href="#i-chevron-right"/></svg></button></div>
+        </div>
+        <div class="all-sheets-popover glass" id="allSheetsPopover" aria-hidden="true"><header><span>ВСЕ ЛИСТЫ</span><button id="allSheetsClose" aria-label="Закрыть"><svg viewBox="0 0 24 24"><use href="#i-close"/></svg></button></header><div id="allSheetsList"></div><button class="all-sheets-create" id="allSheetsCreate"><svg><use href="#i-plus"/></svg>Новый лист</button></div>
+        <div class="sheet-context-menu glass" id="sheetContextMenu" role="menu" aria-hidden="true">
+          <div class="sheet-menu-view" id="sheetMenuActions">
+            <button role="menuitem" data-sheet-action="rename"><svg><use href="#i-pencil"/></svg>Переименовать</button>
+            <button role="menuitem" data-sheet-action="duplicate"><svg><use href="#i-copy"/></svg>Дублировать</button>
+            <button role="menuitem" data-sheet-action="default"><svg><use href="#i-check"/></svg>Сделать основным</button>
+            <span class="menu-sep"></span>
+            <button role="menuitem" data-sheet-action="icon"><svg><use href="#i-star"/></svg>Значок<em class="sheet-action-value" id="sheetIconPreview"></em></button>
+            <span class="menu-sep"></span>
+            <button class="danger" role="menuitem" data-sheet-action="delete"><svg><use href="#i-trash"/></svg>Удалить лист</button>
+          </div>
+          <div class="sheet-menu-view" id="sheetMenuIcons" hidden></div>
+        </div>
+        <div class="sheet-context-menu sheet-icon-popover glass" id="sheetIconPopover" role="menu" aria-label="Какой значок у листа" aria-hidden="true"></div>
+        <div class="sheet-context-menu sheet-icon-band glass" id="sheetIconBand" role="menu" aria-label="Какой значок у листа" aria-hidden="true"></div>
+      </div>
+      <div class="zoom-control glass" id="dashboardZoomPanel" aria-label="Масштаб пользовательского дашборда">
+        <span class="zoom-drag-grip" data-floating-drag-handle aria-label="Переместить панель"><i></i><i></i></span>
+        <button id="zoomOut" aria-label="Уменьшить масштаб" data-tooltip="Уменьшить">−</button>
+        <button class="zoom-menu-trigger" id="zoomMenuTrigger" aria-haspopup="menu" aria-expanded="false"><strong id="zoomValue">100%</strong><svg viewBox="0 0 24 24"><use href="#i-chevron-down"/></svg></button>
+        <button id="zoomIn" aria-label="Увеличить масштаб" data-tooltip="Увеличить">+</button>
+        <button id="zoomFit" aria-label="Показать весь дашборд" data-tooltip="Показать целиком">⌗</button>
+        <div class="zoom-popover glass" id="zoomPopover" role="menu" aria-hidden="true">
+          <header><span>МАСШТАБ</span><small>Canvas</small></header>
+          <button data-zoom-preset="50">50%<svg><use href="#i-check"/></svg></button>
+          <button data-zoom-preset="75">75%<svg><use href="#i-check"/></svg></button>
+          <button data-zoom-preset="100">100%<svg><use href="#i-check"/></svg></button>
+          <button data-zoom-preset="150">150%<svg><use href="#i-check"/></svg></button>
+          <button data-zoom-preset="200">200%<svg><use href="#i-check"/></svg></button>
+          <span></span>
+          <button data-zoom-action="fit"><span>Вместить все</span><kbd>Ctrl+0</kbd></button>
+          <button data-zoom-action="reset"><span>Сбросить 100%</span></button>
+        </div>
+      </div>
+      <button class="presentation-exit glass" id="presentationExit"><svg><use href="#i-close"/></svg>Выйти из презентации</button>
+      <!-- §4: панель команды — один общий правый слой на все разделы. Тело рисует app.js,
+           здесь только остов, чтобы вёрстка вкладки не отличалась от других панелей. -->
+      <div class="team-scrim" id="teamScrim" aria-hidden="true"></div>
+      <aside class="team-panel glass" id="teamPanel" aria-hidden="true" aria-label="Команда" role="dialog">
+        <header>
+          <div><span class="drawer-kicker">КОМАНДА</span><strong id="teamPanelTitle">ООО «Верена»</strong><small id="teamPanelNote"></small></div>
+          <button class="icon-button" id="teamPanelClose" type="button" aria-label="Закрыть панель команды" data-tooltip="Закрыть"><svg><use href="#i-close"/></svg></button>
+        </header>
+        <nav class="drawer-tabs team-tabs" role="tablist" aria-label="Разделы команды">
+          <button class="team-tab is-active" type="button" role="tab" id="teamTabMembers" data-team-tab="members" aria-selected="true" aria-controls="teamPanelBody"><span>Участники</span><b></b></button>
+          <button class="team-tab" type="button" role="tab" id="teamTabTasks" data-team-tab="tasks" aria-selected="false" aria-controls="teamPanelBody"><span>Задачи</span><b></b></button>
+          <button class="team-tab" type="button" role="tab" id="teamTabActivity" data-team-tab="activity" aria-selected="false" aria-controls="teamPanelBody"><span>Активность</span><b></b></button>
+        </nav>
+        <div class="team-body" id="teamPanelBody" role="tabpanel" tabindex="-1" aria-labelledby="teamTabMembers"></div>
+      </aside>
+      <!-- §5: управление составом и ролями — крупная рамка поверх панели команды (z 80 > 57).
+           Тело рисует app.js, здесь остов: список участников, селектор «Смотреть как» и
+           приглашение живут в одном окне, а не в трёхпоповерах на 380-пиксельной панели. -->
+      <div class="modal-backdrop is-hidden" id="teamManageModal" role="dialog" aria-modal="true" aria-labelledby="teamManageTitle">
+        <div class="modal card team-manage-modal">
+          <header><div><span class="drawer-kicker">КОМАНДА</span><h2 id="teamManageTitle">Управление командой</h2><p id="teamManageNote"></p></div><button class="icon-button" id="teamManageClose" aria-label="Закрыть" data-tooltip="Закрыть"><svg><use href="#i-close"/></svg></button></header>
+          <div class="team-manage-demo">
+            <div class="field-control"><span class="field-label">Смотреть как</span>
+              <div class="field-select team-view-select" data-team-view-as>
+                <button class="field-select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false"><span>Аналитик</span><svg><use href="#i-chevron-down"/></svg></button>
+                <div class="field-select-popover team-option-list" role="listbox" aria-label="Роль для проверки прав"></div>
+              </div>
+            </div>
+            <p id="teamViewNote"></p>
+          </div>
+          <div class="team-manage-body" id="teamManageBody" role="list"></div>
+          <footer><span id="teamManageFoot"></span><span class="team-manage-actions"><button class="secondary-button" type="button" id="teamInviteButton">Пригласить</button><button class="primary-button" type="button" id="teamManageDone">Готово</button></span></footer>
+        </div>
+      </div>
+      <!-- §5.3: приглашение — email, роль и области доступа; письмо не отправляется,
+           участник появляется в составе со статусом «Приглашён». -->
+      <div class="modal-backdrop is-hidden" id="teamInviteModal" role="dialog" aria-modal="true" aria-labelledby="teamInviteTitle">
+        <div class="modal card team-invite-modal">
+          <header><div><span class="drawer-kicker">КОМАНДА</span><h2 id="teamInviteTitle">Пригласить участника</h2><p>Демонстрация: приглашение не отправляется, участник появляется в составе сразу.</p></div><button class="icon-button" id="teamInviteClose" aria-label="Закрыть" data-tooltip="Закрыть"><svg><use href="#i-close"/></svg></button></header>
+          <div class="team-invite-form">
+            <label class="field-control"><span class="field-label">Email</span><input id="teamInviteEmail" type="email" placeholder="name@company.ru" autocomplete="off" spellcheck="false"></label>
+            <div class="field-control"><span class="field-label">Роль</span>
+              <div class="field-select team-invite-role" data-team-invite-role>
+                <button class="field-select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false"><span>Аналитик</span><svg><use href="#i-chevron-down"/></svg></button>
+                <div class="field-select-popover team-option-list" role="listbox" aria-label="Роль участника"></div>
+              </div>
+            </div>
+            <div class="field-control"><span class="field-label">Области доступа</span>
+              <div class="team-access-modes" role="group" aria-label="Области доступа">
+                <button type="button" class="team-access-mode" data-team-invite-scope="all" aria-pressed="true">Все кабинеты</button>
+                <button type="button" class="team-access-mode" data-team-invite-scope="picked" aria-pressed="false">Выбранные кабинеты</button>
+              </div>
+            </div>
+            <div class="team-pick-list is-hidden" id="teamInviteAreas" role="group" aria-label="Кабинеты"></div>
+            <button type="button" class="team-check-box" id="teamInviteSend" role="checkbox" aria-checked="true"><span class="check-control"><svg><use href="#i-check"/></svg></span>Отправить приглашение</button>
+            <p class="team-form-state" id="teamInviteState" role="status"></p>
+          </div>
+          <footer><button class="secondary-button" type="button" id="teamInviteCancel">Отмена</button><button class="primary-button" type="button" id="teamInviteSave" disabled>Пригласить</button></footer>
+        </div>
+      </div>
+      <!-- §5.1: удаление из команды — отдельное подтверждение с точным объектом,
+           по образцу удалений Настроек и Студии. Владелец не удаляется, поэтому рамка
+           для него не открывается. -->
+      <div class="modal-backdrop is-hidden" id="teamRemoveModal" role="dialog" aria-modal="true" aria-labelledby="teamRemoveTitle">
+        <div class="modal card team-remove-modal">
+          <header><div><span class="drawer-kicker">КОМАНДА</span><h2 id="teamRemoveTitle">Удалить из команды?</h2><p id="teamRemoveNote"></p></div><button class="icon-button" id="teamRemoveClose" aria-label="Закрыть" data-tooltip="Закрыть"><svg><use href="#i-close"/></svg></button></header>
+          <div class="team-remove-body" id="teamRemoveBody"></div>
+          <footer><button class="secondary-button" type="button" id="teamRemoveCancel">Отмена</button><button class="primary-button danger-button" type="button" id="teamRemoveConfirm">Удалить</button></footer>
+        </div>
+      </div>
+      <!-- §6.1.1: настройка 2FA. QR-pattern и код демонстрационные: приложение-аутентификатор
+           здесь не подключается, шаг «Код из приложения» только разблокирует кнопку. -->
+      <div class="modal-backdrop is-hidden" id="account2faModal" role="dialog" aria-modal="true" aria-labelledby="account2faTitle">
+        <div class="modal card account-2fa-modal">
+          <header><div><span class="drawer-kicker">БЕЗОПАСНОСТЬ</span><h2 id="account2faTitle">Двухфакторная аутентификация</h2><p id="account2faNote"></p></div><button class="icon-button" id="account2faClose" aria-label="Закрыть" data-tooltip="Закрыть"><svg><use href="#i-close"/></svg></button></header>
+          <div class="account-2fa-body" id="account2faBody"></div>
+          <footer><button class="secondary-button" type="button" id="account2faCancel">Отмена</button><button class="primary-button" type="button" id="account2faConfirm" disabled>Подтвердить и включить</button></footer>
+        </div>
+      </div>
+      <!-- §6.1.4: новый ключ показывается один раз — потом в списке остаётся только маска. -->
+      <div class="modal-backdrop is-hidden" id="accountKeyModal" role="dialog" aria-modal="true" aria-labelledby="accountKeyTitle">
+        <div class="modal card account-key-modal">
+          <header><div><span class="drawer-kicker">БЕЗОПАСНОСТЬ</span><h2 id="accountKeyTitle">Ключ создан</h2><p id="accountKeyNote"></p></div><button class="icon-button" id="accountKeyClose" aria-label="Закрыть" data-tooltip="Закрыть"><svg><use href="#i-close"/></svg></button></header>
+          <div class="account-key-body" id="accountKeyBody"></div>
+          <footer><button class="secondary-button" type="button" id="accountKeyCopy">Скопировать</button><button class="primary-button" type="button" id="accountKeyDone">Понятно</button></footer>
+        </div>
+      </div>
+      <!-- §6.2: общее подтверждение опасных действий — сессия, ключ или участник. Рамка одна,
+           объект и глагол подставляет вызывающий код, чтобы подпись всегда называла то,
+           что действительно умрёт. -->
+      <div class="modal-backdrop is-hidden" id="accountConfirmModal" role="dialog" aria-modal="true" aria-labelledby="accountConfirmTitle">
+        <div class="modal card account-confirm-modal">
+          <header><div><span class="drawer-kicker">БЕЗОПАСНОСТЬ</span><h2 id="accountConfirmTitle"></h2><p id="accountConfirmNote"></p></div><button class="icon-button" id="accountConfirmClose" aria-label="Закрыть" data-tooltip="Закрыть"><svg><use href="#i-close"/></svg></button></header>
+          <div class="account-confirm-body" id="accountConfirmBody"></div>
+          <footer><button class="secondary-button" type="button" id="accountConfirmCancel">Отмена</button><button class="primary-button danger-button" type="button" id="accountConfirmRun">Подтвердить</button></footer>
+        </div>
+      </div>
+      <div class="toast" id="toast"><span class="toast-icon"><svg><use href="#i-check"/></svg></span><div><strong id="toastTitle">Правило опубликовано</strong><small id="toastText">Создан пересчёт трёх отчётных недель</small></div></div>
+    </main>
+  </div>
+  <!-- §4.1–§4.2: Admin Console — отдельная полноэкранная среда администрации Grafio. Слой
+       лежит вне .app-shell, а body.is-admin-console убирает обычный shell из вёрстки целиком:
+       здесь не должно быть ни sidebar, ни тулбара, ни листов, ни minimap, ни фоновой сетки.
+       Рамка публикации вложена в сам слой: .modal-backdrop внутри скрытого app-shell не
+       показался бы вообще, а z-index 80 оставляет её над консолью. -->
+  <div class="admin-console-screen" id="adminConsole" role="dialog" aria-modal="true" aria-labelledby="acTitle" hidden>
+    <header class="ac-header">
+      <div class="ac-identity">
+        <svg class="g-logo" viewBox="7 2 42 46" aria-hidden="true">
+          <g fill="currentColor">
+            <circle cx="19" cy="5" r="3.2"/><circle cx="28" cy="5" r="3.2"/><circle cx="37" cy="5" r="3.2"/>
+            <circle cx="10" cy="13" r="3.2"/><circle cx="46" cy="13" r="3.2"/>
+            <circle cx="10" cy="21" r="3.2"/>
+            <circle cx="10" cy="29" r="3.2"/><circle cx="28" cy="29" r="3.2"/><circle cx="37" cy="29" r="3.2"/><circle cx="46" cy="29" r="3.2"/>
+            <circle cx="10" cy="37" r="3.2"/><circle cx="46" cy="37" r="3.2"/>
+            <circle cx="19" cy="45" r="3.2"/><circle cx="28" cy="45" r="3.2"/><circle cx="37" cy="45" r="3.2"/>
+          </g>
+        </svg>
+        <span class="ac-kicker">GRAFIO ADMIN</span>
+        <strong id="acTitle">Правила расчётов</strong>
+        <button class="icon-button ac-queue-restore" type="button" data-ac-queue-toggle aria-expanded="true" aria-label="Развернуть очередь запросов" data-tooltip="Развернуть очередь" data-tooltip-side="bottom"><svg><use href="#i-panel"/></svg></button>
+      </div>
+      <label class="kpi-search ac-search"><svg><use href="#i-search"/></svg><input id="acSearch" type="search" placeholder="Операция, юрлицо или id" aria-label="Поиск по очереди администратора"></label>
+      <div class="ac-user"><span class="avatar">А</span><span class="ac-user-copy"><strong>Администратор</strong><small>admin@grafio.ru · внутренний доступ</small></span></div>
+      <button class="secondary-button" type="button" id="acReturn"><svg><use href="#i-chevron-left"/></svg><span>Вернуться в рабочее пространство</span></button>
+    </header>
+    <div class="ac-body">
+      <section class="ac-queue" aria-label="Очередь запросов администратора">
+        <div class="ac-queue-head"><h2>Очередь запросов</h2><span id="acQueueMeta"></span><button class="icon-button ac-queue-collapse" type="button" data-ac-queue-toggle aria-expanded="true" aria-label="Свернуть очередь запросов" data-tooltip="Свернуть очередь" data-tooltip-side="bottom"><svg><use href="#i-panel"/></svg></button></div>
+        <div class="ac-filters" id="acFilters"></div>
+        <label class="check-row ac-need"><input id="acNeedPublish" type="checkbox"><span class="check-control" aria-hidden="true"><svg><use href="#i-check"/></svg></span><span>Требуют публикации</span><b id="acNeedCount">0</b></label>
+        <div class="queue-scroll ac-scroll" id="acQueueList"></div>
+        <footer class="queue-footer" id="acQueueFoot"></footer>
+      </section>
+      <section class="ac-work" id="acWork" aria-label="Выбранная операция и правило"></section>
+    </div>
+    <div class="modal-backdrop is-hidden" id="acPublishModal" role="dialog" aria-modal="true" aria-labelledby="acPublishTitle">
+      <div class="modal card ac-publish-modal">
+        <header><div><span class="drawer-kicker">ПУБЛИКАЦИЯ ПРАВИЛА</span><h2 id="acPublishTitle">Опубликовать правило</h2><p id="acPublishSub"></p></div><button class="icon-button" id="acPublishClose" type="button" aria-label="Закрыть" data-tooltip="Закрыть"><svg><use href="#i-close"/></svg></button></header>
+        <div class="ac-publish-body" id="acPublishBody"></div>
+        <footer><button class="secondary-button" type="button" id="acPublishCancel">Отмена</button><button class="primary-button" type="button" id="acPublishConfirm">Опубликовать</button></footer>
+      </div>
+    </div>
+  </div>
+  <!-- §12.8: минимальный экран входа — слой уровня body, а не рамка внутри workspace:
+       на нём не должно быть ни боковой панели, ни тулбара, поэтому на время выхода
+       .app-shell убирается из вёрстки целиком (body.is-logged-out). Логотип повторяет
+       разметку сайдбара, а не ссылается на неё через <use>: CSS не проникает в тень
+       <use>, и без настоящих <circle> знак перестал бы пульсировать.
+       Регистрации и восстановления пароля здесь нет — они вне §3.2. -->
+  <div class="login-screen" id="loginScreen" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+    <form class="card login-card" id="demoLoginForm">
+      <div class="login-brand">
+        <svg class="g-logo" viewBox="7 2 42 46" aria-hidden="true">
+          <g fill="currentColor">
+            <circle cx="19" cy="5" r="3.2"/><circle cx="28" cy="5" r="3.2"/><circle cx="37" cy="5" r="3.2"/>
+            <circle cx="10" cy="13" r="3.2"/><circle cx="46" cy="13" r="3.2"/>
+            <circle cx="10" cy="21" r="3.2"/>
+            <circle cx="10" cy="29" r="3.2"/><circle cx="28" cy="29" r="3.2"/><circle cx="37" cy="29" r="3.2"/><circle cx="46" cy="29" r="3.2"/>
+            <circle cx="10" cy="37" r="3.2"/><circle cx="46" cy="37" r="3.2"/>
+            <circle cx="19" cy="45" r="3.2"/><circle cx="28" cy="45" r="3.2"/><circle cx="37" cy="45" r="3.2"/>
+          </g>
+        </svg>
+        <span class="brand-name">GRAFIO</span>
+      </div>
+      <h1 id="loginTitle">Войти в аккаунт</h1>
+      <p class="login-sub">Введите email и пароль для входа</p>
+      <label class="field-control"><span class="field-label">Email</span><input id="loginEmail" type="email" value="analyst@grafio.ru" placeholder="name@example.com" autocomplete="username"></label>
+      <label class="field-control"><span class="field-label">Пароль</span><input id="loginPassword" type="password" placeholder="Введите пароль" autocomplete="current-password"></label>
+      <button class="primary-button" id="loginEnter" type="submit">Войти в демо</button>
+      <p class="login-note"><svg><use href="#i-info"/></svg><span>Демонстрационный вход: учётные данные не проверяются и никуда не отправляются.</span></p>
+    </form>
+  </div>
+  <script src="dashboard-engine.js?v=20260927-studio-charts"></script>
+  <script src="dashboard-ui.js?v=20260927-studio-charts"></script>
+  <script src="weekly-analytics.js"></script>
+  <script src="app.js?v=20260927-studio-charts"></script>
+</body>
+</html>

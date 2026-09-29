@@ -1,0 +1,36 @@
+@startuml
+title Последовательность — подключение организации и кабинета WB
+autonumber
+
+actor "Владелец организации" as Owner
+boundary "Клиентское приложение" as UI
+control "Организации и кабинеты" as Org
+database "Хранилище секретов" as Secrets
+queue "Redis / очередь" as Queue
+control "Worker загрузки" as Worker
+entity "Wildberries API" as WB
+database "PostgreSQL" as DB
+
+Owner -> UI : Создаёт организацию и юридическое лицо
+UI -> Org : POST /organization, POST /legal-entities
+Org -> DB : Сохранить организацию и юрлицо
+Org --> UI : Контекст создан
+Owner -> UI : Вводит идентификатор кабинета и токен WB
+UI -> Org : POST /marketplace-accounts
+Org -> Secrets : Сохранить токен, вернуть secret_ref
+Org -> DB : Создать кабинет в статусе draft
+Org -> Queue : Поставить проверку доступа
+Org --> UI : 202 Accepted: jobId
+Queue -> Worker : Получить проверку кабинета
+Worker -> Secrets : Получить токен по secret_ref
+Worker -> WB : Проверить доступ и запросить первую загрузку
+
+alt Доступ подтверждён
+  WB --> Worker : Данные доступны
+  Worker -> DB : Статус active, создать первую загрузку
+  Worker -> Queue : Поставить загрузку источников
+else Токен неверен или доступ закрыт
+  WB --> Worker : Ошибка доступа
+  Worker -> DB : Статус needs_fix и безопасная причина
+end
+@enduml
