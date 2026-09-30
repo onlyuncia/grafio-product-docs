@@ -23,6 +23,6 @@
 ## Продукт и архитектура
 
 - [Рабочее место администратора](product/admin-quality-workspace.md), [планы и прогнозы](product/plans-and-forecasts.md), [сценарий управления планом](product/plan-management-use-case.md), [визуальная система прототипа](product/prototype-visual-system.md).
-- [Целевая архитектура](architecture/target-financial-architecture.md), [C4](architecture/c4-model.md), [sequence-диаграммы](architecture/sequence-diagrams.md), [ADR](architecture/adr/README.md). [Обзор существующего сервиса](architecture/current-service-overview.md) описывает исходное приложение и отделён от целевой архитектуры.
+- [Единая карта архитектуры Grafio](architecture/README.md) связывает исходную платформу с финансовым контуром. Детали: [границы модулей](architecture/target-financial-architecture.md), [C4](architecture/c4-model.md), [sequence-диаграммы](architecture/sequence-diagrams.md), [ADR](architecture/adr/README.md) и [обзор реализации](architecture/current-service-overview.md).
 
 [Решения по составу и переименованию](editorial-decisions.md) объясняют, какие рабочие файлы не попали в публичную подборку.

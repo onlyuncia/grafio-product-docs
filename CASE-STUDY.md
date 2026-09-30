@@ -71,7 +71,7 @@ flowchart LR
 | Неизменяемые raw-ответы и версии | Можно восстановить источник числа, перепроверить правило и сравнить старый отчёт с новым | [ADR о raw](docs/architecture/adr/ADR-003-immutable-raw-source-storage.md), [ADR о версиях](docs/architecture/adr/ADR-002-immutable-report-versions.md) |
 | Отдельные полномочия администратора | Клиент передаёт проблему и получает объяснение; изменение общей методики проходит внутреннюю проверку | [ADR об Admin Console](docs/architecture/adr/ADR-005-separate-admin-console-boundary.md) |
 
-Целевая техническая форма — [модульный монолит с отдельным worker](docs/architecture/adr/ADR-001-modular-monolith-and-worker.md). [C4-модель](docs/architecture/c4-model.md) показывает границы системы и модулей, а [sequence-диаграммы](docs/architecture/sequence-diagrams.md) — порядок взаимодействий. Исходный код существующего Grafio описан отдельно в [обзоре текущей архитектуры](docs/architecture/current-service-overview.md); целевые диаграммы не следует читать как отчёт о реализованных модулях.
+[Единая карта архитектуры Grafio](docs/architecture/README.md) связывает платформу и её развитие в финансовом кейсе. [C4-модель](docs/architecture/c4-model.md) показывает границы системы и модулей, [sequence-диаграммы](docs/architecture/sequence-diagrams.md) — порядок взаимодействий, а [ADR](docs/architecture/adr/README.md) объясняют выбор модульного монолита с отдельным worker. Технический [обзор реализации](docs/architecture/current-service-overview.md) позволяет сверить проектные решения с исходным кодом.
 
 ## Что подготовлено для команды
 

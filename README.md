@@ -28,7 +28,7 @@
 |---|---|
 | 5 минут | [Кейс](CASE-STUDY.md), [экраны](screenshots/README.md) |
 | 15 минут | [Карта документов](docs/README.md), [BPMN](docs/processes/bpmn-index.md), [критерии приёмки](docs/requirements/acceptance-criteria.md) |
-| 45 минут | [SRS](docs/requirements/srs.md), [ERD](docs/data/target-erd.md), [OpenAPI](docs/api/openapi.json), [C4](docs/architecture/c4-model.md), [ADR](docs/architecture/adr/README.md) |
+| 45 минут | [SRS](docs/requirements/srs.md), [ERD](docs/data/target-erd.md), [OpenAPI](docs/api/openapi.json), [единая карта архитектуры](docs/architecture/README.md), [ADR](docs/architecture/adr/README.md) |
 
 Основной вход в демонстрацию — [prototype/index.html](prototype/index.html): скачайте репозиторий и откройте файл в браузере. Сервер и установка зависимостей не требуются.
 
