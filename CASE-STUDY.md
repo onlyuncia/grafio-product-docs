@@ -104,7 +104,7 @@ flowchart TB
     RULES --> QUEUE
     QUEUE --> WORKER["Worker · загрузка, качество, расчёт"]
     WORKER --> DB
-    WORKER --> RAW[(Raw-ответы WB)]
+    WORKER --> RAW["Объектное хранилище<br/>raw-ответы WB"]
   end
 
   WB["Wildberries API"] -->|финансовые данные| WORKER
