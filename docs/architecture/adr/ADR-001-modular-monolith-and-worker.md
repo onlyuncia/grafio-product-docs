@@ -29,6 +29,6 @@
 
 ## Связи
 
-- [Целевая архитектура](../target-financial-architecture.md)
+- [Проектирование финансового контура (приложение B)](../financial-contour-design.md)
 - [C4: контейнеры](../c4/02-container.puml)
 - [SRS](../../requirements/srs.md)

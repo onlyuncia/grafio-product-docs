@@ -1,6 +1,6 @@
 # Контракты API целевого финансового контура
 
-Статус: проектный контракт API. Машиночитаемый источник истины — [OpenAPI 3.1 JSON](openapi.json); опубликованная версия — [SwaggerHub 3.0.0-target](https://app.swaggerhub.com/apis/grafio/api-grafio/3.0.0-target). Он описывает целевой backend из [архитектуры финансового контура](../architecture/target-financial-architecture.md), а не перечень уже реализованных endpoint’ов.
+Статус: проектный контракт API. Машиночитаемый источник истины — [OpenAPI 3.1 JSON](openapi.json); опубликованная версия — [SwaggerHub 3.0.0-target](https://app.swaggerhub.com/apis/grafio/api-grafio/3.0.0-target). Он описывает проектируемый финансовый контур [единой архитектуры Grafio](../architecture/README.md), подробно раскрытый в [приложении B](../architecture/financial-contour-design.md), а не перечень уже реализованных endpoint’ов.
 
 ## Общие соглашения
 
@@ -75,5 +75,5 @@
 - [OpenAPI 3.1](openapi.json);
 - [требования к интерфейсам](../requirements/interface-requirements.md);
 - [интеграционная спецификация](../data/integration-specification.md);
-- [целевая backend-архитектура](../architecture/target-financial-architecture.md);
+- [проектирование финансового контура](../architecture/financial-contour-design.md);
 - [расширенная ERD](../data/target-erd.md).

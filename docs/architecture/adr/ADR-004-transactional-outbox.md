@@ -28,6 +28,6 @@
 
 ## Связи
 
-- [События и согласованность](../target-financial-architecture.md#4-события-и-согласованность)
+- [События и согласованность](../financial-contour-design.md#4-события-и-согласованность)
 - [C4: компоненты API](../c4/03-api-components.puml)
 - [Контракты API](../../api/contracts.md)

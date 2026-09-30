@@ -189,7 +189,7 @@ Wildberries API
 | Статусы и переходы объектов | [Статусные модели](../processes/status-models.md) |
 | Расширенная целевая ERD | [Расширенная ERD](../data/target-erd.md) |
 | Нефункциональные показатели | [NFR](non-functional-requirements.md) |
-| Целевая архитектура backend | [Architecture: финансовый контур](../architecture/target-financial-architecture.md) |
+| Архитектура Grafio и проектное приложение | [Основная архитектура](../architecture/README.md), [финансовый контур](../architecture/financial-contour-design.md) |
 | C4-представление архитектуры | [Контекст, контейнеры и компоненты](../architecture/c4-model.md) |
 | Последовательности ключевых сценариев | [Sequence-диаграммы](../architecture/sequence-diagrams.md) |
 | Архитектурные решения | [ADR](../architecture/adr/README.md) |

@@ -203,7 +203,7 @@ erDiagram
 
 ## Связь с архитектурой и статусами
 
-- Модули-владельцы сущностей описаны в [целевой backend-архитектуре](../architecture/target-financial-architecture.md).
+- Модули-владельцы сущностей описаны в [проектном приложении к архитектуре](../architecture/financial-contour-design.md).
 - Допустимые статусы `source_load`, `report_version`, `calculation_case`, `plan_version`, членства, кабинета и закрытия определены в [Статусные модели Grafio](../processes/status-models.md).
 - Потоки создания и изменения сущностей закреплены в [BPMN-наборе](../processes/bpmn-index.md).
 - Первая версия финансового ядра с полями и ограничениями остаётся в [Логическая модель данных Grafio](logical-data-model.md).
