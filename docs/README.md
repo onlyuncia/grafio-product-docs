@@ -12,7 +12,7 @@
 - [Бизнес-требования](requirements/business-requirements.md), [пользовательские](requirements/user-requirements.md), [функциональные](requirements/functional-requirements.md), [бизнес-правила](requirements/business-rules.md), [NFR](requirements/non-functional-requirements.md), [ограничения и допущения](requirements/constraints-and-assumptions.md), [интерфейсы](requirements/interface-requirements.md).
 - [SRS](requirements/srs.md), [User Stories](requirements/user-stories.md), [Use Cases и диаграммы](requirements/use-case-catalog.md), [критерии приёмки](requirements/acceptance-criteria.md), [матрица прослеживаемости](requirements/traceability-matrix.md).
 - [Сценарий недельного анализа](requirements/weekly-expense-use-case.md) и [реестр требований первой версии](requirements/first-release-requirements-register.md) сохранены для трассировки исходных идентификаторов.
-- [Подробные приёмочные сценарии](validation/acceptance-scenarios.md), [журнал проверки прототипа](validation/prototype-uat.md), [аудит интерфейса](validation/ui-quality-audit.md).
+- [Подробные приёмочные сценарии](validation/acceptance-scenarios.md), [аудит интерфейса](validation/ui-quality-audit.md).
 
 ## Процессы, показатели и данные
 
