@@ -6,7 +6,7 @@ ADR фиксируют архитектурные решения целевог�
 |---|---|---|
 | [ADR-001](ADR-001-modular-monolith-and-worker.md) | Модульный монолит с отдельным асинхронным worker | Принято |
 | [ADR-002](ADR-002-immutable-report-versions.md) | Неизменяемые версии отчётов и методики | Принято |
-| [ADR-003](ADR-003-immutable-raw-source-storage.md) | Неизменяемое хранение raw-данных WB | Принято |
+| [ADR-003](ADR-003-immutable-raw-source-storage.md) | Неизменяемое хранение raw-ответов маркетплейсов | Принято |
 | [ADR-004](ADR-004-transactional-outbox.md) | Транзакционный outbox для доменных событий | Принято |
 | [ADR-005](ADR-005-separate-admin-console-boundary.md) | Отдельная граница Admin Console | Принято |
 
