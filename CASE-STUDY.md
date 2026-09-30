@@ -13,7 +13,7 @@
 | **Статус результата** | Целевое решение документировано; интерфейс показан в демонстрационном прототипе. Новый финансовый backend и заявленные эффекты не подтверждены внедрением |
 | **Открытая проверка** | Поля и знаки нового финансового API WB требуют сверки на обезличенной фактической неделе |
 
-**Посмотреть результат:** [прототип](prototype/index.html) · [галерея экранов](screenshots/README.md) · [SRS](docs/requirements/srs.md) · [SwaggerHub 3.0.0-target](https://app.swaggerhub.com/apis/grafio/api-grafio/3.0.0-target) · [карта всех документов](docs/README.md).
+**Посмотреть результат:** [прототип](prototype/index.html) · [галерея экранов](screenshots/README.md) · [обзорная архитектура](docs/architecture/README.md) · [SRS](docs/requirements/srs.md) · [SwaggerHub 3.0.0-target](https://app.swaggerhub.com/apis/grafio/api-grafio/3.0.0-target) · [карта всех документов](docs/README.md).
 
 ## Проблема и исходный процесс
 
@@ -71,7 +71,40 @@ flowchart LR
 | Неизменяемые raw-ответы и версии | Можно восстановить источник числа, перепроверить правило и сравнить старый отчёт с новым | [ADR о raw](docs/architecture/adr/ADR-003-immutable-raw-source-storage.md), [ADR о версиях](docs/architecture/adr/ADR-002-immutable-report-versions.md) |
 | Отдельные полномочия администратора | Клиент передаёт проблему и получает объяснение; изменение общей методики проходит внутреннюю проверку | [ADR об Admin Console](docs/architecture/adr/ADR-005-separate-admin-console-boundary.md) |
 
-[Единая карта архитектуры Grafio](docs/architecture/README.md) связывает платформу и её развитие в финансовом кейсе. [C4-модель](docs/architecture/c4-model.md) показывает границы системы и модулей, [sequence-диаграммы](docs/architecture/sequence-diagrams.md) — порядок взаимодействий, а [ADR](docs/architecture/adr/README.md) объясняют выбор модульного монолита с отдельным worker. Технический [обзор реализации](docs/architecture/current-service-overview.md) позволяет сверить проектные решения с исходным кодом.
+## Архитектура Grafio на одной схеме
+
+```mermaid
+flowchart TB
+  USER["Продавец / аналитик"] --> UI
+  ADMIN_USER["Администратор Grafio"] --> ADMIN_UI
+
+  subgraph GRAFIO["Grafio · единый сервис"]
+    direction TB
+    UI["Клиентское приложение · React"]
+    ADMIN_UI["Admin Console · React"]
+
+    subgraph API["Fastify API · модульный монолит"]
+      CORE["Доступ · организации<br/>РНП · товары · планы · дашборд"]
+      FINANCE["Недельный отчёт · контроль расчётов<br/>методика и версии"]
+    end
+
+    UI --> CORE
+    UI --> FINANCE
+    ADMIN_UI --> FINANCE
+    CORE --> DB[(PostgreSQL · данные и настройки)]
+    FINANCE --> DB
+    CORE --> QUEUE["Redis · очередь"]
+    FINANCE --> QUEUE
+    QUEUE --> WORKER["Worker · загрузка, качество, расчёт"]
+    WORKER --> DB
+    WORKER --> RAW[(Raw-ответы WB)]
+  end
+
+  WB["Wildberries API"] -->|финансовые данные| WORKER
+  OZON["Ozon API"] -->|существующая синхронизация| WORKER
+```
+
+Схема показывает один сервис: существующую платформу и спроектированное развитие финансового контура WB. Это логические связи, а не подтверждение внедрения всех изображённых механизмов. Подробности доступны в [карте архитектуры](docs/architecture/README.md), [C4-модели](docs/architecture/c4-model.md), [sequence-диаграммах](docs/architecture/sequence-diagrams.md) и [ADR](docs/architecture/adr/README.md).
 
 ## Что подготовлено для команды
 
