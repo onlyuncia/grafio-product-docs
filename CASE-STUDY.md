@@ -85,16 +85,23 @@ flowchart TB
 
     subgraph API["Fastify API · модульный монолит"]
       CORE["Доступ · организации<br/>РНП · товары · планы · дашборд"]
-      FINANCE["Недельный отчёт · контроль расчётов<br/>методика и версии"]
+      REPORT["Расчёт и отчётность<br/>недельные показатели · версии отчёта"]
+      CASES["Контроль расчётов<br/>кейсы · доказательства"]
+      RULES["Методика<br/>правила · версии методики"]
     end
 
     UI --> CORE
-    UI --> FINANCE
-    ADMIN_UI --> FINANCE
+    UI --> REPORT
+    UI --> CASES
+    ADMIN_UI --> CASES
+    ADMIN_UI --> RULES
     CORE --> DB[(PostgreSQL · данные и настройки)]
-    FINANCE --> DB
+    REPORT --> DB
+    CASES --> DB
+    RULES --> DB
     CORE --> QUEUE["Redis · очередь"]
-    FINANCE --> QUEUE
+    REPORT --> QUEUE
+    RULES --> QUEUE
     QUEUE --> WORKER["Worker · загрузка, качество, расчёт"]
     WORKER --> DB
     WORKER --> RAW[(Raw-ответы WB)]
@@ -104,7 +111,7 @@ flowchart TB
   OZON["Ozon API"] -->|существующая синхронизация| WORKER
 ```
 
-Схема показывает один сервис: существующую платформу и спроектированное развитие финансового контура WB. Это логические связи, а не подтверждение внедрения всех изображённых механизмов. Подробности доступны в [карте архитектуры](docs/architecture/README.md), [C4-модели](docs/architecture/c4-model.md), [sequence-диаграммах](docs/architecture/sequence-diagrams.md) и [ADR](docs/architecture/adr/README.md).
+Схема показывает один сервис: существующую платформу и спроектированное развитие финансового контура WB. Отчётность, клиентские кейсы и методика разделены по ответственности. Это логические связи, а не подтверждение внедрения всех изображённых механизмов. Подробности доступны в [карте архитектуры](docs/architecture/README.md), [C4-модели](docs/architecture/c4-model.md), [sequence-диаграммах](docs/architecture/sequence-diagrams.md) и [ADR](docs/architecture/adr/README.md).
 
 ## Что подготовлено для команды
 
