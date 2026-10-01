@@ -13,7 +13,7 @@
 | **Статус результата** | Целевое решение документировано; интерфейс показан в демонстрационном прототипе. Новый финансовый backend и заявленные эффекты не подтверждены внедрением |
 | **Открытая проверка** | Поля и знаки нового финансового API WB требуют сверки на обезличенной фактической неделе |
 
-**Посмотреть результат:** [прототип](prototype/index.html) · [галерея экранов](screenshots/README.md) · [обзорная архитектура](docs/architecture/README.md) · [SRS](docs/requirements/srs.md) · [SwaggerHub 3.0.0-target](https://app.swaggerhub.com/apis/grafio/api-grafio/3.0.0-target) · [карта всех документов](docs/README.md).
+**Посмотреть результат:** [прототип](prototype/index.html) · [галерея экранов](screenshots/README.md) · [обзорная архитектура](docs/architecture/README.md) · [SRS](docs/requirements/srs.md) · [SwaggerHub 3.0.0-target](https://app.swaggerhub.com/apis/grafio/api-grafio/3.0.0-target) · [маршрут чтения](docs/README.md).
 
 ## Проблема и исходный процесс
 
@@ -117,14 +117,12 @@ flowchart TB
 
 | Вопрос команды | Артефакт |
 |---|---|
-| Зачем менять процесс и кому это нужно? | [Бизнес-требования](docs/requirements/business-requirements.md), [пользовательские требования](docs/requirements/user-requirements.md), [User Stories](docs/requirements/user-stories.md) |
-| Как работают сценарии и исключения? | [Use Cases и диаграммы](docs/requirements/use-case-catalog.md), [BPMN](docs/processes/bpmn-index.md), [операционные процессы](docs/processes/operational-workflows.md) |
-| Что должна делать система и как это принять? | [SRS](docs/requirements/srs.md), [функциональные требования](docs/requirements/functional-requirements.md), [критерии приёмки](docs/requirements/acceptance-criteria.md) |
-| Откуда берутся данные и как считаются показатели? | [Контракт WB](docs/data/wb-data-contract.md), [маппинг полей](docs/data/wb-field-mapping-validation.md), [паспорта метрик](docs/data/metric-passports.md) |
-| Как хранятся данные и версии? | [Единая целевая ERD](docs/data/target-erd.md), [статусные модели](docs/processes/status-models.md) |
-| Как взаимодействуют части системы? | [OpenAPI 3.1](docs/api/openapi.json), [SwaggerHub](https://app.swaggerhub.com/apis/grafio/api-grafio/3.0.0-target), [C4](docs/architecture/c4-model.md), [sequence](docs/architecture/sequence-diagrams.md), [ADR](docs/architecture/adr/README.md) |
-| Какие качества и ограничения важны? | [NFR](docs/requirements/non-functional-requirements.md), [ограничения](docs/requirements/constraints-and-assumptions.md), [матрица прослеживаемости](docs/requirements/traceability-matrix.md) |
+| Зачем менять процесс? | [Бизнес-требования](docs/requirements/business-requirements.md), [AS-IS](docs/context/as-is-weekly-report.md) |
+| Что должна делать система? | [SRS](docs/requirements/srs.md), [BPMN](docs/processes/bpmn-index.md) |
+| Как считаются и проверяются показатели? | [Паспорта метрик](docs/data/metric-passports.md), [критерии приёмки](docs/requirements/acceptance-criteria.md) |
+| Как устроены данные и сервис? | [ERD](docs/data/target-erd.md), [архитектура Grafio](docs/architecture/README.md) |
+| Как задан обмен данными? | [API-контракт](docs/api/contracts.md), [OpenAPI 3.1](docs/api/openapi.json) |
 
 ## Как читать кейс дальше
 
-Для быстрого просмотра достаточно [прототипа](prototype/README.md) и [путеводителя](docs/README.md) после чтения этого кейса. Для оценки полноты системного анализа откройте [SRS](docs/requirements/srs.md), [матрицу прослеживаемости](docs/requirements/traceability-matrix.md) и [API-контракт](docs/api/contracts.md). Источники и детальные таблицы собраны в [карте материалов](docs/README.md).
+После кейса откройте [путеводитель по 12 ключевым материалам](docs/README.md) или сразу пройдите [прототип](prototype/README.md). Матрица прослеживаемости и подробные приложения доступны из путеводителя, когда понадобится проверить конкретное решение.

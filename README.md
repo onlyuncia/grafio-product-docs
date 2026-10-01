@@ -26,11 +26,11 @@
 
 | Время | Что посмотреть |
 |---|---|
-| 5 минут | [Кейс](CASE-STUDY.md), [схема архитектуры](docs/architecture/README.md), [экраны](screenshots/README.md) |
-| 15 минут | [Карта документов](docs/README.md), [BPMN](docs/processes/bpmn-index.md), [критерии приёмки](docs/requirements/acceptance-criteria.md) |
-| 45 минут | [SRS](docs/requirements/srs.md), [ERD](docs/data/target-erd.md), [OpenAPI](docs/api/openapi.json), [единая карта архитектуры](docs/architecture/README.md), [ADR](docs/architecture/adr/README.md) |
+| 5 минут | [Кейс](CASE-STUDY.md) и [основные экраны](screenshots/README.md) |
+| 20 минут | [SRS](docs/requirements/srs.md), [BPMN](docs/processes/bpmn-index.md), [паспорта метрик](docs/data/metric-passports.md) и [критерии приёмки](docs/requirements/acceptance-criteria.md) |
+| 45 минут | [Архитектура](docs/architecture/README.md), [ERD](docs/data/target-erd.md), [API-контракт](docs/api/contracts.md) и [матрица прослеживаемости](docs/requirements/traceability-matrix.md) |
 
-Основной вход в демонстрацию — [prototype/index.html](prototype/index.html): скачайте репозиторий и откройте файл в браузере. Сервер и установка зависимостей не требуются.
+Последовательность из 12 ключевых материалов собрана в [путеводителе](docs/README.md). Для демонстрации откройте [prototype/index.html](prototype/index.html) локально в браузере: сервер и установка зависимостей не требуются.
 
 ## Что означает статус проекта
 
