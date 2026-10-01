@@ -172,4 +172,4 @@ koef GENERAL; koef LOG; koef SALES; Продано шт.; Возвращено �
 
 ## Подтверждение по книге
 
-Формулы и пары контрольных сумм извлечены из предоставленного примера в [разборе книги](../research/workbook-calculation-review.md). Решения о будущем поведении сервиса находятся в [TO-BE](../processes/to-be-calculation-rules.md).
+Формулы и пары контрольных сумм извлечены из предоставленного примера в [разборе книги](../research/workbook-calculation-review.md). Итоговый процесс изменения расчётов описан в [жизненном цикле правил и версий](../processes/calculation-lifecycle.md).

@@ -99,8 +99,7 @@
 
 - Бизнес-потребность и правила недельных показателей: [анализ расходов](../research/weekly-expense-analysis.md).
 - Ручной процесс: [AS-IS](../context/as-is-weekly-report.md).
-- Административный процесс и версии: [TO-BE расчётов](../processes/to-be-calculation-rules.md).
+- Административный процесс и версии: [жизненный цикл правил и версий](../processes/calculation-lifecycle.md).
 - Границы первой версии: [границы кейса](../context/case-scope.md).
-- Отбор прежних визуализаций: [оценка недельных графиков](../research/weekly-chart-assessment.md).
 
 Требования первой версии с идентификаторами и критериями проверки сохранены в [исходном реестре](first-release-requirements-register.md).
