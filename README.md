@@ -52,12 +52,14 @@
 
 ## Форматы и инструменты
 
-| Артефакт | Формат |
-|---|---|
-| Процессы и модели состояний | BPMN 2.0 (`.bpmn`), Mermaid |
-| Use Case, sequence и C4 | PlantUML (`.puml`), для C4 — C4-PlantUML |
-| ERD и модель данных | Mermaid, Markdown |
-| [Целевой API-контракт](docs/api/openapi.json) | OpenAPI 3.1 JSON; Postman применялся для проверки реализованного локального API |
-| [Кликабельный прототип](prototype/README.md) | HTML, CSS, JavaScript |
+**Модели и контракты**
 
-[SwaggerHub](https://app.swaggerhub.com/apis/grafio/api-grafio/3.0.0-target) пока содержит предыдущую публичную версию контракта; актуальная версия находится в репозитории. Прототип не обращается к целевому расчётному API.
+[![BPMN 2.0 — процессы](assets/badges/bpmn-2.0.svg)](docs/processes/bpmn-index.md) [![PlantUML — C4 и sequence](assets/badges/plantuml.svg)](docs/architecture/c4-model.md) [![Mermaid — ERD и статусы](assets/badges/mermaid.svg)](docs/data/target-erd.md) [![OpenAPI 3.1 — целевой контракт](assets/badges/openapi-3.1.svg)](docs/api/openapi.json)
+
+**API и прототип**
+
+[![SwaggerHub — опубликованная версия контракта](assets/badges/swaggerhub.svg)](https://app.swaggerhub.com/apis/grafio/api-grafio/3.0.0-target) [![Postman — проверка локального API](assets/badges/postman.svg)](docs/api/contracts.md) [![HTML, CSS и JavaScript — прототип](assets/badges/html-css-js.svg)](prototype/README.md)
+
+BPMN 2.0 задаёт нотацию процессов, OpenAPI 3.1 — формат API-контракта. Use Case и sequence выполнены в PlantUML, C4 — с библиотекой C4-PlantUML; ERD и статусные модели — в Mermaid. Postman применялся для проверки реализованного локального API.
+
+SwaggerHub пока содержит предыдущую публичную версию контракта; актуальная версия находится в репозитории. Прототип не обращается к целевому расчётному API.
