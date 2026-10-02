@@ -34,7 +34,7 @@
 | РНП и недельная аналитика | Определения метрик, недельный срез, качество и сверка; отсутствие данных не подменяется нулём | [Паспорта показателей](docs/data/metric-passports.md), [экран отчёта](screenshots/01-weekly-report.png) |
 | Товары и себестоимость | Связь операции с товаром и исторической стоимостью, детализация суммы до записей | [Модель данных](docs/data/logical-data-model.md), [сценарий детализации](docs/requirements/weekly-expense-use-case.md) |
 | Планы | Область плана, сопоставление факта с целью, версии и прогноз | [Правила планов](docs/product/plans-and-forecasts.md), [экран планов](screenshots/07-plans.png) |
-| Дашборд и Студия | Листы, каталог KPI и графиков, настройка виджетов и редактирование | [Прототип](prototype/README.md), [экран Студии](screenshots/05-studio.png) |
+| Дашборд и Студия | Листы, каталог KPI и графиков, настройка виджетов и редактирование | [Прототип](https://onlyuncia.github.io/grafio-product-docs/), [экран Студии](screenshots/05-studio.png) |
 | Контроль расчётов, команда и доступ | Клиентский кейс, роли сотрудников и отдельный процесс администратора | [Операционные процессы](docs/processes/operational-workflows.md), [BPMN](docs/processes/bpmn-index.md) |
 | История расчётов | Новая версия сохраняет прежний результат и объясняет изменение | [Решение о версиях](docs/architecture/adr/ADR-002-immutable-report-versions.md) |
 
@@ -59,5 +59,3 @@
 [![SwaggerHub — опубликованная версия контракта](assets/badges/swaggerhub.svg)](https://app.swaggerhub.com/apis/grafio/api-grafio/3.0.1) [![Postman — проверка локального API](assets/badges/postman.svg)](docs/api/contracts.md) [![HTML, CSS и JavaScript — прототип](assets/badges/html-css-js.svg)](prototype/README.md)
 
 BPMN 2.0 задаёт нотацию процессов, OpenAPI 3.1 — формат API-контракта. Use Case и sequence выполнены в PlantUML, C4 — с библиотекой C4-PlantUML; ERD и статусные модели — в Mermaid. Postman применялся для проверки реализованного локального API.
-
-SwaggerHub пока содержит предыдущую публичную версию контракта; актуальная версия находится в репозитории. Прототип не обращается к целевому расчётному API.
