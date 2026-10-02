@@ -175,19 +175,19 @@
       "post": { "tags": ["Кабинеты маркетплейсов"], "summary": "Создать подключение кабинета WB", "operationId": "createMarketplaceAccount", "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MarketplaceAccountInput" } } } }, "responses": { "202": { "$ref": "#/components/responses/AsyncAccepted" }, "422": { "$ref": "#/components/responses/ValidationError" } } }
     },
     "/marketplace-accounts/{accountId}": {
-      "get": { "tags": ["Кабинеты маркетплейсов"], "summary": "Получить кабинет маркетплейса", "operationId": "getMarketplaceAccount", "parameters": [{ "$ref": "#/components/parameters/AccountId" }], "responses": { "200": { "description": "Кабинет и его статус", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MarketplaceAccount" } } } } } },
-      "patch": { "tags": ["Кабинеты маркетплейсов"], "summary": "Изменить данные подключения кабинета", "operationId": "updateMarketplaceAccount", "parameters": [{ "$ref": "#/components/parameters/AccountId" }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MarketplaceAccountUpdate" } } } }, "responses": { "202": { "$ref": "#/components/responses/AsyncAccepted" } } },
-      "delete": { "tags": ["Кабинеты маркетплейсов"], "summary": "Отключить кабинет маркетплейса", "operationId": "disconnectMarketplaceAccount", "parameters": [{ "$ref": "#/components/parameters/AccountId" }], "responses": { "202": { "$ref": "#/components/responses/AsyncAccepted" } } }
+      "get": { "tags": ["Кабинеты маркетплейсов"], "summary": "Получить кабинет маркетплейса", "operationId": "getMarketplaceAccount", "parameters": [{ "$ref": "#/components/parameters/AccountPathId" }], "responses": { "200": { "description": "Кабинет и его статус", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MarketplaceAccount" } } } } } },
+      "patch": { "tags": ["Кабинеты маркетплейсов"], "summary": "Изменить данные подключения кабинета", "operationId": "updateMarketplaceAccount", "parameters": [{ "$ref": "#/components/parameters/AccountPathId" }], "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MarketplaceAccountUpdate" } } } }, "responses": { "202": { "$ref": "#/components/responses/AsyncAccepted" } } },
+      "delete": { "tags": ["Кабинеты маркетплейсов"], "summary": "Отключить кабинет маркетплейса", "operationId": "disconnectMarketplaceAccount", "parameters": [{ "$ref": "#/components/parameters/AccountPathId" }], "responses": { "202": { "$ref": "#/components/responses/AsyncAccepted" } } }
     },
     "/marketplace-accounts/{accountId}/verification": {
-      "post": { "tags": ["Кабинеты маркетплейсов"], "summary": "Проверить доступ к кабинету и запустить первую загрузку", "operationId": "verifyMarketplaceAccount", "parameters": [{ "$ref": "#/components/parameters/AccountId" }], "responses": { "202": { "$ref": "#/components/responses/AsyncAccepted" }, "403": { "$ref": "#/components/responses/Forbidden" } } }
+      "post": { "tags": ["Кабинеты маркетплейсов"], "summary": "Проверить доступ к кабинету и запустить первую загрузку", "operationId": "verifyMarketplaceAccount", "parameters": [{ "$ref": "#/components/parameters/AccountPathId" }], "responses": { "202": { "$ref": "#/components/responses/AsyncAccepted" }, "403": { "$ref": "#/components/responses/Forbidden" } } }
     },
     "/marketplace-accounts/{accountId}/load-status": {
-      "get": { "tags": ["Кабинеты маркетплейсов"], "summary": "Получить статус подключения и первой загрузки", "operationId": "getMarketplaceLoadStatus", "parameters": [{ "$ref": "#/components/parameters/AccountId" }], "responses": { "200": { "description": "Статус подключения", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/AccountLoadStatus" } } } } } }
+      "get": { "tags": ["Кабинеты маркетплейсов"], "summary": "Получить статус подключения и первой загрузки", "operationId": "getMarketplaceLoadStatus", "parameters": [{ "$ref": "#/components/parameters/AccountPathId" }], "responses": { "200": { "description": "Статус подключения", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/AccountLoadStatus" } } } } } }
     },
     "/marketplace-accounts/{accountId}/loads": {
-      "get": { "tags": ["Кабинеты маркетплейсов"], "summary": "Получить историю загрузок кабинета", "operationId": "listAccountLoads", "parameters": [{ "$ref": "#/components/parameters/AccountId" }], "responses": { "200": { "description": "Загрузки финансовых данных", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/LoadRun" } } } } } } },
-      "post": { "tags": ["Кабинеты маркетплейсов"], "summary": "Запустить загрузку данных повторно", "operationId": "runAccountLoad", "parameters": [{ "$ref": "#/components/parameters/AccountId" }], "responses": { "202": { "$ref": "#/components/responses/AsyncAccepted" } } }
+      "get": { "tags": ["Кабинеты маркетплейсов"], "summary": "Получить историю загрузок кабинета", "operationId": "listAccountLoads", "parameters": [{ "$ref": "#/components/parameters/AccountPathId" }], "responses": { "200": { "description": "Загрузки финансовых данных", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/LoadRun" } } } } } } },
+      "post": { "tags": ["Кабинеты маркетплейсов"], "summary": "Запустить загрузку данных повторно", "operationId": "runAccountLoad", "parameters": [{ "$ref": "#/components/parameters/AccountPathId" }], "responses": { "202": { "$ref": "#/components/responses/AsyncAccepted" } } }
     },
     "/organization": {
       "get": { "tags": ["Организация"], "summary": "Получить текущую организацию", "operationId": "getOrganization", "responses": { "200": { "description": "Организация", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Organization" } } } } } },
@@ -221,6 +221,7 @@
     "parameters": {
       "LegalEntityId": { "name": "legalEntityId", "in": "query", "required": true, "schema": { "$ref": "#/components/schemas/Id" } },
       "AccountId": { "name": "accountId", "in": "query", "required": true, "schema": { "$ref": "#/components/schemas/Id" } },
+      "AccountPathId": { "name": "accountId", "in": "path", "required": true, "schema": { "$ref": "#/components/schemas/Id" } },
       "ReportVersionId": { "name": "reportVersionId", "in": "path", "required": true, "schema": { "$ref": "#/components/schemas/Id" } },
       "CaseId": { "name": "caseId", "in": "path", "required": true, "schema": { "$ref": "#/components/schemas/Id" } },
       "InvestigationId": { "name": "investigationId", "in": "path", "required": true, "schema": { "$ref": "#/components/schemas/Id" } },
