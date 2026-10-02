@@ -1,14 +1,14 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "API финансового контура Grafio",
-    "version": "3.0.0-target",
+    "title": "Целевой API Grafio",
+    "version": "3.0.1-target",
     "description": "Целевой контракт API. Он фиксирует планируемые эндпоинты и не подтверждает их реализацию в текущей версии сервиса."
   },
   "servers": [{ "url": "https://api.grafio.example/v1", "description": "Целевой базовый URL производственной среды" }],
   "security": [{ "bearerAuth": [] }],
   "tags": [
-    { "name": "Отчёты" }, { "name": "Контроль расчётов" }, { "name": "Администрирование методики" },
+    { "name": "Отчёты" }, { "name": "Финансовые настройки" }, { "name": "Контроль расчётов" }, { "name": "Администрирование методики" },
     { "name": "Планы" }, { "name": "Мой дашборд" }, { "name": "Недельная аналитика" },
     { "name": "Команда" }, { "name": "Безопасность" }, { "name": "Кабинеты маркетплейсов" },
     { "name": "Организация" }, { "name": "Жизненный цикл организации" },
@@ -87,6 +87,17 @@
     "/methodology/versions": {
       "get": { "tags": ["Отчёты"], "summary": "Получить доступные версии методики", "operationId": "listMethodologyVersions", "parameters": [{ "name": "reportVersionId", "in": "query", "schema": { "$ref": "#/components/schemas/Id" } }], "responses": { "200": { "description": "Версии методики и объяснения изменений", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/MethodologyVersion" } } } } } } }
     },
+    "/user-expenses": {
+      "get": { "tags": ["Финансовые настройки"], "summary": "Получить пользовательские расходы", "operationId": "listUserExpenses", "parameters": [{ "name": "legalEntityId", "in": "query", "required": true, "schema": { "$ref": "#/components/schemas/Id" } }], "responses": { "200": { "description": "Расходы выбранного юридического лица", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/UserExpense" } } } } }, "403": { "$ref": "#/components/responses/Forbidden" } } },
+      "post": { "tags": ["Финансовые настройки"], "summary": "Добавить пользовательский расход", "operationId": "createUserExpense", "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/UserExpenseInput" } } } }, "responses": { "201": { "description": "Расход создан", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/UserExpense" } } } }, "403": { "$ref": "#/components/responses/Forbidden" }, "422": { "$ref": "#/components/responses/ValidationError" } } }
+    },
+    "/financial-settings/tax": {
+      "get": { "tags": ["Финансовые настройки"], "summary": "Получить налоговую настройку юридического лица", "operationId": "getTaxSetting", "parameters": [{ "name": "legalEntityId", "in": "query", "required": true, "schema": { "$ref": "#/components/schemas/Id" } }], "responses": { "200": { "description": "Выбранное правило или явное отключение учёта", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/TaxSetting" } } } }, "403": { "$ref": "#/components/responses/Forbidden" } } },
+      "put": { "tags": ["Финансовые настройки"], "summary": "Выбрать опубликованное налоговое правило или отключить учёт", "operationId": "setTaxSetting", "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/TaxSettingInput" } } } }, "responses": { "200": { "description": "Настройка сохранена", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/TaxSetting" } } } }, "403": { "$ref": "#/components/responses/Forbidden" }, "422": { "$ref": "#/components/responses/ValidationError" } } }
+    },
+    "/financial-settings/tax/rules": {
+      "get": { "tags": ["Финансовые настройки"], "summary": "Получить доступные опубликованные налоговые правила", "operationId": "listPublishedTaxRules", "parameters": [{ "name": "legalEntityId", "in": "query", "required": true, "schema": { "$ref": "#/components/schemas/Id" } }], "responses": { "200": { "description": "Правила, доступные юридическому лицу", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/TaxRuleOption" } } } } }, "403": { "$ref": "#/components/responses/Forbidden" } } }
+    },
     "/plans": {
       "get": { "tags": ["Планы"], "summary": "Получить планы в доступной области", "operationId": "listPlans", "parameters": [{ "name": "status", "in": "query", "schema": { "type": "string" } }], "responses": { "200": { "description": "Планы", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Plan" } } } } } } },
       "post": { "tags": ["Планы"], "summary": "Создать черновик плана", "operationId": "createPlan", "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/PlanInput" } } } }, "responses": { "201": { "description": "Черновик плана", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Plan" } } } }, "422": { "$ref": "#/components/responses/ValidationError" } } }
@@ -127,7 +138,7 @@
       "get": { "tags": ["Команда"], "summary": "Получить участников организации", "operationId": "listTeamMembers", "responses": { "200": { "description": "Участники с ролями и областями доступа", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Membership" } } } } } } }
     },
     "/team/invitations/{invitationId}/accept": {
-      "post": { "tags": ["Команда"], "summary": "Принять приглашение в организацию", "operationId": "acceptInvitation", "parameters": [{ "$ref": "#/components/parameters/InvitationId" }], "responses": { "200": { "description": "Участник добавлен в организацию", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Membership" } } } }, "409": { "$ref": "#/components/responses/Conflict" } } }
+      "post": { "tags": ["Команда"], "summary": "Принять приглашение в организацию", "operationId": "acceptInvitation", "parameters": [{ "$ref": "#/components/parameters/InvitationId" }], "responses": { "200": { "description": "Членство создано; при обязательной 2FA доступ остаётся в состоянии pending_mfa", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/Membership" } } } }, "409": { "$ref": "#/components/responses/Conflict" } } }
     },
     "/team/invitations/{invitationId}": {
       "delete": { "tags": ["Команда"], "summary": "Отозвать приглашение", "operationId": "revokeInvitation", "parameters": [{ "$ref": "#/components/parameters/InvitationId" }], "responses": { "204": { "description": "Приглашение отозвано" } } }
@@ -144,7 +155,7 @@
       "post": { "tags": ["Безопасность"], "summary": "Начать подключение двухфакторной защиты", "operationId": "setupMfa", "responses": { "200": { "description": "Секрет и ссылка для подключения", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MfaSetup" } } } } } }
     },
     "/security/mfa/verify": {
-      "post": { "tags": ["Безопасность"], "summary": "Подтвердить двухфакторную защиту", "operationId": "verifyMfa", "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MfaVerifyInput" } } } }, "responses": { "204": { "description": "Двухфакторная защита включена" }, "422": { "$ref": "#/components/responses/ValidationError" } } }
+      "post": { "tags": ["Безопасность"], "summary": "Подтвердить двухфакторную защиту", "operationId": "verifyMfa", "requestBody": { "required": true, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MfaVerifyInput" } } } }, "responses": { "204": { "description": "Двухфакторная защита включена; ожидающее подтверждения членство активировано" }, "422": { "$ref": "#/components/responses/ValidationError" } } }
     },
     "/security/sessions": {
       "get": { "tags": ["Безопасность"], "summary": "Получить активные сессии", "operationId": "listSessions", "responses": { "200": { "description": "Активные сессии", "content": { "application/json": { "schema": { "type": "array", "items": { "$ref": "#/components/schemas/Session" } } } } } } }
@@ -234,9 +245,30 @@
     },
     "schemas": {
       "Id": { "type": "string", "format": "uuid" },
+      "UserExpenseInput": { "type": "object", "required": ["legalEntityId", "amount", "method", "periodFrom", "periodTo"], "properties": { "legalEntityId": { "$ref": "#/components/schemas/Id" }, "accountId": { "$ref": "#/components/schemas/Id" }, "amount": { "type": "number", "description": "Сумма в рублях; расчётная точность не зависит от отображения" }, "category": { "type": "string" }, "method": { "enum": ["payment_week", "spread_over_period"] }, "periodFrom": { "type": "string", "format": "date" }, "periodTo": { "type": "string", "format": "date" } } },
+      "UserExpense": { "allOf": [{ "$ref": "#/components/schemas/UserExpenseInput" }, { "type": "object", "required": ["id"], "properties": { "id": { "$ref": "#/components/schemas/Id" } } }] },
+      "TaxSettingInput": { "type": "object", "required": ["legalEntityId", "enabled"], "properties": { "legalEntityId": { "$ref": "#/components/schemas/Id" }, "enabled": { "type": "boolean" }, "ruleVersionId": { "$ref": "#/components/schemas/Id", "description": "Опубликованная версия правила, обязательна при enabled=true" } }, "allOf": [{ "if": { "properties": { "enabled": { "const": true } } }, "then": { "required": ["ruleVersionId"] } }] },
+      "TaxSetting": { "allOf": [{ "$ref": "#/components/schemas/TaxSettingInput" }, { "type": "object", "required": ["updatedAt"], "properties": { "updatedAt": { "type": "string", "format": "date-time" } } }] },
+      "TaxRuleOption": { "type": "object", "required": ["id", "name", "status"], "properties": { "id": { "$ref": "#/components/schemas/Id" }, "name": { "type": "string" }, "status": { "const": "published" }, "description": { "type": "string" } } },
       "AsyncAccepted": { "type": "object", "required": ["jobId", "correlationId", "status"], "properties": { "jobId": { "$ref": "#/components/schemas/Id" }, "correlationId": { "type": "string" }, "status": { "const": "accepted" } } },
       "Problem": { "type": "object", "required": ["code", "title", "correlationId"], "properties": { "code": { "type": "string" }, "title": { "type": "string" }, "detail": { "type": "string" }, "correlationId": { "type": "string" } } },
-      "ReportVersion": { "type": "object", "required": ["id", "number", "status", "calculatedAt"], "properties": { "id": { "$ref": "#/components/schemas/Id" }, "number": { "type": "integer" }, "status": { "enum": ["full", "limited", "not_publishable", "superseded"] }, "calculatedAt": { "type": "string", "format": "date-time" }, "ruleVersion": { "type": "string" } } },
+      "ReportVersion": {
+        "type": "object",
+        "required": ["id", "number", "publicationStatus", "qualityLevel", "calculatedAt"],
+        "properties": {
+          "id": { "$ref": "#/components/schemas/Id" },
+          "number": { "type": "integer" },
+          "publicationStatus": { "enum": ["draft", "published", "not_publishable", "superseded"] },
+          "qualityLevel": { "enum": ["full", "limited", "unavailable"] },
+          "calculatedAt": { "type": "string", "format": "date-time" },
+          "ruleVersion": { "type": "string" }
+        },
+        "oneOf": [
+          { "properties": { "publicationStatus": { "const": "draft" } } },
+          { "properties": { "publicationStatus": { "enum": ["published", "superseded"] }, "qualityLevel": { "enum": ["full", "limited"] } } },
+          { "properties": { "publicationStatus": { "const": "not_publishable" }, "qualityLevel": { "const": "unavailable" } } }
+        ]
+      },
       "WeeklyReport": { "type": "object", "required": ["context", "version", "quality", "metrics"], "properties": { "context": { "type": "object", "required": ["legalEntityId", "accountId", "period"], "properties": { "legalEntityId": { "$ref": "#/components/schemas/Id" }, "accountId": { "$ref": "#/components/schemas/Id" }, "period": { "type": "object", "properties": { "from": { "type": "string", "format": "date" }, "to": { "type": "string", "format": "date" } } } } }, "version": { "$ref": "#/components/schemas/ReportVersion" }, "quality": { "type": "object", "properties": { "source": { "type": "string" }, "completeness": { "type": "string" }, "reconciliation": { "type": "string" }, "methodology": { "type": "string" } } }, "metrics": { "type": "array", "items": { "$ref": "#/components/schemas/Metric" } } } },
       "Metric": { "type": "object", "required": ["code", "label", "unit", "state"], "properties": { "code": { "type": "string" }, "label": { "type": "string" }, "unit": { "enum": ["RUB", "PERCENT", "COUNT"] }, "value": { "type": ["number", "null"] }, "state": { "enum": ["calculated", "not_calculated"] }, "reasonCode": { "type": ["string", "null"] } } },
       "MetricDetailsPage": { "type": "object", "required": ["items", "page"], "properties": { "items": { "type": "array", "items": { "type": "object", "additionalProperties": true } }, "page": { "type": "integer" }, "hasNext": { "type": "boolean" } } },
@@ -255,7 +287,7 @@
       "InvitationInput": { "type": "object", "required": ["email", "role", "scope"], "properties": { "email": { "type": "string", "format": "email" }, "role": { "enum": ["owner", "finance", "analyst", "manager", "viewer"] }, "scope": { "type": "object", "additionalProperties": true } } },
       "MembershipUpdate": { "type": "object", "properties": { "role": { "enum": ["owner", "finance", "analyst", "manager", "viewer"] }, "scope": { "type": "object", "additionalProperties": true }, "status": { "enum": ["active", "suspended"] } }, "minProperties": 1 },
       "MarketplaceAccountInput": { "type": "object", "required": ["legalEntityId", "marketplace", "externalAccountId", "token"], "properties": { "legalEntityId": { "$ref": "#/components/schemas/Id" }, "marketplace": { "const": "WB" }, "externalAccountId": { "type": "string" }, "token": { "type": "string", "writeOnly": true } } },
-      "AccountLoadStatus": { "type": "object", "required": ["accountId", "status"], "properties": { "accountId": { "$ref": "#/components/schemas/Id" }, "status": { "enum": ["draft", "verifying", "active", "needs_fix", "waiting_data", "suspended", "disconnected"] }, "lastJobId": { "type": ["string", "null"], "format": "uuid" } } },
+      "AccountLoadStatus": { "type": "object", "required": ["accountId", "status"], "properties": { "accountId": { "$ref": "#/components/schemas/Id" }, "status": { "enum": ["draft", "verifying", "active", "needs_fix", "waiting_data", "suspended", "disconnected"] }, "lastJobId": { "type": ["string", "null"], "format": "uuid" }, "safeReason": { "type": ["string", "null"], "description": "Безопасная причина ошибки без токена и исходного ответа маркетплейса" } } },
       "ReportingContext": { "type": "object", "required": ["organizations", "legalEntities", "accounts", "completedWeeks"], "properties": { "organizations": { "type": "array", "items": { "$ref": "#/components/schemas/Organization" } }, "legalEntities": { "type": "array", "items": { "$ref": "#/components/schemas/LegalEntity" } }, "accounts": { "type": "array", "items": { "$ref": "#/components/schemas/MarketplaceAccount" } }, "completedWeeks": { "type": "array", "items": { "type": "string", "format": "date" } } } },
       "ReportComparison": { "type": "object", "required": ["baseVersion", "comparedVersion", "changes"], "properties": { "baseVersion": { "$ref": "#/components/schemas/ReportVersion" }, "comparedVersion": { "$ref": "#/components/schemas/ReportVersion" }, "changes": { "type": "array", "items": { "type": "object", "required": ["metricCode", "delta"], "properties": { "metricCode": { "type": "string" }, "delta": { "type": "number" }, "reason": { "type": "string" } } } } } },
       "QualitySnapshot": { "type": "object", "required": ["createdAt", "source", "completeness", "reconciliation", "methodology"], "properties": { "createdAt": { "type": "string", "format": "date-time" }, "source": { "type": "string" }, "completeness": { "type": "string" }, "reconciliation": { "type": "string" }, "methodology": { "type": "string" }, "message": { "type": "string" } } },
@@ -272,7 +304,7 @@
       "SheetUpdate": { "type": "object", "required": ["name"], "properties": { "name": { "type": "string", "minLength": 1, "maxLength": 120 } } },
       "WidgetUpdate": { "type": "object", "minProperties": 1, "properties": { "metricCode": { "type": "string" }, "chartCode": { "type": "string" }, "sparklineEnabled": { "type": "boolean" }, "layout": { "type": "object", "properties": { "x": { "type": "number" }, "y": { "type": "number" }, "width": { "type": "number" }, "height": { "type": "number" } } } } },
       "Invitation": { "type": "object", "required": ["id", "email", "role", "status"], "properties": { "id": { "$ref": "#/components/schemas/Id" }, "email": { "type": "string", "format": "email" }, "role": { "type": "string" }, "scope": { "type": "object", "additionalProperties": true }, "status": { "enum": ["pending", "accepted", "expired", "revoked"] }, "expiresAt": { "type": "string", "format": "date-time" } } },
-      "Membership": { "type": "object", "required": ["id", "userId", "role", "status"], "properties": { "id": { "$ref": "#/components/schemas/Id" }, "userId": { "$ref": "#/components/schemas/Id" }, "email": { "type": "string", "format": "email" }, "role": { "enum": ["owner", "finance", "analyst", "manager", "viewer"] }, "scope": { "type": "object", "additionalProperties": true }, "status": { "enum": ["active", "suspended"] } } },
+      "Membership": { "type": "object", "required": ["id", "userId", "role", "status"], "properties": { "id": { "$ref": "#/components/schemas/Id" }, "userId": { "$ref": "#/components/schemas/Id" }, "email": { "type": "string", "format": "email" }, "role": { "enum": ["owner", "finance", "analyst", "manager", "viewer"] }, "scope": { "type": "object", "additionalProperties": true }, "status": { "enum": ["pending_mfa", "active", "suspended"] } } },
       "SecuritySettings": { "type": "object", "required": ["mfaEnabled"], "properties": { "mfaEnabled": { "type": "boolean" }, "newDeviceAlerts": { "type": "boolean" }, "sessionTimeoutMinutes": { "type": "integer", "minimum": 15, "maximum": 43200 } } },
       "SecuritySettingsUpdate": { "type": "object", "minProperties": 1, "properties": { "newDeviceAlerts": { "type": "boolean" }, "sessionTimeoutMinutes": { "type": "integer", "minimum": 15, "maximum": 43200 } } },
       "MfaSetup": { "type": "object", "required": ["secret", "otpauthUrl"], "properties": { "secret": { "type": "string", "readOnly": true }, "otpauthUrl": { "type": "string", "format": "uri", "readOnly": true } } },
@@ -285,7 +317,7 @@
       "MarketplaceAccountUpdate": { "type": "object", "minProperties": 1, "properties": { "externalAccountId": { "type": "string" }, "token": { "type": "string", "writeOnly": true } } },
       "LoadRun": { "type": "object", "required": ["id", "status", "startedAt"], "properties": { "id": { "$ref": "#/components/schemas/Id" }, "status": { "enum": ["queued", "running", "completed", "failed"] }, "startedAt": { "type": "string", "format": "date-time" }, "completedAt": { "type": ["string", "null"], "format": "date-time" }, "message": { "type": "string" } } },
       "OrganizationInput": { "type": "object", "required": ["name"], "properties": { "name": { "type": "string", "minLength": 1, "maxLength": 200 } } },
-      "Organization": { "allOf": [{ "$ref": "#/components/schemas/OrganizationInput" }, { "type": "object", "required": ["id", "status"], "properties": { "id": { "$ref": "#/components/schemas/Id" }, "status": { "enum": ["active", "closing", "closed"] } } }] },
+      "Organization": { "allOf": [{ "$ref": "#/components/schemas/OrganizationInput" }, { "type": "object", "required": ["id", "status"], "properties": { "id": { "$ref": "#/components/schemas/Id" }, "status": { "enum": ["active", "closing", "closed"], "description": "Укрупнённый публичный статус; этап хранения и удаления доступен через /organization/closure/status" } } }] },
       "LegalEntityInput": { "type": "object", "required": ["name", "inn"], "properties": { "name": { "type": "string" }, "inn": { "type": "string", "pattern": "^[0-9]{10,12}$" } } },
       "LegalEntity": { "allOf": [{ "$ref": "#/components/schemas/LegalEntityInput" }, { "type": "object", "required": ["id"], "properties": { "id": { "$ref": "#/components/schemas/Id" } } }] },
       "Job": { "type": "object", "required": ["id", "status", "createdAt"], "properties": { "id": { "$ref": "#/components/schemas/Id" }, "status": { "enum": ["accepted", "queued", "running", "completed", "failed", "cancelled"] }, "progress": { "type": "integer", "minimum": 0, "maximum": 100 }, "createdAt": { "type": "string", "format": "date-time" }, "completedAt": { "type": ["string", "null"], "format": "date-time" }, "result": { "type": ["object", "null"], "additionalProperties": true }, "problem": { "oneOf": [{ "$ref": "#/components/schemas/Problem" }, { "type": "null" }] } } },

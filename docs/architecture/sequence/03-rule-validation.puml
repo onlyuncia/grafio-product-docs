@@ -1,0 +1,48 @@
+@startuml
+title Последовательность 03в — контрольная проверка правила
+autonumber
+hide footbox
+
+skinparam defaultFontName Arial
+skinparam defaultFontSize 14
+skinparam sequence {
+  ArrowColor #526274
+  LifeLineBorderColor #94A3B8
+  ParticipantBackgroundColor #EAF2FC
+  ParticipantBorderColor #5289C2
+  GroupBorderColor #64748B
+  GroupHeaderBackgroundColor #EAF2FC
+}
+
+boundary "Admin Console" as UI
+control "API Grafio: методика" as Rules
+database "PostgreSQL" as DB
+control "Диспетчер outbox" as Relay
+queue "Очередь заданий" as Queue
+control "Фоновый обработчик" as Worker
+
+UI -> Rules : POST /admin/investigations/\n{investigationId}/validation-runs
+Rules -> DB : Создать задание, пустой протокол\nи событие outbox
+DB --> Rules : jobId и correlationId
+Rules --> UI : 202: jobId, correlationId,\nstatus=accepted
+Relay -> DB : Прочитать событие outbox
+DB --> Relay : RunRuleValidation
+Relay ->> Queue : Поставить задание проверки
+Worker -> Queue : Взять задание
+Queue --> Worker : RunRuleValidation
+Worker -> DB : Прочитать контрольные загрузки,\nпаспорта показателей и текущую методику
+DB --> Worker : Входы для проверки
+Worker -> Worker : Проверить классификацию, знак,\nдвойной учёт и затронутые показатели
+Worker -> Worker : Сверить детали с источником:\nобязательная Δ = 0 в полной точности
+Worker -> DB : Сохранить протокол и статус проекта
+Worker ->> Queue : Завершить задание проверки
+UI -> Rules : GET /jobs/{jobId} после завершения
+Rules -> DB : Прочитать протокол и статус проекта
+DB --> Rules : Результат проверки
+
+alt Все проверки пройдены
+  Rules --> UI : Проект «Готов к публикации»;\nобласть и затронутые периоды
+else Есть ошибка или Δ ≠ 0
+  Rules --> UI : Причины блокировки публикации
+end
+@enduml

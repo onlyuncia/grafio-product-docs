@@ -1,0 +1,46 @@
+@startuml
+title Последовательность 03г — публикация правила
+autonumber
+hide footbox
+
+skinparam defaultFontName Arial
+skinparam defaultFontSize 14
+skinparam sequence {
+  ArrowColor #526274
+  LifeLineBorderColor #94A3B8
+  ParticipantBackgroundColor #EAF2FC
+  ParticipantBorderColor #5289C2
+  GroupBorderColor #64748B
+  GroupHeaderBackgroundColor #EAF2FC
+}
+
+actor "Администратор Grafio" as Admin
+boundary "Admin Console" as UI
+control "API Grafio: методика" as Rules
+database "PostgreSQL" as DB
+control "Диспетчер outbox" as Relay
+queue "Очередь заданий" as Queue
+
+Admin -> UI : Выбирает область, дату действия,\nпричину и способ применения
+UI -> Rules : POST /admin/investigations/\n{investigationId}/publish
+Rules -> DB : Проверить успешный validationRunId,\nобласть, дату, способ и обязательную Δ = 0
+DB --> Rules : Результат проверки
+
+alt Условие не выполнено или Δ ≠ 0
+  Rules --> UI : 409/422: публикация заблокирована
+  UI --> Admin : Причина и требуемое исправление
+else Публикация допустима
+  Rules -> DB : Атомарно создать неизменяемую версию\nправила, задание и событие outbox
+  DB --> Rules : ruleVersionId, jobId и затронутые периоды
+  Rules --> UI : 202: jobId, correlationId,\nstatus=accepted
+  UI --> Admin : Задание принято, область показана
+  Relay -> DB : Прочитать событие outbox
+  DB --> Relay : Режим, область и периоды
+  Relay ->> Queue : Поставить задание пересчёта\nили активации с validFrom
+end
+
+note over Rules, DB
+  Проект правила не влияет на отчёты до публикации.
+  Ненулевая обязательная сверка всегда блокирует публикацию.
+end note
+@enduml

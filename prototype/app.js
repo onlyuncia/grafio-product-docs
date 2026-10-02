@@ -3575,7 +3575,7 @@ function isStudioItem(item) {
     || (item.kind === 'chart' && Boolean(DASHBOARD_CHARTS[item.chartKey]))
 }
 
-// Утверждённые §6.2 четыре KPI: те же метрики, что стартуют на листе, поэтому связка
+// Утверждённые §6.2 четыре KPI: метрики доступны для добавления на пустой лист, поэтому связка
 // «карточка ↔ виджет» у них сквозная с первого открытия.
 function studioSeedItems() {
   return [['revenue', 4, 2], ['buyouts', 3, 2], ['margin', 2, 1], ['expenses', 1, 0]]

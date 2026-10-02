@@ -1,37 +1,31 @@
 @startuml
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include <C4/C4_Container>
 
-LAYOUT_WITH_LEGEND()
-title C4 — уровень 2. Контейнеры целевого финансового контура Grafio
+HIDE_STEREOTYPE()
+title C2 — Контейнеры Grafio
 
-Person(client, "Пользователь клиента", "Владелец, финансист, аналитик, менеджер или наблюдатель.")
-Person(admin, "Администратор Grafio", "Работает с методикой и расследованиями.")
-System_Ext(wb, "Wildberries API", "Источник финансовых данных.")
-System_Ext(ozon, "Ozon API", "Источник данных существующей синхронизации.")
+System_Ext(marketplaces, "API маркетплейсов", "Wildberries и Ozon.")
 
 System_Boundary(grafio, "Grafio") {
-  Container(web, "Клиентское веб-приложение", "React", "Отчёт, аналитика, планы, команда, безопасность и «Мой дашборд».")
-  Container(adminWeb, "Admin Console", "React", "Внутренняя очередь проблем, методика, контроль и публикация.")
-  Container(api, "Сервер приложений", "Node.js / Fastify", "Модульный монолит: доступ, организации, отчёты, кейсы, планы, дашборд, аудит.")
-  Container(worker, "Асинхронный worker", "Node.js / BullMQ", "Синхронизация WB и Ozon; проектируемые нормализация, качество, расчёт и пересчёт финансовых данных WB.")
-  ContainerDb(db, "Транзакционная БД", "PostgreSQL", "Метаданные, нормализованные операции, версии, планы, кейсы и аудит.")
-  ContainerQueue(queue, "Очередь и кэш", "Redis", "Фоновые задания, повторы и ограничение нагрузки.")
-  Container(raw, "Raw-хранилище", "Защищённое объектное хранилище", "Неизменяемые ответы маркетплейсов и доказательства кейсов; ссылка и хеш находятся в PostgreSQL.")
-  ContainerDb(secrets, "Хранилище секретов", "Secrets manager", "Токены внешних API; в БД хранится только ссылка на секрет.")
+  Container(web, "Клиентское веб-приложение", "React", "Отчёты, планы, дашборд и доступ.")
+  Container(adminWeb, "Панель администратора", "React", "Расследования, правила и публикация.")
+  Container(api, "Сервер приложений", "Node.js / Fastify", "Предметные модули Grafio.")
+  Container(worker, "Фоновый обработчик", "Node.js / BullMQ", "Загрузка WB и Ozon; расчёт и пересчёт WB.")
+  ContainerDb(db, "Транзакционная БД", "PostgreSQL", "Операции, версии, планы и кейсы.")
+  ContainerQueue(queue, "Очередь заданий", "Redis", "Фоновые задания и повторы.")
+  Container(raw, "Хранилище ответов", "Объектное хранилище", "Ответы маркетплейсов и вложения кейсов.")
+  ContainerDb(secrets, "Хранилище секретов", "Secrets manager", "Токены внешних API.")
 }
 
-Rel(client, web, "Работает с сервисом", "HTTPS")
-Rel(admin, adminWeb, "Работает с Admin Console", "HTTPS + MFA")
-Rel(web, api, "Читает данные и отправляет команды", "JSON/HTTPS")
-Rel(adminWeb, api, "Управляет расследованиями и методикой", "JSON/HTTPS")
-Rel(api, db, "Читает и изменяет предметные данные", "SQL")
-Rel(api, queue, "Создаёт фоновые задания", "Redis")
-Rel(api, secrets, "Получает ссылки на секреты", "HTTPS")
-Rel(worker, queue, "Получает и завершает задания", "Redis")
-Rel(worker, wb, "Получает финансовые данные", "HTTPS API")
-Rel(worker, ozon, "Выполняет существующую синхронизацию", "HTTPS API")
-Rel(worker, raw, "Сохраняет raw-ответы и вложения", "HTTPS")
-Rel(worker, db, "Сохраняет операции, качество и версии отчётов", "SQL")
-Rel(worker, secrets, "Получает токены WB", "HTTPS")
+Rel(web, api, "Запросы")
+Rel(adminWeb, api, "Решения")
+Rel(api, db, "Данные")
+Rel(api, queue, "Задания")
+Rel(api, secrets, "Секреты")
+Rel(worker, queue, "Берёт задания")
+Rel(worker, marketplaces, "Синхронизирует данные")
+Rel(worker, raw, "Исходные ответы")
+Rel(worker, db, "Результаты")
+Rel(worker, secrets, "Токены")
 
 @enduml

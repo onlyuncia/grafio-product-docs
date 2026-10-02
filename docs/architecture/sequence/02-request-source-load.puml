@@ -1,0 +1,37 @@
+@startuml
+title Последовательность 02а — запрос загрузки данных WB
+autonumber
+hide footbox
+
+skinparam defaultFontName Arial
+skinparam defaultFontSize 14
+skinparam sequence {
+  ArrowColor #526274
+  LifeLineBorderColor #94A3B8
+  ParticipantBackgroundColor #EAF2FC
+  ParticipantBorderColor #5289C2
+  GroupBorderColor #64748B
+  GroupHeaderBackgroundColor #EAF2FC
+}
+
+actor "Пользователь клиента" as User
+control "API Grafio" as API
+database "PostgreSQL" as DB
+queue "Очередь заданий" as Queue
+
+User -> API : POST /marketplace-accounts/{accountId}/loads
+API -> API : Проверить доступ, область и command_id
+API -> DB : Найти активное или создать новое задание\nдля кабинета, источника и периода
+DB --> API : jobId и признак нового задания
+alt Задание создано
+  API ->> Queue : RequestSourceLoad(jobId)
+else Активное задание уже существует
+  API -> API : Не ставить дубль в очередь
+end
+API --> User : 202: jobId, correlationId, status=accepted
+
+note over API, Queue
+  Планировщик ставит ту же команду без клиентского HTTP.
+  Повтор command_id возвращает существующий jobId.
+end note
+@enduml

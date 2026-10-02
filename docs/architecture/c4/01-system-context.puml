@@ -1,18 +1,18 @@
 @startuml
-!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!include <C4/C4_Context>
 
-LAYOUT_WITH_LEGEND()
-title C4 — уровень 1. Контекст системы Grafio
+HIDE_STEREOTYPE()
+title C1 — Контекст Grafio
 
-Person(client, "Владелец / финансист / аналитик", "Просматривает финансовый результат, исследует отклонения, ведёт планы и личный дашборд.")
-Person(admin, "Администратор Grafio", "Исследует системные проблемы и публикует версии методики.")
-System(grafio, "Grafio", "Аналитика продавцов WB и Ozon; проектируемый недельный финансовый контур детализирован для WB.")
-System_Ext(wb, "Wildberries API", "Источник финансовых операций и данных кабинета.")
-System_Ext(ozon, "Ozon API", "Источник данных существующей синхронизации Grafio.")
+Person(client, "Пользователь клиента", "Анализирует данные и ведёт планы.")
+Person(admin, "Администратор Grafio", "Проверяет кейсы и управляет методикой.")
+System(grafio, "Grafio", "Аналитика продавцов маркетплейсов.")
+System_Ext(wb, "Wildberries API", "Финансовые данные и данные кабинета.")
+System_Ext(ozon, "Ozon API", "Данные кабинета.")
 
-Rel(client, grafio, "Работает с отчётами, кейсами, планами, дашбордом и доступом", "HTTPS")
-Rel(admin, grafio, "Работает во внутренней Admin Console", "HTTPS + MFA")
-Rel(grafio, wb, "Запрашивает финансовые данные кабинета", "HTTPS API")
-Rel(grafio, ozon, "Синхронизирует данные существующих разделов", "HTTPS API")
+Rel(client, grafio, "Использует аналитику и рабочее пространство", "HTTPS")
+Rel(admin, grafio, "Работает с методикой и кейсами", "HTTPS + MFA")
+Rel(grafio, wb, "Получает данные WB", "HTTPS API")
+Rel(grafio, ozon, "Получает данные Ozon", "HTTPS API")
 
 @enduml

@@ -10,7 +10,6 @@ const {
   // Сам здесь не вызывается: деструктурируем, чтобы app.js увидел его как глобальную привязку
   // скрипта — каталог графиков наполняется приложением, а не движком.
   registerDashboardChart,
-  createDefaultDashboardWidgets,
   createKpiWidget,
   createChartWidget,
   computeMinimapGeometry,
@@ -18,7 +17,7 @@ const {
 } = window.GrafioDashboard
 
 const dashboardSheets = [
-  { id: 'main', name: 'Основной', isDefault: true, model: new DashboardLayoutModel(createDefaultDashboardWidgets()) },
+  { id: 'main', name: 'Основной', isDefault: true, model: new DashboardLayoutModel([]) },
 ]
 let activeDashboardSheet = 'main'
 let dashboardEditing = false
@@ -445,7 +444,7 @@ function renderDashboardEmptyState() {
   const copySource = sources.reduce((max, item) => (!max || item.model.widgets.length > max.model.widgets.length ? item : max), null)
   const canCopy = Boolean(copySource)
   const widgetWord = n => `${n} ${n % 10 === 1 && n % 100 !== 11 ? 'виджет' : n % 10 >= 2 && n % 10 <= 4 && !(n % 100 >= 12 && n % 100 <= 14) ? 'виджета' : 'виджетов'}`
-  empty.innerHTML = `<h2>С чего начать «${escapeDashboardText(sheet?.name || 'Лист')}»?</h2><p>Выберите быстрый старт или создайте виджет с нуля</p><div class="empty-start-grid"><button class="empty-start-card" data-empty-action="kpi"><span class="empty-start-icon">${dashboardIcon('i-target')}</span><strong>Виджет KPI</strong><small>Карточка с одной метрикой</small><span class="empty-start-cta">↗ Создать</span></button><button class="empty-start-card" data-empty-action="chart"><span class="empty-start-icon">${dashboardIcon('i-chart')}</span><strong>График</strong><small>Линия, столбцы, площадь, стопка</small><span class="empty-start-cta">↗ Создать</span></button><button class="empty-start-card" data-empty-action="template"><span class="empty-start-icon">${dashboardIcon('i-sparkles')}</span><strong>Выбрать шаблон</strong><small>4 готовых компоновки</small><span class="empty-start-cta">↗ Открыть</span></button><button class="empty-start-card" data-empty-action="copy" ${canCopy ? '' : 'disabled'}><span class="empty-start-icon">${dashboardIcon('i-copy')}</span><strong>Скопировать с листа</strong><small>Полная копия виджетов</small><span class="empty-start-cta">${canCopy ? widgetWord(copySource.model.widgets.length) : 'Нет листа-источника'}</span></button></div><span class="empty-start-footer">Или начните без виджетов — canvas готов к работе</span>`
+  empty.innerHTML = `<h2>С чего начать «${escapeDashboardText(sheet?.name || 'Лист')}»?</h2><p>Выберите быстрый старт или создайте виджет с нуля</p><div class="empty-start-grid"><button class="empty-start-card" data-empty-action="kpi"><span class="empty-start-icon">${dashboardIcon('i-target')}</span><strong>Виджет KPI</strong><small>Карточка с одной метрикой</small><span class="empty-start-cta">↗ Создать</span></button><button class="empty-start-card" data-empty-action="chart"><span class="empty-start-icon">${dashboardIcon('i-chart')}</span><strong>График</strong><small>Линия, столбцы, площадь, стопка</small><span class="empty-start-cta">↗ Создать</span></button><button class="empty-start-card" data-empty-action="copy" ${canCopy ? '' : 'disabled'}><span class="empty-start-icon">${dashboardIcon('i-copy')}</span><strong>Скопировать с листа</strong><small>Полная копия виджетов</small><span class="empty-start-cta">${canCopy ? widgetWord(copySource.model.widgets.length) : 'Нет листа-источника'}</span></button></div><span class="empty-start-footer">Или начните без виджетов — canvas готов к работе</span>`
 }
 
 // ── Значок листа ─────────────────────────────────────────────────────────────────────
@@ -998,10 +997,10 @@ function renderDashboard() {
 }
 
 function resetDashboardLayout() {
-  activeDashboardModel().replace(createDefaultDashboardWidgets())
+  activeDashboardModel().replace([])
   clearDashboardSelection()
   renderDashboard()
-  showToast('Раскладка сброшена', 'Возвращены четыре утверждённых KPI')
+  showToast('Раскладка сброшена', 'Лист очищен')
 }
 
 function addDashboardWidget(kind) {
@@ -2289,10 +2288,6 @@ function bindDashboardAdvancedInteractions() {
     const action = event.target.closest('[data-empty-action]')?.dataset.emptyAction
     if (action === 'kpi') openDashboardKpiEditor()
     if (action === 'chart') openDashboardChartEditor()
-    if (action === 'template') {
-      activeDashboardModel().replace(createDefaultDashboardWidgets())
-      renderDashboard()
-    }
     if (action === 'copy') {
       const menu = document.getElementById('copySourceMenu')
       if (menu.classList.contains('is-open')) closeCopySourceMenu()

@@ -1,0 +1,41 @@
+@startuml
+title Последовательность 07б — срок хранения и удаление данных
+autonumber
+hide footbox
+
+skinparam defaultFontName Arial
+skinparam defaultFontSize 14
+skinparam sequence {
+  ArrowColor #526274
+  LifeLineBorderColor #94A3B8
+  ParticipantBackgroundColor #EAF2FC
+  ParticipantBorderColor #5289C2
+  GroupBorderColor #64748B
+  GroupHeaderBackgroundColor #EAF2FC
+}
+
+queue "Очередь заданий" as Queue
+control "Фоновый обработчик" as Worker
+database "PostgreSQL" as DB
+database "Raw-хранилище" as Raw
+
+... При наступлении времени проверки ...
+
+Worker -> Queue : Взять задание проверки удаления
+Queue --> Worker : organizationId
+Worker -> DB : Проверить истечение срока\nи удерживающие зависимости
+DB --> Worker : Результат проверки
+alt Срок не истёк или есть удержание
+  Worker -> DB : Сохранить причину отсрочки
+  DB --> Worker : Отсрочка сохранена
+  Worker ->> Queue : Завершить текущую проверку\nи назначить следующую
+else Удаление допустимо
+  Worker -> DB : Статус «Подлежит удалению»
+  DB --> Worker : Переход сохранён
+  Worker -> Raw : Удалить raw-ответы и вложения\nпо политике хранения
+  Raw --> Worker : Удаление подтверждено
+  Worker -> DB : Удалить данные клиента;\nсохранить статус «Удалена» и аудит результата
+  DB --> Worker : Удаление подтверждено
+  Worker ->> Queue : Завершить задание: SUCCEEDED
+end
+@enduml

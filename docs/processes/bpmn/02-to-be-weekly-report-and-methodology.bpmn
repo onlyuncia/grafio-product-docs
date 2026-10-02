@@ -1,39 +1,401 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_ToBe" targetNamespace="https://grafio.example/bpmn">
   <bpmn:process id="Process_ToBeWeeklyReport" name="TO-BE: недельный отчёт и изменение методики" isExecutable="false">
     <bpmn:laneSet id="LaneSet_ToBe">
-      <bpmn:lane id="Lane_Client" name="Клиентская команда"><bpmn:flowNodeRef>Start_ToBe</bpmn:flowNodeRef><bpmn:flowNodeRef>Task_SelectContext</bpmn:flowNodeRef><bpmn:flowNodeRef>Task_ViewReport</bpmn:flowNodeRef><bpmn:flowNodeRef>Gateway_NeedCase</bpmn:flowNodeRef><bpmn:flowNodeRef>Task_CreateCase</bpmn:flowNodeRef><bpmn:flowNodeRef>Task_ReceiveResult</bpmn:flowNodeRef><bpmn:flowNodeRef>End_ToBe</bpmn:flowNodeRef></bpmn:lane>
-      <bpmn:lane id="Lane_Grafio" name="Grafio: данные и расчёт"><bpmn:flowNodeRef>Task_RequestWB</bpmn:flowNodeRef><bpmn:flowNodeRef>Task_Normalize</bpmn:flowNodeRef><bpmn:flowNodeRef>Gateway_DataComplete</bpmn:flowNodeRef><bpmn:flowNodeRef>Task_PublishLimited</bpmn:flowNodeRef><bpmn:flowNodeRef>Task_ClassifyCalculate</bpmn:flowNodeRef><bpmn:flowNodeRef>Gateway_ReconcileToBe</bpmn:flowNodeRef><bpmn:flowNodeRef>Task_PublishReport</bpmn:flowNodeRef></bpmn:lane>
-      <bpmn:lane id="Lane_Admin" name="Admin Console Grafio"><bpmn:flowNodeRef>Task_InvestigateCase</bpmn:flowNodeRef><bpmn:flowNodeRef>Gateway_MethodologyChange</bpmn:flowNodeRef><bpmn:flowNodeRef>Task_DraftRule</bpmn:flowNodeRef><bpmn:flowNodeRef>Gateway_PublishReady</bpmn:flowNodeRef><bpmn:flowNodeRef>Task_RequestEvidence</bpmn:flowNodeRef><bpmn:flowNodeRef>Task_PublishRule</bpmn:flowNodeRef><bpmn:flowNodeRef>Gateway_ApplyMode</bpmn:flowNodeRef><bpmn:flowNodeRef>Task_RecalculateHistory</bpmn:flowNodeRef><bpmn:flowNodeRef>Task_ApplyForward</bpmn:flowNodeRef></bpmn:lane>
+      <bpmn:lane id="Lane_Client" name="Клиентская команда">
+        <bpmn:flowNodeRef>Start_ToBe</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_SelectContext</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ViewReport</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ReceiveResult</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_ToBe</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_ReportViewed</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Grafio" name="Grafio: данные и расчёт">
+        <bpmn:flowNodeRef>Task_RequestWB</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_Normalize</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_DataComplete</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_BlockPublication</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ClassifyCalculate</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_ReconcileToBe</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_PublishReport</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_SignalSplit</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Admin" name="Admin Console Grafio">
+        <bpmn:flowNodeRef>Task_InvestigateCase</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_MethodologyChange</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_DraftRule</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_PublishReady</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ResolveBlock</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_PublishRule</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_ApplyMode</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_RecalculateHistory</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ApplyForward</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_AdminComplete</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_SendResult</bpmn:flowNodeRef>
+      </bpmn:lane>
     </bpmn:laneSet>
-    <bpmn:startEvent id="Start_ToBe" name="Нужен недельный результат"><bpmn:outgoing>Flow_T01</bpmn:outgoing></bpmn:startEvent>
-    <bpmn:userTask id="Task_SelectContext" name="Выбрать кабинет и неделю"><bpmn:incoming>Flow_T01</bpmn:incoming><bpmn:outgoing>Flow_T02</bpmn:outgoing></bpmn:userTask>
-    <bpmn:serviceTask id="Task_RequestWB" name="Получить финансовые данные WB"><bpmn:incoming>Flow_T02</bpmn:incoming><bpmn:outgoing>Flow_T03</bpmn:outgoing></bpmn:serviceTask>
-    <bpmn:serviceTask id="Task_Normalize" name="Сохранить, нормализовать и проверить данные"><bpmn:incoming>Flow_T03</bpmn:incoming><bpmn:outgoing>Flow_T04</bpmn:outgoing></bpmn:serviceTask>
-    <bpmn:exclusiveGateway id="Gateway_DataComplete" name="Данные полны?"><bpmn:incoming>Flow_T04</bpmn:incoming><bpmn:outgoing>Flow_T05_Yes</bpmn:outgoing><bpmn:outgoing>Flow_T05_No</bpmn:outgoing></bpmn:exclusiveGateway>
-    <bpmn:serviceTask id="Task_PublishLimited" name="Опубликовать независимые показатели с ограничением"><bpmn:incoming>Flow_T05_No</bpmn:incoming><bpmn:outgoing>Flow_T06_Limited</bpmn:outgoing></bpmn:serviceTask>
-    <bpmn:serviceTask id="Task_ClassifyCalculate" name="Классифицировать и рассчитать отчёт"><bpmn:incoming>Flow_T05_Yes</bpmn:incoming><bpmn:outgoing>Flow_T06</bpmn:outgoing></bpmn:serviceTask>
-    <bpmn:exclusiveGateway id="Gateway_ReconcileToBe" name="Δ = 0?"><bpmn:incoming>Flow_T06</bpmn:incoming><bpmn:outgoing>Flow_T07_Yes</bpmn:outgoing><bpmn:outgoing>Flow_T07_No</bpmn:outgoing></bpmn:exclusiveGateway>
-    <bpmn:serviceTask id="Task_PublishReport" name="Опубликовать версию отчёта"><bpmn:incoming>Flow_T07_Yes</bpmn:incoming><bpmn:outgoing>Flow_T08</bpmn:outgoing></bpmn:serviceTask>
-    <bpmn:userTask id="Task_ViewReport" name="Изучить отчёт и детали"><bpmn:incoming>Flow_T08</bpmn:incoming><bpmn:incoming>Flow_T06_Limited</bpmn:incoming><bpmn:outgoing>Flow_T09</bpmn:outgoing></bpmn:userTask>
-    <bpmn:exclusiveGateway id="Gateway_NeedCase" name="Есть проблема?"><bpmn:incoming>Flow_T09</bpmn:incoming><bpmn:outgoing>Flow_T10_Yes</bpmn:outgoing><bpmn:outgoing>Flow_T10_No</bpmn:outgoing></bpmn:exclusiveGateway>
-    <bpmn:userTask id="Task_CreateCase" name="Создать кейс и приложить доказательства"><bpmn:incoming>Flow_T07_No</bpmn:incoming><bpmn:incoming>Flow_T10_Yes</bpmn:incoming><bpmn:outgoing>Flow_T11</bpmn:outgoing></bpmn:userTask>
-    <bpmn:userTask id="Task_InvestigateCase" name="Исследовать кейс и область воздействия"><bpmn:incoming>Flow_T11</bpmn:incoming><bpmn:outgoing>Flow_T12</bpmn:outgoing></bpmn:userTask>
-    <bpmn:exclusiveGateway id="Gateway_MethodologyChange" name="Нужна новая методика?"><bpmn:incoming>Flow_T12</bpmn:incoming><bpmn:outgoing>Flow_T13_Yes</bpmn:outgoing><bpmn:outgoing>Flow_T13_No</bpmn:outgoing></bpmn:exclusiveGateway>
-    <bpmn:userTask id="Task_DraftRule" name="Подготовить проект правила и контроль"><bpmn:incoming>Flow_T13_Yes</bpmn:incoming><bpmn:outgoing>Flow_T14</bpmn:outgoing></bpmn:userTask>
-    <bpmn:exclusiveGateway id="Gateway_PublishReady" name="Условия публикации выполнены?"><bpmn:incoming>Flow_T14</bpmn:incoming><bpmn:outgoing>Flow_T15_Yes</bpmn:outgoing><bpmn:outgoing>Flow_T15_No</bpmn:outgoing></bpmn:exclusiveGateway>
-    <bpmn:userTask id="Task_RequestEvidence" name="Запросить дополнительные данные"><bpmn:incoming>Flow_T15_No</bpmn:incoming><bpmn:outgoing>Flow_T16</bpmn:outgoing></bpmn:userTask>
-    <bpmn:userTask id="Task_PublishRule" name="Опубликовать версию методики"><bpmn:incoming>Flow_T15_Yes</bpmn:incoming><bpmn:outgoing>Flow_T17</bpmn:outgoing></bpmn:userTask>
-    <bpmn:exclusiveGateway id="Gateway_ApplyMode" name="Пересчитать историю?"><bpmn:incoming>Flow_T17</bpmn:incoming><bpmn:outgoing>Flow_T18_Yes</bpmn:outgoing><bpmn:outgoing>Flow_T18_No</bpmn:outgoing></bpmn:exclusiveGateway>
-    <bpmn:serviceTask id="Task_RecalculateHistory" name="Создать новые версии затронутых недель"><bpmn:incoming>Flow_T18_Yes</bpmn:incoming><bpmn:outgoing>Flow_T19</bpmn:outgoing></bpmn:serviceTask>
-    <bpmn:serviceTask id="Task_ApplyForward" name="Применить методику вперёд с даты"><bpmn:incoming>Flow_T18_No</bpmn:incoming><bpmn:outgoing>Flow_T19</bpmn:outgoing></bpmn:serviceTask>
-    <bpmn:userTask id="Task_ReceiveResult" name="Получить результат публикации"><bpmn:incoming>Flow_T13_No</bpmn:incoming><bpmn:incoming>Flow_T16</bpmn:incoming><bpmn:incoming>Flow_T19</bpmn:incoming><bpmn:outgoing>Flow_T20</bpmn:outgoing></bpmn:userTask>
-    <bpmn:endEvent id="End_ToBe" name="Результат использован"><bpmn:incoming>Flow_T10_No</bpmn:incoming><bpmn:incoming>Flow_T20</bpmn:incoming></bpmn:endEvent>
-    <bpmn:sequenceFlow id="Flow_T01" sourceRef="Start_ToBe" targetRef="Task_SelectContext"/><bpmn:sequenceFlow id="Flow_T02" sourceRef="Task_SelectContext" targetRef="Task_RequestWB"/><bpmn:sequenceFlow id="Flow_T03" sourceRef="Task_RequestWB" targetRef="Task_Normalize"/><bpmn:sequenceFlow id="Flow_T04" sourceRef="Task_Normalize" targetRef="Gateway_DataComplete"/><bpmn:sequenceFlow id="Flow_T05_Yes" name="да" sourceRef="Gateway_DataComplete" targetRef="Task_ClassifyCalculate"/><bpmn:sequenceFlow id="Flow_T05_No" name="нет" sourceRef="Gateway_DataComplete" targetRef="Task_PublishLimited"/><bpmn:sequenceFlow id="Flow_T06" sourceRef="Task_ClassifyCalculate" targetRef="Gateway_ReconcileToBe"/><bpmn:sequenceFlow id="Flow_T06_Limited" sourceRef="Task_PublishLimited" targetRef="Task_ViewReport"/><bpmn:sequenceFlow id="Flow_T07_Yes" name="да" sourceRef="Gateway_ReconcileToBe" targetRef="Task_PublishReport"/><bpmn:sequenceFlow id="Flow_T07_No" name="нет" sourceRef="Gateway_ReconcileToBe" targetRef="Task_CreateCase"/><bpmn:sequenceFlow id="Flow_T08" sourceRef="Task_PublishReport" targetRef="Task_ViewReport"/><bpmn:sequenceFlow id="Flow_T09" sourceRef="Task_ViewReport" targetRef="Gateway_NeedCase"/><bpmn:sequenceFlow id="Flow_T10_Yes" name="да" sourceRef="Gateway_NeedCase" targetRef="Task_CreateCase"/><bpmn:sequenceFlow id="Flow_T10_No" name="нет" sourceRef="Gateway_NeedCase" targetRef="End_ToBe"/><bpmn:sequenceFlow id="Flow_T11" sourceRef="Task_CreateCase" targetRef="Task_InvestigateCase"/><bpmn:sequenceFlow id="Flow_T12" sourceRef="Task_InvestigateCase" targetRef="Gateway_MethodologyChange"/><bpmn:sequenceFlow id="Flow_T13_Yes" name="да" sourceRef="Gateway_MethodologyChange" targetRef="Task_DraftRule"/><bpmn:sequenceFlow id="Flow_T13_No" name="нет" sourceRef="Gateway_MethodologyChange" targetRef="Task_ReceiveResult"/><bpmn:sequenceFlow id="Flow_T14" sourceRef="Task_DraftRule" targetRef="Gateway_PublishReady"/><bpmn:sequenceFlow id="Flow_T15_Yes" name="да" sourceRef="Gateway_PublishReady" targetRef="Task_PublishRule"/><bpmn:sequenceFlow id="Flow_T15_No" name="нет" sourceRef="Gateway_PublishReady" targetRef="Task_RequestEvidence"/><bpmn:sequenceFlow id="Flow_T16" sourceRef="Task_RequestEvidence" targetRef="Task_ReceiveResult"/><bpmn:sequenceFlow id="Flow_T17" sourceRef="Task_PublishRule" targetRef="Gateway_ApplyMode"/><bpmn:sequenceFlow id="Flow_T18_Yes" name="да" sourceRef="Gateway_ApplyMode" targetRef="Task_RecalculateHistory"/><bpmn:sequenceFlow id="Flow_T18_No" name="нет" sourceRef="Gateway_ApplyMode" targetRef="Task_ApplyForward"/><bpmn:sequenceFlow id="Flow_T19" sourceRef="Task_RecalculateHistory" targetRef="Task_ReceiveResult"/><bpmn:sequenceFlow id="Flow_T20" sourceRef="Task_ReceiveResult" targetRef="End_ToBe"/>
+    <bpmn:startEvent id="Start_ToBe" name="Нужен недельный результат">
+      <bpmn:outgoing>Flow_T01</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Task_SelectContext" name="Выбрать кабинет и неделю">
+      <bpmn:incoming>Flow_T01</bpmn:incoming>
+      <bpmn:outgoing>Flow_T02</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Task_RequestWB" name="Получить финансовые данные WB">
+      <bpmn:incoming>Flow_T02</bpmn:incoming>
+      <bpmn:outgoing>Flow_T03</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_Normalize" name="Нормализовать и проверить структуру данных">
+      <bpmn:incoming>Flow_T03</bpmn:incoming>
+      <bpmn:outgoing>Flow_T04</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_DataComplete" name="Обязательная загрузка и контроль доступны?">
+      <bpmn:incoming>Flow_T04</bpmn:incoming>
+      <bpmn:outgoing>Flow_T05_Yes</bpmn:outgoing>
+      <bpmn:outgoing>Flow_T05_No</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="Task_BlockPublication" name="Сохранить версию и сигнал качества">
+      <bpmn:incoming>Flow_T05_No</bpmn:incoming>
+      <bpmn:incoming>Flow_T07_No</bpmn:incoming>
+      <bpmn:outgoing>Flow_T06_BlockedStart</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_ClassifyCalculate" name="Классифицировать и рассчитать отчёт">
+      <bpmn:incoming>Flow_T05_Yes</bpmn:incoming>
+      <bpmn:outgoing>Flow_T06</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_ReconcileToBe" name="Нет блокирующих условий и Δ = 0?">
+      <bpmn:incoming>Flow_T06</bpmn:incoming>
+      <bpmn:outgoing>Flow_T07_Yes</bpmn:outgoing>
+      <bpmn:outgoing>Flow_T07_No</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="Task_PublishReport" name="Опубликовать полный или ограниченный отчёт">
+      <bpmn:incoming>Flow_T07_Yes</bpmn:incoming>
+      <bpmn:outgoing>Flow_T08</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="Task_ViewReport" name="Изучить отчёт или статус и детали">
+      <bpmn:incoming>Flow_T08</bpmn:incoming>
+      <bpmn:incoming>Flow_T06_Blocked</bpmn:incoming>
+      <bpmn:outgoing>Flow_T09_ViewEnd</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_InvestigateCase" name="Исследовать системный сигнал">
+      <bpmn:incoming>Flow_T06_Auto</bpmn:incoming>
+      <bpmn:outgoing>Flow_T12</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_MethodologyChange" name="Нужна новая методика?">
+      <bpmn:incoming>Flow_T12</bpmn:incoming>
+      <bpmn:outgoing>Flow_T13_Yes</bpmn:outgoing>
+      <bpmn:outgoing>Flow_T13_No</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_DraftRule" name="Подготовить проект правила и контроль">
+      <bpmn:incoming>Flow_T13_Yes</bpmn:incoming>
+      <bpmn:incoming>Flow_T16</bpmn:incoming>
+      <bpmn:outgoing>Flow_T14</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_PublishReady" name="Условия выполнены и Δ = 0?">
+      <bpmn:incoming>Flow_T14</bpmn:incoming>
+      <bpmn:outgoing>Flow_T15_Yes</bpmn:outgoing>
+      <bpmn:outgoing>Flow_T15_No</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_ResolveBlock" name="Разобрать причину блокировки">
+      <bpmn:incoming>Flow_T15_No</bpmn:incoming>
+      <bpmn:outgoing>Flow_T16</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_PublishRule" name="Опубликовать версию методики">
+      <bpmn:incoming>Flow_T15_Yes</bpmn:incoming>
+      <bpmn:outgoing>Flow_T17</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_ApplyMode" name="Пересчитать историю?">
+      <bpmn:incoming>Flow_T17</bpmn:incoming>
+      <bpmn:outgoing>Flow_T18_Yes</bpmn:outgoing>
+      <bpmn:outgoing>Flow_T18_No</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="Task_RecalculateHistory" name="Создать новые версии затронутых недель">
+      <bpmn:incoming>Flow_T18_Yes</bpmn:incoming>
+      <bpmn:outgoing>Flow_T19</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_ApplyForward" name="Применить методику вперёд с даты">
+      <bpmn:incoming>Flow_T18_No</bpmn:incoming>
+      <bpmn:outgoing>Flow_T21</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:userTask id="Task_ReceiveResult" name="Получить уведомление о решении">
+      <bpmn:incoming>Flow_T23</bpmn:incoming>
+      <bpmn:outgoing>Flow_T20</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="End_ToBe" name="Решение получено">
+      <bpmn:incoming>Flow_T20</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:exclusiveGateway id="Gateway_AdminComplete" name="Решение готово">
+      <bpmn:incoming>Flow_T13_No</bpmn:incoming>
+      <bpmn:incoming>Flow_T19</bpmn:incoming>
+      <bpmn:incoming>Flow_T21</bpmn:incoming>
+      <bpmn:outgoing>Flow_T22</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_SendResult" name="Передать решение клиенту">
+      <bpmn:incoming>Flow_T22</bpmn:incoming>
+      <bpmn:outgoing>Flow_T23</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:parallelGateway id="Gateway_SignalSplit" name="Статус и сигнал">
+      <bpmn:incoming>Flow_T06_BlockedStart</bpmn:incoming>
+      <bpmn:outgoing>Flow_T06_Blocked</bpmn:outgoing>
+      <bpmn:outgoing>Flow_T06_Auto</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:endEvent id="End_ReportViewed" name="Отчёт или статус просмотрен">
+      <bpmn:incoming>Flow_T09_ViewEnd</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_T01" sourceRef="Start_ToBe" targetRef="Task_SelectContext"/>
+    <bpmn:sequenceFlow id="Flow_T02" sourceRef="Task_SelectContext" targetRef="Task_RequestWB"/>
+    <bpmn:sequenceFlow id="Flow_T03" sourceRef="Task_RequestWB" targetRef="Task_Normalize"/>
+    <bpmn:sequenceFlow id="Flow_T04" sourceRef="Task_Normalize" targetRef="Gateway_DataComplete"/>
+    <bpmn:sequenceFlow id="Flow_T05_Yes" name="да" sourceRef="Gateway_DataComplete" targetRef="Task_ClassifyCalculate"/>
+    <bpmn:sequenceFlow id="Flow_T05_No" name="нет" sourceRef="Gateway_DataComplete" targetRef="Task_BlockPublication"/>
+    <bpmn:sequenceFlow id="Flow_T06" sourceRef="Task_ClassifyCalculate" targetRef="Gateway_ReconcileToBe"/>
+    <bpmn:sequenceFlow id="Flow_T06_Blocked" sourceRef="Gateway_SignalSplit" targetRef="Task_ViewReport"/>
+    <bpmn:sequenceFlow id="Flow_T07_Yes" name="да" sourceRef="Gateway_ReconcileToBe" targetRef="Task_PublishReport"/>
+    <bpmn:sequenceFlow id="Flow_T07_No" name="нет" sourceRef="Gateway_ReconcileToBe" targetRef="Task_BlockPublication"/>
+    <bpmn:sequenceFlow id="Flow_T08" sourceRef="Task_PublishReport" targetRef="Task_ViewReport"/>
+    <bpmn:sequenceFlow id="Flow_T12" sourceRef="Task_InvestigateCase" targetRef="Gateway_MethodologyChange"/>
+    <bpmn:sequenceFlow id="Flow_T13_Yes" name="да" sourceRef="Gateway_MethodologyChange" targetRef="Task_DraftRule"/>
+    <bpmn:sequenceFlow id="Flow_T13_No" name="нет" sourceRef="Gateway_MethodologyChange" targetRef="Gateway_AdminComplete"/>
+    <bpmn:sequenceFlow id="Flow_T14" sourceRef="Task_DraftRule" targetRef="Gateway_PublishReady"/>
+    <bpmn:sequenceFlow id="Flow_T15_Yes" name="да" sourceRef="Gateway_PublishReady" targetRef="Task_PublishRule"/>
+    <bpmn:sequenceFlow id="Flow_T15_No" name="нет" sourceRef="Gateway_PublishReady" targetRef="Task_ResolveBlock"/>
+    <bpmn:sequenceFlow id="Flow_T16" sourceRef="Task_ResolveBlock" targetRef="Task_DraftRule"/>
+    <bpmn:sequenceFlow id="Flow_T17" sourceRef="Task_PublishRule" targetRef="Gateway_ApplyMode"/>
+    <bpmn:sequenceFlow id="Flow_T18_Yes" name="да" sourceRef="Gateway_ApplyMode" targetRef="Task_RecalculateHistory"/>
+    <bpmn:sequenceFlow id="Flow_T18_No" name="нет" sourceRef="Gateway_ApplyMode" targetRef="Task_ApplyForward"/>
+    <bpmn:sequenceFlow id="Flow_T19" sourceRef="Task_RecalculateHistory" targetRef="Gateway_AdminComplete"/>
+    <bpmn:sequenceFlow id="Flow_T20" sourceRef="Task_ReceiveResult" targetRef="End_ToBe"/>
+    <bpmn:sequenceFlow id="Flow_T21" sourceRef="Task_ApplyForward" targetRef="Gateway_AdminComplete"/>
+    <bpmn:sequenceFlow id="Flow_T22" sourceRef="Gateway_AdminComplete" targetRef="Task_SendResult"/>
+    <bpmn:sequenceFlow id="Flow_T23" sourceRef="Task_SendResult" targetRef="Task_ReceiveResult"/>
+    <bpmn:sequenceFlow id="Flow_T06_BlockedStart" sourceRef="Task_BlockPublication" targetRef="Gateway_SignalSplit"/>
+    <bpmn:sequenceFlow id="Flow_T06_Auto" sourceRef="Gateway_SignalSplit" targetRef="Task_InvestigateCase"/>
+    <bpmn:sequenceFlow id="Flow_T09_ViewEnd" sourceRef="Task_ViewReport" targetRef="End_ReportViewed"/>
   </bpmn:process>
-  <bpmndi:BPMNDiagram id="Diagram_ToBe"><bpmndi:BPMNPlane id="Plane_ToBe" bpmnElement="Process_ToBeWeeklyReport">
-    <bpmndi:BPMNShape id="Lane_Client_di" bpmnElement="Lane_Client" isHorizontal="true"><dc:Bounds x="60" y="70" width="2480" height="180"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Lane_Grafio_di" bpmnElement="Lane_Grafio" isHorizontal="true"><dc:Bounds x="60" y="250" width="2480" height="180"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Lane_Admin_di" bpmnElement="Lane_Admin" isHorizontal="true"><dc:Bounds x="60" y="430" width="2480" height="260"/></bpmndi:BPMNShape>
-    <bpmndi:BPMNShape id="Start_ToBe_di" bpmnElement="Start_ToBe"><dc:Bounds x="125" y="142" width="36" height="36"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Task_SelectContext_di" bpmnElement="Task_SelectContext"><dc:Bounds x="200" y="117" width="140" height="86"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Task_RequestWB_di" bpmnElement="Task_RequestWB"><dc:Bounds x="390" y="297" width="145" height="86"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Task_Normalize_di" bpmnElement="Task_Normalize"><dc:Bounds x="590" y="297" width="170" height="86"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Gateway_DataComplete_di" bpmnElement="Gateway_DataComplete" isMarkerVisible="true"><dc:Bounds x="810" y="315" width="50" height="50"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Task_PublishLimited_di" bpmnElement="Task_PublishLimited"><dc:Bounds x="910" y="297" width="180" height="86"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Task_ClassifyCalculate_di" bpmnElement="Task_ClassifyCalculate"><dc:Bounds x="910" y="117" width="180" height="86"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Gateway_ReconcileToBe_di" bpmnElement="Gateway_ReconcileToBe" isMarkerVisible="true"><dc:Bounds x="1140" y="315" width="50" height="50"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Task_PublishReport_di" bpmnElement="Task_PublishReport"><dc:Bounds x="1240" y="297" width="155" height="86"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Task_ViewReport_di" bpmnElement="Task_ViewReport"><dc:Bounds x="1450" y="117" width="155" height="86"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Gateway_NeedCase_di" bpmnElement="Gateway_NeedCase" isMarkerVisible="true"><dc:Bounds x="1655" y="135" width="50" height="50"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Task_CreateCase_di" bpmnElement="Task_CreateCase"><dc:Bounds x="1755" y="117" width="180" height="86"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Task_InvestigateCase_di" bpmnElement="Task_InvestigateCase"><dc:Bounds x="1990" y="477" width="185" height="86"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Gateway_MethodologyChange_di" bpmnElement="Gateway_MethodologyChange" isMarkerVisible="true"><dc:Bounds x="2220" y="495" width="50" height="50"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Task_DraftRule_di" bpmnElement="Task_DraftRule"><dc:Bounds x="2315" y="477" width="180" height="86"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Gateway_PublishReady_di" bpmnElement="Gateway_PublishReady" isMarkerVisible="true"><dc:Bounds x="2315" y="600" width="50" height="50"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Task_RequestEvidence_di" bpmnElement="Task_RequestEvidence"><dc:Bounds x="2100" y="590" width="165" height="86"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Task_PublishRule_di" bpmnElement="Task_PublishRule"><dc:Bounds x="2400" y="590" width="165" height="86"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Gateway_ApplyMode_di" bpmnElement="Gateway_ApplyMode" isMarkerVisible="true"><dc:Bounds x="2400" y="700" width="50" height="50"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Task_RecalculateHistory_di" bpmnElement="Task_RecalculateHistory"><dc:Bounds x="2160" y="720" width="185" height="86"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Task_ApplyForward_di" bpmnElement="Task_ApplyForward"><dc:Bounds x="2400" y="720" width="165" height="86"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Task_ReceiveResult_di" bpmnElement="Task_ReceiveResult"><dc:Bounds x="2050" y="117" width="170" height="86"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="End_ToBe_di" bpmnElement="End_ToBe"><dc:Bounds x="2290" y="142" width="36" height="36"/></bpmndi:BPMNShape>
-    <bpmndi:BPMNEdge id="Flow_T01_di" bpmnElement="Flow_T01"><di:waypoint x="161" y="160"/><di:waypoint x="200" y="160"/></bpmndi:BPMNEdge><bpmndi:BPMNEdge id="Flow_T02_di" bpmnElement="Flow_T02"><di:waypoint x="340" y="160"/><di:waypoint x="365" y="160"/><di:waypoint x="365" y="340"/><di:waypoint x="390" y="340"/></bpmndi:BPMNEdge><bpmndi:BPMNEdge id="Flow_T03_di" bpmnElement="Flow_T03"><di:waypoint x="535" y="340"/><di:waypoint x="590" y="340"/></bpmndi:BPMNEdge><bpmndi:BPMNEdge id="Flow_T04_di" bpmnElement="Flow_T04"><di:waypoint x="760" y="340"/><di:waypoint x="810" y="340"/></bpmndi:BPMNEdge><bpmndi:BPMNEdge id="Flow_T05_Yes_di" bpmnElement="Flow_T05_Yes"><di:waypoint x="835" y="315"/><di:waypoint x="835" y="160"/><di:waypoint x="910" y="160"/></bpmndi:BPMNEdge><bpmndi:BPMNEdge id="Flow_T05_No_di" bpmnElement="Flow_T05_No"><di:waypoint x="860" y="340"/><di:waypoint x="910" y="340"/></bpmndi:BPMNEdge><bpmndi:BPMNEdge id="Flow_T06_di" bpmnElement="Flow_T06"><di:waypoint x="1090" y="160"/><di:waypoint x="1115" y="160"/><di:waypoint x="1115" y="340"/><di:waypoint x="1140" y="340"/></bpmndi:BPMNEdge><bpmndi:BPMNEdge id="Flow_T06_Limited_di" bpmnElement="Flow_T06_Limited"><di:waypoint x="1090" y="340"/><di:waypoint x="1420" y="340"/><di:waypoint x="1420" y="160"/><di:waypoint x="1450" y="160"/></bpmndi:BPMNEdge><bpmndi:BPMNEdge id="Flow_T07_Yes_di" bpmnElement="Flow_T07_Yes"><di:waypoint x="1190" y="340"/><di:waypoint x="1240" y="340"/></bpmndi:BPMNEdge><bpmndi:BPMNEdge id="Flow_T07_No_di" bpmnElement="Flow_T07_No"><di:waypoint x="1165" y="315"/><di:waypoint x="1165" y="90"/><di:waypoint x="1845" y="90"/><di:waypoint x="1845" y="117"/></bpmndi:BPMNEdge><bpmndi:BPMNEdge id="Flow_T08_di" bpmnElement="Flow_T08"><di:waypoint x="1395" y="340"/><di:waypoint x="1420" y="340"/><di:waypoint x="1420" y="160"/><di:waypoint x="1450" y="160"/></bpmndi:BPMNEdge><bpmndi:BPMNEdge id="Flow_T09_di" bpmnElement="Flow_T09"><di:waypoint x="1605" y="160"/><di:waypoint x="1655" y="160"/></bpmndi:BPMNEdge><bpmndi:BPMNEdge id="Flow_T10_Yes_di" bpmnElement="Flow_T10_Yes"><di:waypoint x="1705" y="160"/><di:waypoint x="1755" y="160"/></bpmndi:BPMNEdge><bpmndi:BPMNEdge id="Flow_T10_No_di" bpmnElement="Flow_T10_No"><di:waypoint x="1680" y="185"/><di:waypoint x="1680" y="220"/><di:waypoint x="2308" y="220"/><di:waypoint x="2308" y="178"/></bpmndi:BPMNEdge><bpmndi:BPMNEdge id="Flow_T11_di" bpmnElement="Flow_T11"><di:waypoint x="1935" y="160"/><di:waypoint x="2082" y="160"/><di:waypoint x="2082" y="477"/></bpmndi:BPMNEdge><bpmndi:BPMNEdge id="Flow_T12_di" bpmnElement="Flow_T12"><di:waypoint x="2175" y="520"/><di:waypoint x="2220" y="520"/></bpmndi:BPMNEdge><bpmndi:BPMNEdge id="Flow_T13_Yes_di" bpmnElement="Flow_T13_Yes"><di:waypoint x="2270" y="520"/><di:waypoint x="2315" y="520"/></bpmndi:BPMNEdge><bpmndi:BPMNEdge id="Flow_T13_No_di" bpmnElement="Flow_T13_No"><di:waypoint x="2245" y="495"/><di:waypoint x="2245" y="250"/><di:waypoint x="2135" y="250"/><di:waypoint x="2135" y="203"/></bpmndi:BPMNEdge><bpmndi:BPMNEdge id="Flow_T14_di" bpmnElement="Flow_T14"><di:waypoint x="2405" y="563"/><di:waypoint x="2405" y="575"/><di:waypoint x="2340" y="575"/><di:waypoint x="2340" y="600"/></bpmndi:BPMNEdge><bpmndi:BPMNEdge id="Flow_T15_Yes_di" bpmnElement="Flow_T15_Yes"><di:waypoint x="2365" y="625"/><di:waypoint x="2400" y="633"/></bpmndi:BPMNEdge><bpmndi:BPMNEdge id="Flow_T15_No_di" bpmnElement="Flow_T15_No"><di:waypoint x="2315" y="625"/><di:waypoint x="2265" y="633"/></bpmndi:BPMNEdge><bpmndi:BPMNEdge id="Flow_T16_di" bpmnElement="Flow_T16"><di:waypoint x="2182" y="590"/><di:waypoint x="2135" y="250"/><di:waypoint x="2135" y="203"/></bpmndi:BPMNEdge><bpmndi:BPMNEdge id="Flow_T17_di" bpmnElement="Flow_T17"><di:waypoint x="2482" y="676"/><di:waypoint x="2482" y="700"/><di:waypoint x="2425" y="700"/></bpmndi:BPMNEdge><bpmndi:BPMNEdge id="Flow_T18_Yes_di" bpmnElement="Flow_T18_Yes"><di:waypoint x="2400" y="725"/><di:waypoint x="2345" y="763"/></bpmndi:BPMNEdge><bpmndi:BPMNEdge id="Flow_T18_No_di" bpmnElement="Flow_T18_No"><di:waypoint x="2425" y="750"/><di:waypoint x="2482" y="720"/></bpmndi:BPMNEdge><bpmndi:BPMNEdge id="Flow_T19_di" bpmnElement="Flow_T19"><di:waypoint x="2252" y="720"/><di:waypoint x="2135" y="250"/><di:waypoint x="2135" y="203"/></bpmndi:BPMNEdge><bpmndi:BPMNEdge id="Flow_T20_di" bpmnElement="Flow_T20"><di:waypoint x="2220" y="160"/><di:waypoint x="2290" y="160"/></bpmndi:BPMNEdge>
-  </bpmndi:BPMNPlane></bpmndi:BPMNDiagram>
+  <bpmndi:BPMNDiagram id="Diagram_ToBe">
+    <bpmndi:BPMNPlane id="Plane_ToBe" bpmnElement="Process_ToBeWeeklyReport">
+      <bpmndi:BPMNShape id="Lane_Client_di" bpmnElement="Lane_Client" isHorizontal="true">
+        <dc:Bounds x="60" y="70" width="3700" height="180"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Grafio_di" bpmnElement="Lane_Grafio" isHorizontal="true">
+        <dc:Bounds x="60" y="250" width="3700" height="310"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Admin_di" bpmnElement="Lane_Admin" isHorizontal="true">
+        <dc:Bounds x="60" y="560" width="3700" height="450"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Start_ToBe_di" bpmnElement="Start_ToBe">
+        <dc:Bounds x="125" y="142" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SelectContext_di" bpmnElement="Task_SelectContext">
+        <dc:Bounds x="200" y="117" width="140" height="86"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RequestWB_di" bpmnElement="Task_RequestWB">
+        <dc:Bounds x="390" y="297" width="145" height="86"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Normalize_di" bpmnElement="Task_Normalize">
+        <dc:Bounds x="590" y="297" width="170" height="86"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_DataComplete_di" bpmnElement="Gateway_DataComplete" isMarkerVisible="true">
+        <dc:Bounds x="810" y="315" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_BlockPublication_di" bpmnElement="Task_BlockPublication">
+        <dc:Bounds x="910" y="440" width="180" height="86"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ClassifyCalculate_di" bpmnElement="Task_ClassifyCalculate">
+        <dc:Bounds x="910" y="297" width="180" height="86"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ReconcileToBe_di" bpmnElement="Gateway_ReconcileToBe" isMarkerVisible="true">
+        <dc:Bounds x="1140" y="315" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PublishReport_di" bpmnElement="Task_PublishReport">
+        <dc:Bounds x="1240" y="297" width="155" height="86"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ViewReport_di" bpmnElement="Task_ViewReport">
+        <dc:Bounds x="1450" y="117" width="155" height="86"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_InvestigateCase_di" bpmnElement="Task_InvestigateCase">
+        <dc:Bounds x="2000" y="640" width="185" height="86"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_MethodologyChange_di" bpmnElement="Gateway_MethodologyChange" isMarkerVisible="true">
+        <dc:Bounds x="2240" y="658" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_DraftRule_di" bpmnElement="Task_DraftRule">
+        <dc:Bounds x="2350" y="640" width="180" height="86"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_PublishReady_di" bpmnElement="Gateway_PublishReady" isMarkerVisible="true">
+        <dc:Bounds x="2590" y="658" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ResolveBlock_di" bpmnElement="Task_ResolveBlock">
+        <dc:Bounds x="2500" y="790" width="165" height="86"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PublishRule_di" bpmnElement="Task_PublishRule">
+        <dc:Bounds x="2690" y="640" width="165" height="86"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_ApplyMode_di" bpmnElement="Gateway_ApplyMode" isMarkerVisible="true">
+        <dc:Bounds x="2910" y="658" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RecalculateHistory_di" bpmnElement="Task_RecalculateHistory">
+        <dc:Bounds x="3100" y="790" width="185" height="86"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ApplyForward_di" bpmnElement="Task_ApplyForward">
+        <dc:Bounds x="3070" y="640" width="165" height="86"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReceiveResult_di" bpmnElement="Task_ReceiveResult">
+        <dc:Bounds x="3450" y="117" width="170" height="86"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_ToBe_di" bpmnElement="End_ToBe">
+        <dc:Bounds x="3670" y="142" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_AdminComplete_di" bpmnElement="Gateway_AdminComplete" isMarkerVisible="true">
+        <dc:Bounds x="3325" y="658" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SendResult_di" bpmnElement="Task_SendResult">
+        <dc:Bounds x="3430" y="640" width="165" height="86"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_T01_di" bpmnElement="Flow_T01">
+        <di:waypoint x="161" y="160"/>
+        <di:waypoint x="200" y="160"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T02_di" bpmnElement="Flow_T02">
+        <di:waypoint x="340" y="160"/>
+        <di:waypoint x="365" y="160"/>
+        <di:waypoint x="365" y="340"/>
+        <di:waypoint x="390" y="340"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T03_di" bpmnElement="Flow_T03">
+        <di:waypoint x="535" y="340"/>
+        <di:waypoint x="590" y="340"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T04_di" bpmnElement="Flow_T04">
+        <di:waypoint x="760" y="340"/>
+        <di:waypoint x="810" y="340"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T05_Yes_di" bpmnElement="Flow_T05_Yes">
+        <di:waypoint x="860" y="340"/>
+        <di:waypoint x="910" y="340"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T05_No_di" bpmnElement="Flow_T05_No">
+        <di:waypoint x="835" y="365"/>
+        <di:waypoint x="835" y="483"/>
+        <di:waypoint x="910" y="483"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T06_di" bpmnElement="Flow_T06">
+        <di:waypoint x="1090" y="340"/>
+        <di:waypoint x="1140" y="340"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T06_Blocked_di" bpmnElement="Flow_T06_Blocked">
+        <di:waypoint x="1180" y="483"/>
+        <di:waypoint x="1527" y="483"/>
+        <di:waypoint x="1527" y="203"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T07_Yes_di" bpmnElement="Flow_T07_Yes">
+        <di:waypoint x="1190" y="340"/>
+        <di:waypoint x="1240" y="340"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T07_No_di" bpmnElement="Flow_T07_No">
+        <di:waypoint x="1165" y="365"/>
+        <di:waypoint x="1165" y="410"/>
+        <di:waypoint x="1000" y="410"/>
+        <di:waypoint x="1000" y="440"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T08_di" bpmnElement="Flow_T08">
+        <di:waypoint x="1395" y="340"/>
+        <di:waypoint x="1420" y="340"/>
+        <di:waypoint x="1420" y="160"/>
+        <di:waypoint x="1450" y="160"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T12_di" bpmnElement="Flow_T12">
+        <di:waypoint x="2185" y="683"/>
+        <di:waypoint x="2240" y="683"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T13_Yes_di" bpmnElement="Flow_T13_Yes">
+        <di:waypoint x="2290" y="683"/>
+        <di:waypoint x="2350" y="683"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T13_No_di" bpmnElement="Flow_T13_No">
+        <di:waypoint x="2265" y="658"/>
+        <di:waypoint x="2265" y="580"/>
+        <di:waypoint x="3350" y="580"/>
+        <di:waypoint x="3350" y="658"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T14_di" bpmnElement="Flow_T14">
+        <di:waypoint x="2530" y="683"/>
+        <di:waypoint x="2590" y="683"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T15_Yes_di" bpmnElement="Flow_T15_Yes">
+        <di:waypoint x="2640" y="683"/>
+        <di:waypoint x="2690" y="683"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T15_No_di" bpmnElement="Flow_T15_No">
+        <di:waypoint x="2615" y="708"/>
+        <di:waypoint x="2615" y="750"/>
+        <di:waypoint x="2582" y="750"/>
+        <di:waypoint x="2582" y="790"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T16_di" bpmnElement="Flow_T16">
+        <di:waypoint x="2582" y="876"/>
+        <di:waypoint x="2582" y="960"/>
+        <di:waypoint x="2440" y="960"/>
+        <di:waypoint x="2440" y="726"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T17_di" bpmnElement="Flow_T17">
+        <di:waypoint x="2855" y="683"/>
+        <di:waypoint x="2910" y="683"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T18_Yes_di" bpmnElement="Flow_T18_Yes">
+        <di:waypoint x="2935" y="708"/>
+        <di:waypoint x="2935" y="755"/>
+        <di:waypoint x="3192" y="755"/>
+        <di:waypoint x="3192" y="790"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T18_No_di" bpmnElement="Flow_T18_No">
+        <di:waypoint x="2960" y="683"/>
+        <di:waypoint x="3070" y="683"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T19_di" bpmnElement="Flow_T19">
+        <di:waypoint x="3285" y="833"/>
+        <di:waypoint x="3350" y="833"/>
+        <di:waypoint x="3350" y="708"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T20_di" bpmnElement="Flow_T20">
+        <di:waypoint x="3620" y="160"/>
+        <di:waypoint x="3670" y="160"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T21_di" bpmnElement="Flow_T21">
+        <di:waypoint x="3235" y="683"/>
+        <di:waypoint x="3325" y="683"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T22_di" bpmnElement="Flow_T22">
+        <di:waypoint x="3375" y="683"/>
+        <di:waypoint x="3430" y="683"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T23_di" bpmnElement="Flow_T23">
+        <di:waypoint x="3512" y="640"/>
+        <di:waypoint x="3512" y="240"/>
+        <di:waypoint x="3535" y="240"/>
+        <di:waypoint x="3535" y="203"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Gateway_SignalSplit_di" bpmnElement="Gateway_SignalSplit" isMarkerVisible="true">
+        <dc:Bounds x="1130" y="458" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_ReportViewed_di" bpmnElement="End_ReportViewed">
+        <dc:Bounds x="1670" y="142" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_T06_BlockedStart_di" bpmnElement="Flow_T06_BlockedStart">
+        <di:waypoint x="1090" y="483"/>
+        <di:waypoint x="1130" y="483"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T06_Auto_di" bpmnElement="Flow_T06_Auto">
+        <di:waypoint x="1155" y="508"/>
+        <di:waypoint x="1155" y="570"/>
+        <di:waypoint x="1900" y="570"/>
+        <di:waypoint x="1900" y="683"/>
+        <di:waypoint x="2000" y="683"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_T09_ViewEnd_di" bpmnElement="Flow_T09_ViewEnd">
+        <di:waypoint x="1605" y="160"/>
+        <di:waypoint x="1670" y="160"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
 </bpmn:definitions>

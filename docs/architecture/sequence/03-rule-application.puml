@@ -1,0 +1,60 @@
+@startuml
+title Последовательность 03д — применение правила и результат кейса
+autonumber
+hide footbox
+
+skinparam defaultFontName Arial
+skinparam defaultFontSize 14
+skinparam sequence {
+  ArrowColor #526274
+  LifeLineBorderColor #94A3B8
+  ParticipantBackgroundColor #EAF2FC
+  ParticipantBorderColor #5289C2
+  GroupBorderColor #64748B
+  GroupHeaderBackgroundColor #EAF2FC
+}
+
+queue "Очередь заданий" as Queue
+control "Фоновый обработчик" as Worker
+database "PostgreSQL" as DB
+control "Контроль расчётов" as Cases
+
+Worker -> Queue : Взять задание применения правила
+Queue --> Worker : ruleVersionId, режим, область и периоды
+
+alt Пересчитать историю
+  loop Каждый затронутый кабинет и неделя
+    Worker -> DB : Прочитать неизменяемые входы\nи опубликованное правило
+    DB --> Worker : Данные, хеши и версия методики
+    Worker -> Worker : Рассчитать черновик и заново\nсверить обязательные итоги: Δ = 0
+    Worker -> DB : Сохранить новую версию как черновик
+  end
+  alt Все ожидаемые недели проверены
+    Worker -> DB : Опубликовать новые версии,\nсравнение и событие outbox
+    Worker -> Cases : Передать версию правила,\nпериоды и результат сверки
+    Cases -> DB : Статус «Опубликован результат»\nи уведомление о завершении
+    DB --> Cases : Результат сохранён
+    Cases --> Worker : Кейс обновлён
+    Worker ->> Queue : Завершить задание: SUCCEEDED
+  else Есть ошибка или неполная область
+    Worker -> DB : Сохранить причину и состояние задания
+    Worker ->> Queue : Задание не завершено успешно
+    note over Worker, Cases
+      Прежние опубликованные отчёты доступны.
+      Уведомление «история пересчитана» не создаётся.
+    end note
+  end
+else Применить правило вперёд
+  Worker -> DB : Зафиксировать действие с validFrom;\nпрошлые отчёты не менять
+  Worker -> Cases : Передать дату, причину и результат
+  Cases -> DB : Статус «Опубликован результат»;\nуведомление без заявления о пересчёте истории
+  DB --> Cases : Результат сохранён
+  Cases --> Worker : Кейс обновлён
+  Worker ->> Queue : Завершить задание: SUCCEEDED
+end
+
+note over Worker, Cases
+  Прежние опубликованные версии остаются доступными.
+  Клиент видит методику и способ применения.
+end note
+@enduml

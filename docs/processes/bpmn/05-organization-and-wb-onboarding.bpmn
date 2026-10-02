@@ -1,8 +1,221 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_Onboarding" targetNamespace="https://grafio.example/bpmn">
-  <bpmn:process id="Process_Onboarding" name="Подключение организации и кабинета WB" isExecutable="false"><bpmn:laneSet id="Lanes_Onboarding"><bpmn:lane id="Lane_Owner" name="Владелец клиента"><bpmn:flowNodeRef>Start_O</bpmn:flowNodeRef><bpmn:flowNodeRef>Task_CreateOrg</bpmn:flowNodeRef><bpmn:flowNodeRef>Task_EnterCabinet</bpmn:flowNodeRef><bpmn:flowNodeRef>Task_FixConnection</bpmn:flowNodeRef><bpmn:flowNodeRef>End_O</bpmn:flowNodeRef></bpmn:lane><bpmn:lane id="Lane_Platform" name="Grafio"><bpmn:flowNodeRef>Task_StoreSecret</bpmn:flowNodeRef><bpmn:flowNodeRef>Task_VerifyAccess</bpmn:flowNodeRef><bpmn:flowNodeRef>Gateway_Access</bpmn:flowNodeRef><bpmn:flowNodeRef>Task_ActivateAccount</bpmn:flowNodeRef><bpmn:flowNodeRef>Task_LoadFirstReport</bpmn:flowNodeRef><bpmn:flowNodeRef>Gateway_FirstLoad</bpmn:flowNodeRef></bpmn:lane><bpmn:lane id="Lane_WB" name="Wildberries API"><bpmn:flowNodeRef>Task_WBAuthenticate</bpmn:flowNodeRef><bpmn:flowNodeRef>Task_WBReturnData</bpmn:flowNodeRef></bpmn:lane></bpmn:laneSet>
-    <bpmn:startEvent id="Start_O" name="Организация готова подключиться"><bpmn:outgoing>O01</bpmn:outgoing></bpmn:startEvent><bpmn:userTask id="Task_CreateOrg" name="Создать организацию и юрлицо"><bpmn:incoming>O01</bpmn:incoming><bpmn:outgoing>O02</bpmn:outgoing></bpmn:userTask><bpmn:userTask id="Task_EnterCabinet" name="Указать кабинет WB и токен"><bpmn:incoming>O02</bpmn:incoming><bpmn:incoming>O06</bpmn:incoming><bpmn:outgoing>O03</bpmn:outgoing></bpmn:userTask><bpmn:serviceTask id="Task_StoreSecret" name="Сохранить токен в защищённом хранилище"><bpmn:incoming>O03</bpmn:incoming><bpmn:outgoing>O04</bpmn:outgoing></bpmn:serviceTask><bpmn:serviceTask id="Task_WBAuthenticate" name="Проверить токен и доступ"><bpmn:incoming>O04</bpmn:incoming><bpmn:outgoing>O05</bpmn:outgoing></bpmn:serviceTask><bpmn:serviceTask id="Task_VerifyAccess" name="Проверить ответ WB и кабинет"><bpmn:incoming>O05</bpmn:incoming><bpmn:outgoing>O07</bpmn:outgoing></bpmn:serviceTask><bpmn:exclusiveGateway id="Gateway_Access" name="Доступ подтверждён?"><bpmn:incoming>O07</bpmn:incoming><bpmn:outgoing>O08_Yes</bpmn:outgoing><bpmn:outgoing>O08_No</bpmn:outgoing></bpmn:exclusiveGateway><bpmn:userTask id="Task_FixConnection" name="Показать причину и запросить исправление"><bpmn:incoming>O08_No</bpmn:incoming><bpmn:outgoing>O06</bpmn:outgoing></bpmn:userTask><bpmn:serviceTask id="Task_ActivateAccount" name="Активировать кабинет и область доступа"><bpmn:incoming>O08_Yes</bpmn:incoming><bpmn:outgoing>O09</bpmn:outgoing></bpmn:serviceTask><bpmn:serviceTask id="Task_WBReturnData" name="Получить первый финансовый отчёт"><bpmn:incoming>O09</bpmn:incoming><bpmn:outgoing>O10</bpmn:outgoing></bpmn:serviceTask><bpmn:serviceTask id="Task_LoadFirstReport" name="Загрузить и проверить первый отчёт"><bpmn:incoming>O10</bpmn:incoming><bpmn:outgoing>O11</bpmn:outgoing></bpmn:serviceTask><bpmn:exclusiveGateway id="Gateway_FirstLoad" name="Отчёт готов?"><bpmn:incoming>O11</bpmn:incoming><bpmn:outgoing>O12_Yes</bpmn:outgoing><bpmn:outgoing>O12_No</bpmn:outgoing></bpmn:exclusiveGateway><bpmn:endEvent id="End_O" name="Кабинет готов к работе"><bpmn:incoming>O12_Yes</bpmn:incoming></bpmn:endEvent><bpmn:endEvent id="End_WaitData" name="Ожидание готовности данных"><bpmn:incoming>O12_No</bpmn:incoming></bpmn:endEvent>
-    <bpmn:sequenceFlow id="O01" sourceRef="Start_O" targetRef="Task_CreateOrg"/><bpmn:sequenceFlow id="O02" sourceRef="Task_CreateOrg" targetRef="Task_EnterCabinet"/><bpmn:sequenceFlow id="O03" sourceRef="Task_EnterCabinet" targetRef="Task_StoreSecret"/><bpmn:sequenceFlow id="O04" sourceRef="Task_StoreSecret" targetRef="Task_WBAuthenticate"/><bpmn:sequenceFlow id="O05" sourceRef="Task_WBAuthenticate" targetRef="Task_VerifyAccess"/><bpmn:sequenceFlow id="O06" sourceRef="Task_FixConnection" targetRef="Task_EnterCabinet"/><bpmn:sequenceFlow id="O07" sourceRef="Task_VerifyAccess" targetRef="Gateway_Access"/><bpmn:sequenceFlow id="O08_Yes" name="да" sourceRef="Gateway_Access" targetRef="Task_ActivateAccount"/><bpmn:sequenceFlow id="O08_No" name="нет" sourceRef="Gateway_Access" targetRef="Task_FixConnection"/><bpmn:sequenceFlow id="O09" sourceRef="Task_ActivateAccount" targetRef="Task_WBReturnData"/><bpmn:sequenceFlow id="O10" sourceRef="Task_WBReturnData" targetRef="Task_LoadFirstReport"/><bpmn:sequenceFlow id="O11" sourceRef="Task_LoadFirstReport" targetRef="Gateway_FirstLoad"/><bpmn:sequenceFlow id="O12_Yes" name="да" sourceRef="Gateway_FirstLoad" targetRef="End_O"/><bpmn:sequenceFlow id="O12_No" name="нет" sourceRef="Gateway_FirstLoad" targetRef="End_WaitData"/>
+  <bpmn:process id="Process_Onboarding" name="Подключение организации и кабинета WB" isExecutable="false">
+    <bpmn:laneSet id="Lanes_Onboarding">
+      <bpmn:lane id="Lane_Owner" name="Владелец клиента">
+        <bpmn:flowNodeRef>Start_O</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_CreateOrg</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_EnterCabinet</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_FixConnection</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_O</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Platform" name="Grafio">
+        <bpmn:flowNodeRef>Task_StoreSecret</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_VerifyAccess</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_Access</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_ActivateAccount</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_LoadFirstReport</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Gateway_FirstLoad</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_WB" name="Интеграция Grafio с WB">
+        <bpmn:flowNodeRef>Task_WBAuthenticate</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Task_WBReturnData</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End_WaitData</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="Start_O" name="Организация готова подключиться">
+      <bpmn:outgoing>O01</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Task_CreateOrg" name="Создать организацию и юрлицо">
+      <bpmn:incoming>O01</bpmn:incoming>
+      <bpmn:outgoing>O02</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:userTask id="Task_EnterCabinet" name="Указать кабинет WB и токен">
+      <bpmn:incoming>O02</bpmn:incoming>
+      <bpmn:incoming>O06</bpmn:incoming>
+      <bpmn:outgoing>O03</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Task_StoreSecret" name="Сохранить токен в защищённом хранилище">
+      <bpmn:incoming>O03</bpmn:incoming>
+      <bpmn:outgoing>O04</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_WBAuthenticate" name="Проверить токен и доступ">
+      <bpmn:incoming>O04</bpmn:incoming>
+      <bpmn:outgoing>O05</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_VerifyAccess" name="Проверить ответ WB и кабинет">
+      <bpmn:incoming>O05</bpmn:incoming>
+      <bpmn:outgoing>O07</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_Access" name="Доступ подтверждён?">
+      <bpmn:incoming>O07</bpmn:incoming>
+      <bpmn:outgoing>O08_Yes</bpmn:outgoing>
+      <bpmn:outgoing>O08_No</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_FixConnection" name="Показать причину и запросить исправление">
+      <bpmn:incoming>O08_No</bpmn:incoming>
+      <bpmn:outgoing>O06</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:serviceTask id="Task_ActivateAccount" name="Активировать кабинет и область доступа">
+      <bpmn:incoming>O08_Yes</bpmn:incoming>
+      <bpmn:outgoing>O09</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_WBReturnData" name="Получить первый финансовый отчёт">
+      <bpmn:incoming>O09</bpmn:incoming>
+      <bpmn:outgoing>O10</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_LoadFirstReport" name="Загрузить и проверить первый отчёт">
+      <bpmn:incoming>O10</bpmn:incoming>
+      <bpmn:outgoing>O11</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_FirstLoad" name="Отчёт готов?">
+      <bpmn:incoming>O11</bpmn:incoming>
+      <bpmn:outgoing>O12_Yes</bpmn:outgoing>
+      <bpmn:outgoing>O12_No</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="End_O" name="Кабинет готов к работе">
+      <bpmn:incoming>O12_Yes</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:endEvent id="End_WaitData" name="Ожидание готовности данных">
+      <bpmn:incoming>O12_No</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="O01" sourceRef="Start_O" targetRef="Task_CreateOrg" />
+    <bpmn:sequenceFlow id="O02" sourceRef="Task_CreateOrg" targetRef="Task_EnterCabinet" />
+    <bpmn:sequenceFlow id="O03" sourceRef="Task_EnterCabinet" targetRef="Task_StoreSecret" />
+    <bpmn:sequenceFlow id="O04" sourceRef="Task_StoreSecret" targetRef="Task_WBAuthenticate" />
+    <bpmn:sequenceFlow id="O05" sourceRef="Task_WBAuthenticate" targetRef="Task_VerifyAccess" />
+    <bpmn:sequenceFlow id="O06" sourceRef="Task_FixConnection" targetRef="Task_EnterCabinet" />
+    <bpmn:sequenceFlow id="O07" sourceRef="Task_VerifyAccess" targetRef="Gateway_Access" />
+    <bpmn:sequenceFlow id="O08_Yes" name="да" sourceRef="Gateway_Access" targetRef="Task_ActivateAccount" />
+    <bpmn:sequenceFlow id="O08_No" name="нет" sourceRef="Gateway_Access" targetRef="Task_FixConnection" />
+    <bpmn:sequenceFlow id="O09" sourceRef="Task_ActivateAccount" targetRef="Task_WBReturnData" />
+    <bpmn:sequenceFlow id="O10" sourceRef="Task_WBReturnData" targetRef="Task_LoadFirstReport" />
+    <bpmn:sequenceFlow id="O11" sourceRef="Task_LoadFirstReport" targetRef="Gateway_FirstLoad" />
+    <bpmn:sequenceFlow id="O12_Yes" name="да" sourceRef="Gateway_FirstLoad" targetRef="End_O" />
+    <bpmn:sequenceFlow id="O12_No" name="нет" sourceRef="Gateway_FirstLoad" targetRef="End_WaitData" />
   </bpmn:process>
-  <bpmndi:BPMNDiagram id="Diagram_Onboarding"><bpmndi:BPMNPlane id="Plane_Onboarding" bpmnElement="Process_Onboarding"><bpmndi:BPMNShape id="Lane_Owner_di" bpmnElement="Lane_Owner" isHorizontal="true"><dc:Bounds x="60" y="60" width="1700" height="150"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Lane_Platform_di" bpmnElement="Lane_Platform" isHorizontal="true"><dc:Bounds x="60" y="210" width="1700" height="160"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Lane_WB_di" bpmnElement="Lane_WB" isHorizontal="true"><dc:Bounds x="60" y="370" width="1700" height="150"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Start_O_di" bpmnElement="Start_O"><dc:Bounds x="120" y="117" width="36" height="36"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Task_CreateOrg_di" bpmnElement="Task_CreateOrg"><dc:Bounds x="200" y="92" width="160" height="86"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Task_EnterCabinet_di" bpmnElement="Task_EnterCabinet"><dc:Bounds x="420" y="92" width="160" height="86"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Task_StoreSecret_di" bpmnElement="Task_StoreSecret"><dc:Bounds x="640" y="247" width="175" height="86"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Task_WBAuthenticate_di" bpmnElement="Task_WBAuthenticate"><dc:Bounds x="870" y="402" width="160" height="86"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Task_VerifyAccess_di" bpmnElement="Task_VerifyAccess"><dc:Bounds x="1090" y="247" width="160" height="86"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Gateway_Access_di" bpmnElement="Gateway_Access" isMarkerVisible="true"><dc:Bounds x="1310" y="265" width="50" height="50"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Task_FixConnection_di" bpmnElement="Task_FixConnection"><dc:Bounds x="1410" y="92" width="180" height="86"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Task_ActivateAccount_di" bpmnElement="Task_ActivateAccount"><dc:Bounds x="1410" y="247" width="180" height="86"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Task_WBReturnData_di" bpmnElement="Task_WBReturnData"><dc:Bounds x="1410" y="402" width="180" height="86"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Task_LoadFirstReport_di" bpmnElement="Task_LoadFirstReport"><dc:Bounds x="1640" y="247" width="180" height="86"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="Gateway_FirstLoad_di" bpmnElement="Gateway_FirstLoad" isMarkerVisible="true"><dc:Bounds x="1870" y="265" width="50" height="50"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="End_O_di" bpmnElement="End_O"><dc:Bounds x="1970" y="117" width="36" height="36"/></bpmndi:BPMNShape><bpmndi:BPMNShape id="End_WaitData_di" bpmnElement="End_WaitData"><dc:Bounds x="1970" y="422" width="36" height="36"/></bpmndi:BPMNShape></bpmndi:BPMNPlane></bpmndi:BPMNDiagram>
+  <bpmndi:BPMNDiagram id="Diagram_Onboarding">
+    <bpmndi:BPMNPlane id="Plane_Onboarding" bpmnElement="Process_Onboarding">
+      <bpmndi:BPMNShape id="Lane_Owner_di" bpmnElement="Lane_Owner" isHorizontal="true">
+        <dc:Bounds x="60" y="60" width="2020" height="150" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Platform_di" bpmnElement="Lane_Platform" isHorizontal="true">
+        <dc:Bounds x="60" y="210" width="2020" height="160" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_WB_di" bpmnElement="Lane_WB" isHorizontal="true">
+        <dc:Bounds x="60" y="370" width="2020" height="150" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Start_O_di" bpmnElement="Start_O">
+        <dc:Bounds x="120" y="117" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CreateOrg_di" bpmnElement="Task_CreateOrg">
+        <dc:Bounds x="200" y="92" width="160" height="86" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_EnterCabinet_di" bpmnElement="Task_EnterCabinet">
+        <dc:Bounds x="420" y="92" width="160" height="86" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_StoreSecret_di" bpmnElement="Task_StoreSecret">
+        <dc:Bounds x="640" y="247" width="175" height="86" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_WBAuthenticate_di" bpmnElement="Task_WBAuthenticate">
+        <dc:Bounds x="870" y="402" width="160" height="86" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_VerifyAccess_di" bpmnElement="Task_VerifyAccess">
+        <dc:Bounds x="1090" y="247" width="160" height="86" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Access_di" bpmnElement="Gateway_Access" isMarkerVisible="true">
+        <dc:Bounds x="1310" y="265" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_FixConnection_di" bpmnElement="Task_FixConnection">
+        <dc:Bounds x="1410" y="92" width="180" height="86" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ActivateAccount_di" bpmnElement="Task_ActivateAccount">
+        <dc:Bounds x="1410" y="247" width="180" height="86" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_WBReturnData_di" bpmnElement="Task_WBReturnData">
+        <dc:Bounds x="1410" y="402" width="180" height="86" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_LoadFirstReport_di" bpmnElement="Task_LoadFirstReport">
+        <dc:Bounds x="1640" y="247" width="180" height="86" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_FirstLoad_di" bpmnElement="Gateway_FirstLoad" isMarkerVisible="true">
+        <dc:Bounds x="1870" y="265" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_O_di" bpmnElement="End_O">
+        <dc:Bounds x="1970" y="117" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_WaitData_di" bpmnElement="End_WaitData">
+        <dc:Bounds x="1970" y="422" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Edge_O01" bpmnElement="O01">
+        <di:waypoint x="156.0" y="135.0" />
+        <di:waypoint x="200.0" y="135.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_O02" bpmnElement="O02">
+        <di:waypoint x="360.0" y="135.0" />
+        <di:waypoint x="420.0" y="135.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_O03" bpmnElement="O03">
+        <di:waypoint x="580.0" y="135.0" />
+        <di:waypoint x="610.0" y="135.0" />
+        <di:waypoint x="610.0" y="290.0" />
+        <di:waypoint x="640.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_O04" bpmnElement="O04">
+        <di:waypoint x="815.0" y="290.0" />
+        <di:waypoint x="842.5" y="290.0" />
+        <di:waypoint x="842.5" y="445.0" />
+        <di:waypoint x="870.0" y="445.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_O05" bpmnElement="O05">
+        <di:waypoint x="1030.0" y="445.0" />
+        <di:waypoint x="1060.0" y="445.0" />
+        <di:waypoint x="1060.0" y="290.0" />
+        <di:waypoint x="1090.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_O06" bpmnElement="O06">
+        <di:waypoint x="1500" y="92" />
+        <di:waypoint x="1500" y="75" />
+        <di:waypoint x="500" y="75" />
+        <di:waypoint x="500" y="92" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_O07" bpmnElement="O07">
+        <di:waypoint x="1250.0" y="290.0" />
+        <di:waypoint x="1310.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_O08_Yes" bpmnElement="O08_Yes">
+        <di:waypoint x="1360.0" y="290.0" />
+        <di:waypoint x="1410.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_O08_No" bpmnElement="O08_No">
+        <di:waypoint x="1335" y="265" />
+        <di:waypoint x="1335" y="135" />
+        <di:waypoint x="1410" y="135" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_O09" bpmnElement="O09">
+        <di:waypoint x="1500" y="333" />
+        <di:waypoint x="1500" y="402" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_O10" bpmnElement="O10">
+        <di:waypoint x="1590.0" y="445.0" />
+        <di:waypoint x="1615.0" y="445.0" />
+        <di:waypoint x="1615.0" y="290.0" />
+        <di:waypoint x="1640.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_O11" bpmnElement="O11">
+        <di:waypoint x="1820.0" y="290.0" />
+        <di:waypoint x="1870.0" y="290.0" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_O12_Yes" bpmnElement="O12_Yes">
+        <di:waypoint x="1895" y="265" />
+        <di:waypoint x="1895" y="135" />
+        <di:waypoint x="1970" y="135" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Edge_O12_No" bpmnElement="O12_No">
+        <di:waypoint x="1895" y="315" />
+        <di:waypoint x="1895" y="440" />
+        <di:waypoint x="1970" y="440" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
 </bpmn:definitions>

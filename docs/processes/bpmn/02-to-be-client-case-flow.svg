@@ -1,0 +1,279 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2720" height="1190" viewBox="0 0 2720 1190" role="img" aria-label="TO-BE: клиентский запрос и взаимодействие">
+<defs><marker id="seq-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 1 1 L 9 5 L 1 9 z" fill="#516173"/></marker>
+<marker id="msg-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M 1 1 L 9 5 L 1 9" fill="none" stroke="#636b76" stroke-width="1.5"/></marker></defs>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<style>text{font-family:Arial,Segoe UI,sans-serif}.edge{fill:none;stroke:#516173;stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round}.lane{fill:#f8fafc;stroke:#94a3b8;stroke-width:1.3}.shape{fill:#fff;stroke:#334155;stroke-width:1.7}.association{fill:none;stroke:#94a3b8;stroke-width:1.4;stroke-dasharray:2 5}</style>
+<text x="60" y="36" font-size="24" font-weight="700" fill="#111827">TO-BE: клиентский запрос и взаимодействие</text>
+<rect class="lane" x="60" y="80" width="2600" height="150"/>
+<rect x="60" y="80" width="38" height="150" fill="#e9eef5" stroke="#94a3b8" stroke-width="1"/>
+<text x="79" y="155" transform="rotate(-90 79 155)" text-anchor="middle" dominant-baseline="middle" font-size="14" font-weight="600" fill="#334155">Wildberries API</text>
+<rect class="lane" x="60" y="270" width="2600" height="350"/>
+<rect x="60" y="270" width="38" height="350" fill="#e9eef5" stroke="#94a3b8" stroke-width="1"/>
+<text x="79" y="445" transform="rotate(-90 79 445)" text-anchor="middle" dominant-baseline="middle" font-size="14" font-weight="600" fill="#334155">Grafio: данные и расчёт</text>
+<rect class="lane" x="60" y="660" width="2600" height="210"/>
+<rect x="60" y="660" width="38" height="210" fill="#e9eef5" stroke="#94a3b8" stroke-width="1"/>
+<text x="79" y="765" transform="rotate(-90 79 765)" text-anchor="middle" dominant-baseline="middle" font-size="14" font-weight="600" fill="#334155">Клиентская организация</text>
+<rect class="lane" x="60" y="910" width="2600" height="210"/>
+<rect x="60" y="910" width="38" height="210" fill="#e9eef5" stroke="#94a3b8" stroke-width="1"/>
+<text x="79" y="1015" transform="rotate(-90 79 1015)" text-anchor="middle" dominant-baseline="middle" font-size="14" font-weight="600" fill="#334155">Admin Console Grafio</text>
+<path class="edge" d="M 488 155 L 590 155" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 745 155 L 802 155" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 318 390 L 385 390" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 540 390 L 625 390" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 503 448 L 503 465 L 555 465 L 555 505 L 540 505" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 445 485 L 445 433" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 800 390 L 850 390" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 900 390 L 960 378" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 875 415 L 875 505 L 960 505" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 1115 378 L 1190 378" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 1345 378 L 1412 390" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 1150 505 L 1430 505 L 1430 408" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 168 765 L 230 765" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 375 765 L 1249 765" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 1285 765 L 1340 765" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 1495 765 L 1545 765" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 1595 765 L 1650 765" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 1570 740 L 1570 685 L 2590 685 L 2590 747" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 1830 765 L 2429 765" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 2465 765 L 2572 765" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 1758 1015 L 1810 1015" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 1985 1015 L 2025 1015" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 2075 1015 L 2120 1015" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 2050 1040 L 2050 1090 L 2447 1090 L 2447 1058" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 2315 1015 L 2370 1015" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 2525 1015 L 2572 1015" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 300 722 L 300 408" marker-end="url(#msg-arrow)" stroke-dasharray="7 6"/>
+<circle cx="300" cy="722" r="4" fill="white" stroke="#636b76" stroke-width="1.5"/>
+<path class="edge" d="M 460 347 L 460 235 L 470 235 L 470 173" marker-end="url(#msg-arrow)" stroke-dasharray="7 6"/>
+<circle cx="460" cy="347" r="4" fill="white" stroke="#636b76" stroke-width="1.5"/>
+<path class="edge" d="M 820 173 L 820 245 L 520 245 L 520 347" marker-end="url(#msg-arrow)" stroke-dasharray="7 6"/>
+<circle cx="820" cy="173" r="4" fill="white" stroke="#636b76" stroke-width="1.5"/>
+<path class="edge" d="M 1267 421 L 1267 747" marker-end="url(#msg-arrow)" stroke-dasharray="7 6"/>
+<circle cx="1267" cy="421" r="4" fill="white" stroke="#636b76" stroke-width="1.5"/>
+<path class="edge" d="M 1070 535 L 1070 640 L 1252 640 L 1252 747" marker-end="url(#msg-arrow)" stroke-dasharray="7 6"/>
+<circle cx="1070" cy="535" r="4" fill="white" stroke="#636b76" stroke-width="1.5"/>
+<path class="edge" d="M 1740 808 L 1740 997" marker-end="url(#msg-arrow)" stroke-dasharray="7 6"/>
+<circle cx="1740" cy="808" r="4" fill="white" stroke="#636b76" stroke-width="1.5"/>
+<path class="edge" d="M 2590 997 L 2590 890 L 2447 890 L 2447 783" marker-end="url(#msg-arrow)" stroke-dasharray="7 6"/>
+<circle cx="2590" cy="997" r="4" fill="white" stroke="#636b76" stroke-width="1.5"/>
+<path class="association" d="M 540 420 L 578 545"/>
+<path class="association" d="M 770 433 L 823 545"/>
+<path class="association" d="M 1320 421 L 1338 545"/>
+<text x="1610" y="752" font-size="12" fill="#475569" stroke="#fff" stroke-width="4" paint-order="stroke">да</text>
+<text x="1580" y="688" font-size="12" fill="#475569" stroke="#fff" stroke-width="4" paint-order="stroke">нет</text>
+<text x="969" y="372" font-size="12" fill="#475569" stroke="#fff" stroke-width="4" paint-order="stroke">да</text>
+<text x="886" y="498" font-size="12" fill="#475569" stroke="#fff" stroke-width="4" paint-order="stroke">нет</text>
+<text x="2122" y="1007" font-size="12" fill="#475569" stroke="#fff" stroke-width="4" paint-order="stroke">да</text>
+<text x="2059" y="1082" font-size="12" fill="#475569" stroke="#fff" stroke-width="4" paint-order="stroke">нет</text>
+<text x="800" y="748" text-anchor="middle" font-size="12" fill="#64748b" stroke="#fff" stroke-width="4" paint-order="stroke">Ожидание отчёта</text>
+<text x="2115" y="748" text-anchor="middle" font-size="12" fill="#64748b" stroke="#fff" stroke-width="4" paint-order="stroke">Ожидание решения</text>
+<text x="375" y="645" text-anchor="middle" font-size="12" fill="#64748b" stroke="#fff" stroke-width="4" paint-order="stroke">Запрос отчёта</text>
+<text x="760" y="635" text-anchor="middle" font-size="12" fill="#64748b" stroke="#fff" stroke-width="4" paint-order="stroke">Отчёт или статус проверки</text>
+<text x="1810" y="898" text-anchor="middle" font-size="12" fill="#64748b" stroke="#fff" stroke-width="4" paint-order="stroke">Кейс и доказательства</text>
+<text x="2460" y="898" text-anchor="middle" font-size="12" fill="#64748b" stroke="#fff" stroke-width="4" paint-order="stroke">Результат исследования</text>
+<g transform="translate(2 625)">
+<circle cx="148" cy="140" r="16" fill="white" stroke="#334155" stroke-width="1.8"/>
+<text x="148.0" y="170.2" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="500" fill="#1f2937"><tspan x="148.0" dy="0.0">Нужен недельный</tspan><tspan x="148.0" dy="13.5">результат</tspan></text>
+</g>
+<g transform="translate(25 625)">
+<rect class="shape" x="205" y="97" width="145" height="86" rx="9"/>
+<circle cx="222" cy="112" r="4" fill="none" stroke="#334155" stroke-width="1.3"/><path d="M213 126 Q222 117 231 126" fill="none" stroke="#334155" stroke-width="1.3"/>
+<text x="277.5" y="133.2" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="500" fill="#1f2937"><tspan x="277.5" dy="0.0">Выбрать</tspan><tspan x="277.5" dy="14.8">кабинет и</tspan><tspan x="277.5" dy="14.8">неделю</tspan></text>
+</g>
+<g transform="translate(839 625)">
+<circle cx="428" cy="140" r="16" fill="white" stroke="#334155" stroke-width="1.8"/>
+<circle cx="428" cy="140" r="12" fill="none" stroke="#334155" stroke-width="1.2"/>
+<text x="428.0" y="170.2" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="500" fill="#1f2937"><tspan x="428.0" dy="0.0">Получить отчёт или</tspan><tspan x="428.0" dy="13.5">статус</tspan></text>
+</g>
+<g transform="translate(850 625)">
+<rect class="shape" x="490" y="97" width="155" height="86" rx="9"/>
+<circle cx="507" cy="112" r="4" fill="none" stroke="#334155" stroke-width="1.3"/><path d="M498 126 Q507 117 516 126" fill="none" stroke="#334155" stroke-width="1.3"/>
+<text x="567.5" y="125.9" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="500" fill="#1f2937"><tspan x="567.5" dy="0.0">Проверить</tspan><tspan x="567.5" dy="14.8">доступный</tspan><tspan x="567.5" dy="14.8">результат и</tspan><tspan x="567.5" dy="14.8">статус</tspan></text>
+</g>
+<g transform="translate(845 625)">
+<path class="shape" d="M725 115 L750 140 L725 165 L700 140 Z"/>
+<path d="M716 131 L734 149 M734 131 L716 149" stroke="#334155" stroke-width="2.5"/>
+<text x="725.0" y="91.0" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="600" fill="#1f2937"><tspan x="725.0" dy="0.0">Есть проблема?</tspan></text>
+</g>
+<g transform="translate(845 625)">
+<rect class="shape" x="805" y="97" width="180" height="86" rx="9"/>
+<circle cx="822" cy="112" r="4" fill="none" stroke="#334155" stroke-width="1.3"/><path d="M813 126 Q822 117 831 126" fill="none" stroke="#334155" stroke-width="1.3"/>
+<text x="895.0" y="133.2" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="500" fill="#1f2937"><tspan x="895.0" dy="0.0">Создать кейс и</tspan><tspan x="895.0" dy="14.8">приложить</tspan><tspan x="895.0" dy="14.8">доказательства</tspan></text>
+</g>
+<g transform="translate(1389 625)">
+<circle cx="1058" cy="140" r="16" fill="white" stroke="#334155" stroke-width="1.8"/>
+<circle cx="1058" cy="140" r="12" fill="none" stroke="#334155" stroke-width="1.2"/>
+<text x="1058.0" y="177.0" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="500" fill="#1f2937"><tspan x="1058.0" dy="0.0">Получить результат</tspan></text>
+</g>
+<g transform="translate(1442 625)">
+<circle cx="1148" cy="140" r="16" fill="white" stroke="#334155" stroke-width="3.2"/>
+<text x="1148.0" y="177.0" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="500" fill="#1f2937"><tspan x="1148.0" dy="0.0">Результат использован</tspan></text>
+</g>
+<g transform="translate(77 37)">
+<circle cx="223" cy="353" r="16" fill="white" stroke="#334155" stroke-width="1.8"/>
+<text x="223.0" y="390.0" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="500" fill="#1f2937"><tspan x="223.0" dy="0.0">Получен запрос отчёта</tspan></text>
+</g>
+<g transform="translate(100 37)">
+<rect class="shape" x="285" y="310" width="155" height="86" rx="9"/>
+<circle cx="303" cy="328" r="8" fill="none" stroke="#334155" stroke-width="1.4"/><circle cx="303" cy="328" r="3" fill="none" stroke="#334155" stroke-width="1.2"/>
+<path d="M311.0 328.0 L314.0 328.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M308.7 333.7 L310.8 335.8" stroke="#334155" stroke-width="1.5"/>
+<path d="M303.0 336.0 L303.0 339.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M297.3 333.7 L295.2 335.8" stroke="#334155" stroke-width="1.5"/>
+<path d="M295.0 328.0 L292.0 328.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M297.3 322.3 L295.2 320.2" stroke="#334155" stroke-width="1.5"/>
+<path d="M303.0 320.0 L303.0 317.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M308.7 322.3 L310.8 320.2" stroke="#334155" stroke-width="1.5"/>
+<text x="362.5" y="346.2" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="500" fill="#1f2937"><tspan x="362.5" dy="0.0">Получить</tspan><tspan x="362.5" dy="14.8">финансовые</tspan><tspan x="362.5" dy="14.8">данные WB</tspan></text>
+</g>
+<g transform="translate(100 40)">
+<circle cx="403" cy="393" r="13" fill="white" stroke="#334155" stroke-width="1.8"/>
+<circle cx="403" cy="393" r="9" fill="none" stroke="#334155" stroke-width="1.2"/>
+<circle cx="403" cy="393" r="7" fill="none" stroke="#334155"/><path d="M403 388 V393 L407 395" fill="none" stroke="#334155" stroke-width="1.2"/>
+</g>
+<g transform="translate(100 75)">
+<rect class="shape" x="285" y="410" width="155" height="40" rx="9"/>
+<circle cx="303" cy="428" r="8" fill="none" stroke="#334155" stroke-width="1.4"/><circle cx="303" cy="428" r="3" fill="none" stroke="#334155" stroke-width="1.2"/>
+<path d="M311.0 428.0 L314.0 428.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M308.7 433.7 L310.8 435.8" stroke="#334155" stroke-width="1.5"/>
+<path d="M303.0 436.0 L303.0 439.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M297.3 433.7 L295.2 435.8" stroke="#334155" stroke-width="1.5"/>
+<path d="M295.0 428.0 L292.0 428.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M297.3 422.3 L295.2 420.2" stroke="#334155" stroke-width="1.5"/>
+<path d="M303.0 420.0 L303.0 417.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M308.7 422.3 L310.8 420.2" stroke="#334155" stroke-width="1.5"/>
+<text x="362.5" y="423.2" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="500" fill="#1f2937"><tspan x="362.5" dy="0.0">Запланировать</tspan><tspan x="362.5" dy="14.8">идемпотентный</tspan><tspan x="362.5" dy="14.8">повтор</tspan></text>
+</g>
+<g transform="translate(125 37)">
+<rect class="shape" x="500" y="310" width="175" height="86" rx="9"/>
+<circle cx="518" cy="328" r="8" fill="none" stroke="#334155" stroke-width="1.4"/><circle cx="518" cy="328" r="3" fill="none" stroke="#334155" stroke-width="1.2"/>
+<path d="M526.0 328.0 L529.0 328.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M523.7 333.7 L525.8 335.8" stroke="#334155" stroke-width="1.5"/>
+<path d="M518.0 336.0 L518.0 339.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M512.3 333.7 L510.2 335.8" stroke="#334155" stroke-width="1.5"/>
+<path d="M510.0 328.0 L507.0 328.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M512.3 322.3 L510.2 320.2" stroke="#334155" stroke-width="1.5"/>
+<path d="M518.0 320.0 L518.0 317.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M523.7 322.3 L525.8 320.2" stroke="#334155" stroke-width="1.5"/>
+<text x="587.5" y="346.2" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="500" fill="#1f2937"><tspan x="587.5" dy="0.0">Нормализовать,</tspan><tspan x="587.5" dy="14.8">классифицировать и</tspan><tspan x="587.5" dy="14.8">сверить</tspan></text>
+</g>
+<g transform="translate(120 37)">
+<path class="shape" d="M755 328 L780 353 L755 378 L730 353 Z"/>
+<path d="M746 344 L764 362 M764 344 L746 362" stroke="#334155" stroke-width="2.5"/>
+</g>
+<g transform="translate(130 55)">
+<rect class="shape" x="830" y="280" width="155" height="86" rx="9"/>
+<circle cx="848" cy="298" r="8" fill="none" stroke="#334155" stroke-width="1.4"/><circle cx="848" cy="298" r="3" fill="none" stroke="#334155" stroke-width="1.2"/>
+<path d="M856.0 298.0 L859.0 298.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M853.7 303.7 L855.8 305.8" stroke="#334155" stroke-width="1.5"/>
+<path d="M848.0 306.0 L848.0 309.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M842.3 303.7 L840.2 305.8" stroke="#334155" stroke-width="1.5"/>
+<path d="M840.0 298.0 L837.0 298.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M842.3 292.3 L840.2 290.2" stroke="#334155" stroke-width="1.5"/>
+<path d="M848.0 290.0 L848.0 287.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M853.7 292.3 L855.8 290.2" stroke="#334155" stroke-width="1.5"/>
+<text x="907.5" y="323.6" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="500" fill="#1f2937"><tspan x="907.5" dy="0.0">Классифицировать</tspan><tspan x="907.5" dy="14.8">и рассчитать</tspan></text>
+</g>
+<g transform="translate(150 55)">
+<rect class="shape" x="1040" y="280" width="155" height="86" rx="9"/>
+<circle cx="1058" cy="298" r="8" fill="none" stroke="#334155" stroke-width="1.4"/><circle cx="1058" cy="298" r="3" fill="none" stroke="#334155" stroke-width="1.2"/>
+<path d="M1066.0 298.0 L1069.0 298.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M1063.7 303.7 L1065.8 305.8" stroke="#334155" stroke-width="1.5"/>
+<path d="M1058.0 306.0 L1058.0 309.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M1052.3 303.7 L1050.2 305.8" stroke="#334155" stroke-width="1.5"/>
+<path d="M1050.0 298.0 L1047.0 298.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M1052.3 292.3 L1050.2 290.2" stroke="#334155" stroke-width="1.5"/>
+<path d="M1058.0 290.0 L1058.0 287.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M1063.7 292.3 L1065.8 290.2" stroke="#334155" stroke-width="1.5"/>
+<text x="1117.5" y="308.9" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="500" fill="#1f2937"><tspan x="1117.5" dy="0.0">Опубликовать</tspan><tspan x="1117.5" dy="14.8">полную или</tspan><tspan x="1117.5" dy="14.8">ограниченную</tspan><tspan x="1117.5" dy="14.8">версию</tspan></text>
+</g>
+<g transform="translate(130 95)">
+<rect class="shape" x="830" y="380" width="190" height="60" rx="9"/>
+<circle cx="848" cy="398" r="8" fill="none" stroke="#334155" stroke-width="1.4"/><circle cx="848" cy="398" r="3" fill="none" stroke="#334155" stroke-width="1.2"/>
+<path d="M856.0 398.0 L859.0 398.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M853.7 403.7 L855.8 405.8" stroke="#334155" stroke-width="1.5"/>
+<path d="M848.0 406.0 L848.0 409.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M842.3 403.7 L840.2 405.8" stroke="#334155" stroke-width="1.5"/>
+<path d="M840.0 398.0 L837.0 398.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M842.3 392.3 L840.2 390.2" stroke="#334155" stroke-width="1.5"/>
+<path d="M848.0 390.0 L848.0 387.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M853.7 392.3 L855.8 390.2" stroke="#334155" stroke-width="1.5"/>
+<text x="925.0" y="403.2" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="500" fill="#1f2937"><tspan x="925.0" dy="0.0">Сохранить</tspan><tspan x="925.0" dy="14.8">непубликуемую версию</tspan><tspan x="925.0" dy="14.8">и сигнал</tspan></text>
+</g>
+<g transform="translate(162 42)">
+<circle cx="1268" cy="348" r="16" fill="white" stroke="#334155" stroke-width="3.2"/>
+
+</g>
+<g transform="translate(210 275)">
+<path d="M350 270 H376 L386 280 V320 H350 Z M376 270 V280 H386" fill="white" stroke="#334155" stroke-width="1.4"/>
+<text x="368.0" y="259.0" text-anchor="middle" dominant-baseline="middle" font-size="10" font-weight="500" fill="#1f2937"><tspan x="368.0" dy="0.0">Raw-ответ WB</tspan></text>
+</g>
+<g transform="translate(220 275)">
+<path d="M585 270 H611 L621 280 V320 H585 Z M611 270 V280 H621" fill="white" stroke="#334155" stroke-width="1.4"/>
+<text x="603.0" y="259.0" text-anchor="middle" dominant-baseline="middle" font-size="10" font-weight="500" fill="#1f2937"><tspan x="603.0" dy="0.0">Операции</tspan></text>
+</g>
+<g transform="translate(210 315)">
+<path d="M1110 230 H1136 L1146 240 V280 H1110 Z M1136 230 V240 H1146" fill="white" stroke="#334155" stroke-width="1.4"/>
+<text x="1128.0" y="219.0" text-anchor="middle" dominant-baseline="middle" font-size="10" font-weight="500" fill="#1f2937"><tspan x="1128.0" dy="0.0">Версия отчёта</tspan></text>
+</g>
+<g transform="translate(917 445)">
+<circle cx="823" cy="570" r="16" fill="white" stroke="#334155" stroke-width="1.8"/>
+<text x="823.0" y="600.2" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="500" fill="#1f2937"><tspan x="823.0" dy="0.0">Получен клиентский</tspan><tspan x="823.0" dy="13.5">кейс</tspan></text>
+</g>
+<g transform="translate(920 445)">
+<rect class="shape" x="890" y="527" width="175" height="86" rx="9"/>
+<circle cx="907" cy="542" r="4" fill="none" stroke="#334155" stroke-width="1.3"/><path d="M898 556 Q907 547 916 556" fill="none" stroke="#334155" stroke-width="1.3"/>
+<text x="977.5" y="563.2" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="500" fill="#1f2937"><tspan x="977.5" dy="0.0">Исследовать кейс и</tspan><tspan x="977.5" dy="14.8">область</tspan><tspan x="977.5" dy="14.8">воздействия</tspan></text>
+</g>
+<g transform="translate(905 445)">
+<path class="shape" d="M1145 545 L1170 570 L1145 595 L1120 570 Z"/>
+<path d="M1136 561 L1154 579 M1154 561 L1136 579" stroke="#334155" stroke-width="2.5"/>
+</g>
+<g transform="translate(900 445)">
+<rect class="shape" x="1220" y="527" width="195" height="86" rx="9"/>
+<rect x="1310.5" y="597" width="14" height="12" fill="white" stroke="#334155"/><path d="M1313.5 603 H1321.5 M1317.5 599 V607" stroke="#334155"/>
+<text x="1317.5" y="563.2" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="500" fill="#1f2937"><tspan x="1317.5" dy="0.0">Проверить и</tspan><tspan x="1317.5" dy="14.8">опубликовать методику</tspan><tspan x="1317.5" dy="14.8">(BPMN-03)</tspan></text>
+</g>
+<g transform="translate(900 445)">
+<rect class="shape" x="1470" y="527" width="155" height="86" rx="9"/>
+<circle cx="1487" cy="542" r="4" fill="none" stroke="#334155" stroke-width="1.3"/><path d="M1478 556 Q1487 547 1496 556" fill="none" stroke="#334155" stroke-width="1.3"/>
+<text x="1547.5" y="563.2" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="500" fill="#1f2937"><tspan x="1547.5" dy="0.0">Подготовить</tspan><tspan x="1547.5" dy="14.8">ответ</tspan><tspan x="1547.5" dy="14.8">клиенту</tspan></text>
+</g>
+<g transform="translate(902 445)">
+<circle cx="1688" cy="570" r="16" fill="white" stroke="#334155" stroke-width="3.2"/>
+
+</g>
+
+<g transform="translate(152 -591)">
+<circle cx="318" cy="746" r="16" fill="white" stroke="#334155" stroke-width="1.8"/>
+<text x="318.0" y="783.0" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="500" fill="#1f2937"><tspan x="318.0" dy="0.0">Запрос данных</tspan></text>
+</g>
+<g transform="translate(190 -591)">
+<rect class="shape" x="400" y="703" width="155" height="86" rx="9"/>
+<circle cx="418" cy="721" r="8" fill="none" stroke="#334155" stroke-width="1.4"/><circle cx="418" cy="721" r="3" fill="none" stroke="#334155" stroke-width="1.2"/>
+<path d="M426.0 721.0 L429.0 721.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M423.7 726.7 L425.8 728.8" stroke="#334155" stroke-width="1.5"/>
+<path d="M418.0 729.0 L418.0 732.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M412.3 726.7 L410.2 728.8" stroke="#334155" stroke-width="1.5"/>
+<path d="M410.0 721.0 L407.0 721.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M412.3 715.3 L410.2 713.2" stroke="#334155" stroke-width="1.5"/>
+<path d="M418.0 713.0 L418.0 710.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M423.7 715.3 L425.8 713.2" stroke="#334155" stroke-width="1.5"/>
+<text x="477.5" y="739.2" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="500" fill="#1f2937"><tspan x="477.5" dy="0.0">Вернуть</tspan><tspan x="477.5" dy="14.8">финансовые</tspan><tspan x="477.5" dy="14.8">данные</tspan></text>
+</g>
+<g transform="translate(182 -591)">
+<circle cx="638" cy="746" r="16" fill="white" stroke="#334155" stroke-width="3.2"/>
+<text x="638.0" y="783.0" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="500" fill="#1f2937"><tspan x="638.0" dy="0.0">Ответ API</tspan></text>
+</g>
+<path d="M462 150 h16 v10 h-16 z M462 150 l8 6 l8 -6" fill="none" stroke="#334155" stroke-width="1.1"/>
+<path d="M812 150 h16 v10 h-16 z M812 150 l8 6 l8 -6" fill="none" stroke="#334155" stroke-width="1.1"/>
+<path d="M292 385 h16 v10 h-16 z M292 385 l8 6 l8 -6" fill="none" stroke="#334155" stroke-width="1.1"/>
+<path d="M1259 760 h16 v10 h-16 z M1259 760 l8 6 l8 -6" fill="none" stroke="#334155" stroke-width="1.1"/>
+<path d="M1732 1010 h16 v10 h-16 z M1732 1010 l8 6 l8 -6" fill="none" stroke="#334155" stroke-width="1.1"/>
+<path d="M2439 760 h16 v10 h-16 z M2439 760 l8 6 l8 -6" fill="none" stroke="#334155" stroke-width="1.1"/>
+<path d="M2582 1010 h16 v10 h-16 z M2582 1010 l8 6 l8 -6" fill="none" stroke="#334155" stroke-width="1.1"/>
+<text x="2590" y="1055" text-anchor="middle" font-size="11" fill="#1f2937">Ответ отправлен</text>
+<text x="595" y="457" font-size="11" fill="#475569">Таймаут / лимит WB</text>
+<text x="875" y="297" text-anchor="middle" font-size="12" font-weight="600" fill="#1f2937"><tspan x="875" dy="0">Нет блокирующих нарушений</tspan><tspan x="875" dy="15">и Δ = 0?</tspan></text>
+<text x="2050" y="948" text-anchor="middle" font-size="12" font-weight="600" fill="#1f2937">Нужна новая методика?</text>
+</svg>

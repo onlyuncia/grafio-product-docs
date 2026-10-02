@@ -1,0 +1,58 @@
+@startuml
+title Последовательность 05б — проверка кабинета WB и запуск первой загрузки
+autonumber
+hide footbox
+
+skinparam defaultFontName Arial
+skinparam defaultFontSize 14
+skinparam sequence {
+  ArrowColor #526274
+  LifeLineBorderColor #94A3B8
+  ParticipantBackgroundColor #EAF2FC
+  ParticipantBorderColor #5289C2
+  GroupBorderColor #64748B
+  GroupHeaderBackgroundColor #EAF2FC
+}
+
+boundary "Клиентское приложение" as UI
+control "Организации и кабинеты" as Org
+database "PostgreSQL" as DB
+queue "Очередь заданий" as Queue
+control "Фоновый обработчик" as Worker
+database "Хранилище секретов" as Secrets
+entity "Wildberries API" as WB
+
+UI -> Org : POST /marketplace-accounts/\n{accountId}/verification
+Org -> DB : Статус «Проверяется» и задание
+DB --> Org : jobId
+Org ->> Queue : Поставить проверку кабинета
+Org --> UI : 202: jobId
+
+Worker -> Queue : Взять задание проверки
+Queue --> Worker : accountId и secret_ref
+Worker -> Secrets : Получить токен по secret_ref
+Secrets --> Worker : Токен
+Worker -> WB : Проверить доступ к кабинету
+
+alt Доступ подтверждён
+  WB --> Worker : Доступ подтверждён
+  Worker -> DB : Статус «Активен», создать задание первой загрузки
+  DB --> Worker : Статус и задание сохранены
+  Worker ->> Queue : Поставить первую загрузку
+  Worker ->> Queue : Завершить проверку: SUCCEEDED
+else Токен неверен или доступ закрыт
+  WB --> Worker : Ошибка доступа
+  Worker -> DB : Статус «Требует исправления»\nи безопасная причина
+  DB --> Worker : Статус и причина сохранены
+  Worker ->> Queue : Завершить проверку с ошибкой
+end
+
+UI -> Org : GET /marketplace-accounts/{accountId}/load-status\nпосле завершения проверки
+Org -> DB : Прочитать состояние кабинета
+DB --> Org : Статус и safeReason
+Org --> UI : 200: результат подключения
+note over Worker,WB
+  Результат первой загрузки и публикация отчёта
+  показаны в последовательности 02б.
+end note
+@enduml

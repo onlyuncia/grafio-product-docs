@@ -1,6 +1,18 @@
 @startuml
-title Последовательность — создание и активация версии плана
+title Последовательность 04 — создание и активация версии плана
 autonumber
+hide footbox
+
+skinparam defaultFontName Arial
+skinparam defaultFontSize 14
+skinparam sequence {
+  ArrowColor #526274
+  LifeLineBorderColor #94A3B8
+  ParticipantBackgroundColor #EAF2FC
+  ParticipantBorderColor #5289C2
+  GroupBorderColor #64748B
+  GroupHeaderBackgroundColor #EAF2FC
+}
 
 actor "Владелец / аналитик" as User
 boundary "Клиентское приложение" as UI
@@ -8,31 +20,39 @@ control "Планы" as Plans
 control "Идентификация и доступ" as Access
 database "PostgreSQL" as DB
 control "Расчёт и отчётность" as Reports
-control "Аудит" as Audit
 
 User -> UI : Вводит область, период и целевые показатели
-UI -> Access : Проверить право планирования в области
-Access --> UI : Доступ разрешён
 UI -> Plans : POST /plans
+Plans -> Access : Проверить роль и область
+Access --> Plans : Доступ разрешён
 Plans -> DB : Создать черновик плана и версию
-Plans --> UI : План draft
+DB --> Plans : planId и planVersionId
+Plans --> UI : 201: черновик
+UI --> User : Показывает созданный план
 User -> UI : Изменяет цели или правило сравнения
 UI -> Plans : PATCH /plans/{planId}
 Plans -> DB : Сохранить новую редакцию черновика
+DB --> Plans : Обновлённая версия
+Plans --> UI : 200: черновик
 
 User -> UI : Активирует версию
-UI -> Plans : POST /versions/{planVersionId}/activate
+UI -> Plans : POST /plans/{planId}/versions/\n{planVersionId}/activate
+Plans -> Access : Повторно проверить роль и область
+Access --> Plans : Доступ разрешён
 Plans -> Reports : Проверить совместимость области,\nединицы и версии методики
 Reports --> Plans : Результат проверки
 alt Совместимо
-  Plans -> DB : Активировать версию, прежнюю пометить superseded
-  Plans -> Audit : Зафиксировать PlanVersionActivated
-  Plans --> UI : Активный план
+  Plans -> DB : Атомарно активировать версию,\nзаместить прежнюю и записать аудит
+  DB --> Plans : Активная версия
+  Plans --> UI : 200: активный план
+  UI --> User : Показывает активную версию
   UI -> Plans : GET /plans/{planId}/fact
   Plans -> Reports : Получить совместимый факт
   Reports --> Plans : Значения факта
-  Plans --> UI : Срез «план — факт»
+  Plans --> UI : 200: срез «план — факт»
+  UI --> User : Показывает сравнение
 else Несовместимо
   Plans --> UI : 422: причина несовместимости
+  UI --> User : Показывает причину отказа
 end
 @enduml

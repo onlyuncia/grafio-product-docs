@@ -1,0 +1,30 @@
+@startuml
+!include <C4/C4_Component>
+
+HIDE_STEREOTYPE()
+title C3 — Доступ и рабочее пространство API Grafio
+
+Container_Ext(web, "Клиентское приложение", "React", "Рабочее пространство продавца.")
+Container_Ext(adminWeb, "Панель администратора", "React", "Доступ администратора.")
+ContainerDb_Ext(db, "PostgreSQL", "Пользователи и предметные данные.")
+ContainerQueue_Ext(queue, "Redis", "Задания загрузки.")
+
+Container_Boundary(api, "Сервер приложений Grafio") {
+  Component(access, "Идентификация и доступ", "Fastify", "Роли, области, сессии и 2FA.")
+  Component(organization, "Организации и кабинеты", "Fastify", "Юрлица и подключения WB/Ozon.")
+  Component(plans, "Планы", "Fastify", "Цели, версии и факт–план.")
+  Component(dashboard, "Мой дашборд", "Fastify", "Листы и виджеты.")
+}
+
+Rel(web, access, "Входит в сервис", "HTTPS")
+Rel(web, organization, "Выбирает область", "HTTPS")
+Rel(web, plans, "Ведёт планы", "HTTPS")
+Rel(web, dashboard, "Настраивает листы", "HTTPS")
+Rel(adminWeb, access, "Проверяет доступ", "HTTPS + MFA")
+Rel(access, db, "Пользователи и сессии", "SQL")
+Rel(organization, db, "Организации и кабинеты", "SQL")
+Rel(plans, db, "Планы", "SQL")
+Rel(dashboard, db, "Листы и виджеты", "SQL")
+Rel(organization, queue, "Ставит загрузку", "Redis")
+
+@enduml

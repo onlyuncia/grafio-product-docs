@@ -1,0 +1,45 @@
+@startuml
+title Последовательность 07в — попытка отмены закрытия
+autonumber
+hide footbox
+
+skinparam defaultFontName Arial
+skinparam defaultFontSize 14
+skinparam sequence {
+  ArrowColor #526274
+  LifeLineBorderColor #94A3B8
+  ParticipantBackgroundColor #EAF2FC
+  ParticipantBorderColor #5289C2
+  GroupBorderColor #64748B
+  GroupHeaderBackgroundColor #EAF2FC
+}
+
+actor "Владелец организации" as Owner
+boundary "Клиентское приложение" as UI
+control "Организации и кабинеты" as Org
+database "PostgreSQL" as DB
+queue "Очередь заданий" as Queue
+
+note over Owner,Queue
+  Запрос закрытия уже принят. Возможность отмены
+  зависит от отметки точки невозврата в БД.
+end note
+
+Owner -> UI : Запрашивает отмену закрытия
+UI -> Org : POST /organization/closure/cancel
+Org -> DB : Атомарно вернуть «Активна» и записать аудит,\nтолько если точка невозврата не пройдена
+DB --> Org : Отмена разрешена / запрещена
+alt Отмена разрешена
+  Org ->> Queue : Отменить задание закрытия
+  Org --> UI : 200: закрытие отменено
+  UI --> Owner : Организация снова активна
+else Необратимые действия уже начались
+  Org --> UI : 409: отмена недоступна
+  UI --> Owner : Показывает причину отказа
+end
+
+note over DB,Queue
+  Перед отзывом доступа обработчик повторно проверяет
+  состояние в БД; отменённое закрытие он не продолжает.
+end note
+@enduml

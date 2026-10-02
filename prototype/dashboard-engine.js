@@ -209,15 +209,6 @@
     }
   }
 
-  function createDefaultDashboardWidgets() {
-    return [
-      createKpiWidget('revenue', { id: 'dash-revenue', x: 48 }),
-      createKpiWidget('buyouts', { id: 'dash-buyouts', x: 296 }),
-      createKpiWidget('margin', { id: 'dash-margin', x: 544 }),
-      createKpiWidget('expenses', { id: 'dash-expenses', x: 792 }),
-    ]
-  }
-
   function computeMinimapGeometry(widgets, camera, viewport, options = {}) {
     const mapWidth = options.width || 192
     const mapHeight = options.height || 128
@@ -581,7 +572,6 @@
     KPI_HEIGHT,
     CHART_WIDTH,
     CHART_HEIGHT,
-    createDefaultDashboardWidgets,
     createKpiWidget,
     DASHBOARD_CHARTS,
     registerDashboardChart,

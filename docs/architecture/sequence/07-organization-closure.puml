@@ -1,42 +1,65 @@
 @startuml
-title Последовательность — контролируемое закрытие организации
+title Последовательность 07а — запрос закрытия и архивирование
 autonumber
+hide footbox
+
+skinparam defaultFontName Arial
+skinparam defaultFontSize 14
+skinparam sequence {
+  ArrowColor #526274
+  LifeLineBorderColor #94A3B8
+  ParticipantBackgroundColor #EAF2FC
+  ParticipantBorderColor #5289C2
+  GroupBorderColor #64748B
+  GroupHeaderBackgroundColor #EAF2FC
+}
 
 actor "Владелец организации" as Owner
 boundary "Клиентское приложение" as UI
 control "Организации и кабинеты" as Org
 control "Идентификация и доступ" as Access
-queue "Redis / очередь" as Queue
-control "Worker закрытия" as Worker
+queue "Очередь заданий" as Queue
+control "Фоновый обработчик" as Worker
 database "PostgreSQL" as DB
-database "Хранилище секретов / raw" as Storage
-control "Аудит" as Audit
+database "Хранилище секретов" as Secrets
 
-Owner -> UI : Подтверждает закрытие и при необходимости\nзапрашивает выгрузку
+note over Owner,Org
+  При необходимости владелец запрашивает выгрузку
+  через POST /organization/data-export и получает её
+  до подтверждения закрытия.
+end note
+
+Owner -> UI : Подтверждает закрытие организации
 UI -> Org : POST /organization/closure
-Org -> DB : Зафиксировать closure requested
-Org -> Queue : Поставить закрытие и, при необходимости, экспорт
-Org -> Audit : Зафиксировать запрос закрытия
-Org --> UI : 202 Accepted: jobId
-Queue -> Worker : Получить задание закрытия
-Worker -> Access : Завершить сессии и отозвать ключи
-Worker -> Storage : Отозвать токены WB, остановить новые загрузки
-Worker -> DB : Определить сроки хранения и зависимости
+Org -> Access : Проверить полномочия владельца
+Access --> Org : Доступ разрешён
+Org -> DB : Статус «Закрывается», запрет новых загрузок\nи доступов, задание и аудит
+DB --> Org : jobId
+Org ->> Queue : Поставить задание закрытия
+Org --> UI : 202: jobId
 
-alt Есть удерживающая зависимость
-  Worker -> DB : Статус blocked и список препятствий
-  Worker -> Audit : Зафиксировать блокировку
-else До точки невозврата
-  Worker -> DB : Статус retention, доступна отмена
-  opt Владелец отменяет закрытие
-    Owner -> UI : Отменяет закрытие
-    UI -> Org : POST /organization/closure/cancel
-    Org -> DB : Вернуть статус active
-    Org -> Audit : Зафиксировать отмену
+Worker -> Queue : Взять задание закрытия
+Queue --> Worker : organizationId
+Worker -> DB : Проверить зависимости и политику хранения
+DB --> Worker : Зависимости и сроки
+alt Есть препятствие для архивирования
+  Worker -> DB : Сохранить причину остановки;\nорганизация остаётся «Закрывается»
+  DB --> Worker : Причина сохранена
+  Worker ->> Queue : Приостановить задание
+else Архивирование допустимо
+  Worker -> DB : Атомарно отметить точку невозврата,\nесли закрытие ещё не отменено
+  DB --> Worker : Продолжать / отменено
+  alt Закрытие уже отменено
+    Worker ->> Queue : Завершить задание как отменённое
+  else Закрытие подтверждено
+    Worker -> Access : Завершить сессии и отозвать ключи
+    Access --> Worker : Доступ прекращён
+    Worker -> Secrets : Отозвать токены маркетплейсов
+    Secrets --> Worker : Токены отозваны
+    Worker -> DB : Статус «Архивирована»,\nсостав и начало срока хранения, аудит
+    DB --> Worker : Архивирование сохранено
+    Worker ->> Queue : Назначить проверку после срока хранения
+    Worker ->> Queue : Завершить задание архивирования
   end
-else Срок хранения завершён
-  Worker -> Storage : Удалить данные по политике хранения
-  Worker -> DB : Статус closed
-  Worker -> Audit : Зафиксировать завершение закрытия
 end
 @enduml

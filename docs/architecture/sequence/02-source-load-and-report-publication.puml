@@ -1,41 +1,67 @@
 @startuml
-title Последовательность — загрузка WB, качество и публикация отчёта
+title Последовательность 02б — фоновая загрузка и публикация отчёта
 autonumber
+hide footbox
 
-actor "Планировщик / пользователь" as Trigger
-control "Сервер приложений" as API
-queue "Redis / очередь" as Queue
-control "Worker загрузки" as Worker
+skinparam defaultFontName Arial
+skinparam defaultFontSize 14
+skinparam sequence {
+  ArrowColor #526274
+  LifeLineBorderColor #94A3B8
+  ParticipantBackgroundColor #EAF2FC
+  ParticipantBorderColor #5289C2
+  GroupBorderColor #64748B
+  GroupHeaderBackgroundColor #EAF2FC
+}
+
+queue "Очередь заданий" as Queue
+control "Фоновый обработчик" as Worker
 entity "Wildberries API" as WB
-database "Raw-хранилище" as Raw
+database "Хранилище ответов" as Raw
 database "PostgreSQL" as DB
-control "Уведомления и аудит" as Audit
 
-Trigger -> API : Запускает загрузку кабинета
-API -> Queue : Создать идемпотентное RequestSourceLoad
-API --> Trigger : 202 Accepted: jobId, correlationId
-Queue -> Worker : Получить задание
-Worker -> WB : Запросить финансовые данные периода
+Worker -> Queue : Взять задание
+Queue --> Worker : RequestSourceLoad
+Worker -> WB : POST /api/finance/v1/sales-reports/list
+WB --> Worker : reportId и итоги FIN-LIST\nили состояние источника
 
-alt WB вернул данные
-  WB --> Worker : Страница raw-операций
-  loop Пока есть следующая страница
-    Worker -> Raw : Неизменно сохранить ответ, хеш и параметры
-    Worker -> WB : Запросить следующую страницу
-    WB --> Worker : Следующая страница
-  end
-  Worker -> DB : Нормализовать операции, проверить схему,\nдубли, полноту и контрольные суммы
-  Worker -> DB : Рассчитать показатели и сверку
-  alt Публикация допустима
-    Worker -> DB : Создать новую версию отчёта и опубликовать
-    Worker -> Audit : Зафиксировать ReportVersionPublished
-  else Есть ограничение качества
-    Worker -> DB : Создать ограниченную либо непубликуемую версию\nи сигналы качества
-    Worker -> Audit : Зафиксировать QualityIssueDetected
-  end
-else WB недоступен или ответ невалиден
-  Worker -> Queue : Запланировать безопасный повтор
-  Worker -> DB : Сохранить состояние загрузки и причину
-  Worker -> Audit : Зафиксировать SourceLoadFailed
+break Отчёт не готов или источник недоступен
+  Worker -> DB : Сохранить причину и состояние загрузки
+  Worker ->> Queue : RETRY_WAIT или FAILED_FINAL\nпо типу ошибки
 end
+
+loop Каждая страница до подтверждённого 204
+  Worker -> WB : POST /api/finance/v1/sales-reports/\ndetailed/{reportId} (rrdId: 0 → последний)
+  WB --> Worker : 200: страница или 204: конец
+  opt Получена страница 200
+    Worker -> Raw : Неизменно сохранить ответ\nи параметры без секрета
+    Raw --> Worker : URI и contentHash
+    Worker -> DB : Сохранить ссылку, хеш и курсор
+  end
+end
+
+break Пагинация прервана до 204 или курсор не продвигается
+  Worker -> DB : Сохранить неполную загрузку и сигнал качества
+  Worker ->> Queue : Повторить с подтверждённой границы\nили завершить с ошибкой
+end
+
+Worker -> Worker : Нормализовать операции; проверить\nсхему, дубли, период и полноту
+Worker -> DB : Прочитать опубликованную версию правил
+DB --> Worker : Версия методики для области и периода
+Worker -> Worker : Классифицировать; неизвестные операции\nоставить нераспределёнными
+Worker -> Worker : Сверить с FIN-LIST в полной точности;\nрассчитать показатели и статусы
+Worker -> DB : Сохранить операции, эффекты\nи черновик версии отчёта
+
+alt Нет блокирующих условий; обязательная сверка Δ = 0
+  Worker -> DB : Атомарно опубликовать новую версию\n(full или limited) и событие outbox
+  DB --> Worker : reportVersionId
+  Worker ->> Queue : Завершить задание: SUCCEEDED
+else Δ ≠ 0, сверка недоступна или иное блокирующее условие
+  Worker -> DB : Сохранить непубликуемую версию,\nсигнал качества и событие outbox
+  Worker ->> Queue : Завершить конвейер: SUCCEEDED,\nрезультат not_publishable
+end
+note over Worker, DB
+  Прежняя опубликованная версия не перезаписывается.
+  При том же input_hash повтор не создаёт новую версию.
+end note
 @enduml

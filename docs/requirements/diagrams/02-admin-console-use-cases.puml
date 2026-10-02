@@ -1,7 +1,15 @@
 @startuml
 left to right direction
+skinparam defaultFontName Arial
+skinparam defaultFontSize 14
+skinparam packageStyle rectangle
+skinparam ArrowColor #526274
+skinparam usecaseBackgroundColor #EAF2FC
+skinparam usecaseBorderColor #5289C2
+skinparam rectangleBackgroundColor #F8FAFC
+skinparam rectangleBorderColor #94A3B8
 actor "Администратор Grafio" as Admin
-actor "Клиентская команда" as Client
+actor "Клиентское приложение" as ClientApp
 rectangle "Grafio: Admin Console" {
   usecase "Получить запрос\nклиента" as UA1
   usecase "Исследовать\nкейс и операции" as UA2
@@ -10,18 +18,18 @@ rectangle "Grafio: Admin Console" {
   usecase "Опубликовать\nверсию методики" as UA5
   usecase "Пересчитать историю" as UA6
   usecase "Применить правило\nвперёд с даты" as UA7
-  usecase "Передать клиенту\nрезультат" as UA8
-  UA2 .> UA1 : <<include>>
+  usecase "Передать результат\nв клиентское приложение" as UA8
   UA3 .> UA2 : <<include>>
   UA5 .> UA3 : <<include>>
   UA5 .> UA4 : <<include>>
   UA6 .> UA5 : <<extend>>
   UA7 .> UA5 : <<extend>>
-  UA8 .> UA5 : <<include>>
+  UA5 .> UA8 : <<include>>
 }
-Client --> UA1
-Client --> UA8
-Admin --> UA2
-Admin --> UA3
-Admin --> UA5
+ClientApp -- UA1
+ClientApp -- UA8
+Admin -- UA1
+Admin -- UA2
+Admin -- UA3
+Admin -- UA5
 @enduml

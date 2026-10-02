@@ -1,35 +1,72 @@
 @startuml
-title Последовательность — выдача и отзыв доступа сотрудника
+title Последовательность 06 — выдача и отзыв доступа сотрудника
 autonumber
+hide footbox
+
+skinparam defaultFontName Arial
+skinparam defaultFontSize 14
+skinparam sequence {
+  ArrowColor #526274
+  LifeLineBorderColor #94A3B8
+  ParticipantBackgroundColor #EAF2FC
+  ParticipantBorderColor #5289C2
+  GroupBorderColor #64748B
+  GroupHeaderBackgroundColor #EAF2FC
+}
 
 actor "Владелец организации" as Owner
 boundary "Клиентское приложение" as UI
 control "Идентификация и доступ" as Access
 database "PostgreSQL" as DB
-control "Аудит" as Audit
 actor "Сотрудник" as Employee
 
 Owner -> UI : Приглашает сотрудника, задаёт роль и область
 UI -> Access : POST /team/invitations
-Access -> DB : Сохранить invitation pending
-Access -> Audit : Зафиксировать приглашение
-Access --> UI : 202 Accepted
+Access -> Access : Проверить право владельца и область
+Access -> DB : Сохранить приглашение и аудит
+DB --> Access : invitationId
+Access --> UI : 202: приглашение принято
+UI --> Owner : Показывает статус приглашения
 Employee -> UI : Переходит по ссылке приглашения
-UI -> Access : POST /team/invitations/{id}/accept
-Access -> DB : Создать membership active\nс ролью и областью
-Access -> Audit : Зафиксировать выдачу доступа
-Access --> UI : Доступ активен
+UI -> Access : POST /team/invitations/{invitationId}/accept
+Access -> DB : Прочитать приглашение,\nсрок действия и область
+DB --> Access : Действующее приглашение
+alt Для роли требуется 2FA
+  Access -> DB : Членство «Ожидает 2FA» и аудит
+  DB --> Access : Членство без доступа к данным
+  Access --> UI : 200: членство «Ожидает 2FA»
+  UI --> Employee : Предлагает настроить 2FA
+  Employee -> UI : Начинает настройку
+  UI -> Access : POST /security/mfa/setup
+  Access --> UI : 200: данные для подключения
+  UI --> Employee : Показывает способ подключения
+  Employee -> UI : Вводит код подтверждения
+  UI -> Access : POST /security/mfa/verify
+  Access -> DB : Активировать членство и записать аудит
+  DB --> Access : Членство активно
+  Access --> UI : 204: 2FA подтверждена
+else Дополнительная проверка не требуется
+  Access -> DB : Активировать членство и записать аудит
+  DB --> Access : Членство активно
+  Access --> UI : 200: доступ активен
+end
+UI --> Employee : Показывает доступную область
 
 opt Владелец меняет область или роль
   Owner -> UI : Изменяет права
-  UI -> Access : PATCH /team/memberships/{id}
-  Access -> DB : Сохранить обновлённое членство
-  Access -> Audit : Зафиксировать изменение доступа
+  UI -> Access : PATCH /team/memberships/{membershipId}
+  Access -> Access : Проверить право владельца и новую область
+  Access -> DB : Сохранить членство и аудит
+  DB --> Access : Обновлённое членство
+  Access --> UI : 200: обновлённые права
 end
 
 Owner -> UI : Отзывает доступ
-UI -> Access : DELETE /team/memberships/{id}
-Access -> DB : Отозвать членство, ключи и активные сессии
-Access -> Audit : Зафиксировать отзыв доступа
+UI -> Access : DELETE /team/memberships/{membershipId}
+Access -> Access : Проверить право владельца
+Access -> DB : Отозвать членство и записать аудит
+DB --> Access : Членство отозвано
+Access -> Access : Завершить сессии и отозвать ключи
 Access --> UI : 204 No Content
+UI --> Owner : Доступ отозван
 @enduml

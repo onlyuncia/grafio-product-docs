@@ -1,0 +1,441 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_ToBeCollaboration" targetNamespace="https://grafio.example/bpmn">
+  <bpmn:message id="Message_AdminResolution" name="Результат исследования или публикации методики"/>
+  <bpmn:collaboration id="Collaboration_ToBe" name="TO-BE: клиентский запрос и взаимодействие">
+    <bpmn:participant id="Participant_Client" name="Клиентская организация" processRef="Process_Client"/>
+    <bpmn:participant id="Participant_Grafio" name="Grafio: данные и расчёт" processRef="Process_Grafio"/>
+    <bpmn:participant id="Participant_Admin" name="Admin Console Grafio" processRef="Process_Admin"/>
+    <bpmn:participant id="Participant_WB" name="Wildberries API" processRef="Process_WB"/>
+    <bpmn:messageFlow id="Message_RequestReport" name="Запрос отчёта" sourceRef="Task_RequestReport" targetRef="Start_Grafio"/>
+    <bpmn:messageFlow id="Message_RequestWB" name="Запрос финансовых данных" sourceRef="Task_RequestData" targetRef="Start_WB"/>
+    <bpmn:messageFlow id="Message_WBResponse" name="Финансовые данные" sourceRef="End_WB" targetRef="Task_RequestData"/>
+    <bpmn:messageFlow id="Message_PublishedReport" name="Версия отчёта и статус качества" sourceRef="Task_PublishReport" targetRef="Catch_Report"/>
+    <bpmn:messageFlow id="Message_QualityIssue" name="Статус проверки и прежняя версия" sourceRef="Task_BlockPublication" targetRef="Catch_Report"/>
+    <bpmn:messageFlow id="Message_Case" name="Кейс и доказательства" sourceRef="Task_CreateCase" targetRef="Start_Admin"/>
+    <bpmn:messageFlow id="Message_AdminResult" name="Результат исследования / публикации" sourceRef="End_Admin" targetRef="Catch_AdminResult" messageRef="Message_AdminResolution"/>
+  </bpmn:collaboration>
+  <bpmn:process id="Process_Client" name="Клиентский процесс" isExecutable="false">
+    <bpmn:startEvent id="Start_Client" name="Нужен недельный результат">
+      <bpmn:outgoing>C01</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Task_RequestReport" name="Выбрать кабинет и неделю">
+      <bpmn:incoming>C01</bpmn:incoming>
+      <bpmn:outgoing>C02</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:intermediateCatchEvent id="Catch_Report" name="Получить отчёт или статус">
+      <bpmn:incoming>C02</bpmn:incoming>
+      <bpmn:outgoing>C03</bpmn:outgoing>
+      <bpmn:messageEventDefinition/>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:userTask id="Task_Explore" name="Проверить доступный результат и статус">
+      <bpmn:incoming>C03</bpmn:incoming>
+      <bpmn:outgoing>C04</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_Problem" name="Есть проблема?">
+      <bpmn:incoming>C04</bpmn:incoming>
+      <bpmn:outgoing>C05_Yes</bpmn:outgoing>
+      <bpmn:outgoing>C05_No</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:userTask id="Task_CreateCase" name="Создать кейс и приложить доказательства">
+      <bpmn:incoming>C05_Yes</bpmn:incoming>
+      <bpmn:outgoing>C06</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:intermediateCatchEvent id="Catch_AdminResult" name="Получить результат">
+      <bpmn:incoming>C06</bpmn:incoming>
+      <bpmn:outgoing>C07</bpmn:outgoing>
+      <bpmn:messageEventDefinition/>
+    </bpmn:intermediateCatchEvent>
+    <bpmn:endEvent id="End_Client" name="Результат использован">
+      <bpmn:incoming>C05_No</bpmn:incoming>
+      <bpmn:incoming>C07</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="C01" sourceRef="Start_Client" targetRef="Task_RequestReport"/>
+    <bpmn:sequenceFlow id="C02" sourceRef="Task_RequestReport" targetRef="Catch_Report"/>
+    <bpmn:sequenceFlow id="C03" sourceRef="Catch_Report" targetRef="Task_Explore"/>
+    <bpmn:sequenceFlow id="C04" sourceRef="Task_Explore" targetRef="Gateway_Problem"/>
+    <bpmn:sequenceFlow id="C05_Yes" name="да" sourceRef="Gateway_Problem" targetRef="Task_CreateCase"/>
+    <bpmn:sequenceFlow id="C05_No" name="нет" sourceRef="Gateway_Problem" targetRef="End_Client"/>
+    <bpmn:sequenceFlow id="C06" sourceRef="Task_CreateCase" targetRef="Catch_AdminResult"/>
+    <bpmn:sequenceFlow id="C07" sourceRef="Catch_AdminResult" targetRef="End_Client"/>
+  </bpmn:process>
+  <bpmn:process id="Process_Grafio" name="Получение и расчёт Grafio" isExecutable="false">
+    <bpmn:dataObject id="Data_Raw" name="Raw-ответ WB"/>
+    <bpmn:dataObjectReference id="DataRef_Raw" dataObjectRef="Data_Raw" name="Raw-ответ WB"/>
+    <bpmn:dataObject id="Data_Operations" name="Нормализованные операции"/>
+    <bpmn:dataObjectReference id="DataRef_Operations" dataObjectRef="Data_Operations" name="Операции"/>
+    <bpmn:dataObject id="Data_ReportVersion" name="Версия отчёта"/>
+    <bpmn:dataObjectReference id="DataRef_ReportVersion" dataObjectRef="Data_ReportVersion" name="Версия отчёта"/>
+    <bpmn:startEvent id="Start_Grafio" name="Получен запрос отчёта">
+      <bpmn:outgoing>G01</bpmn:outgoing>
+      <bpmn:messageEventDefinition/>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="Task_RequestData" name="Получить финансовые данные WB">
+      <bpmn:incoming>G01</bpmn:incoming>
+      <bpmn:incoming>G_Retry</bpmn:incoming>
+      <bpmn:outgoing>G02</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:boundaryEvent id="Boundary_WBTimeout" name="Таймаут / лимит WB" attachedToRef="Task_RequestData">
+      <bpmn:outgoing>G_Timeout</bpmn:outgoing>
+      <bpmn:timerEventDefinition/>
+    </bpmn:boundaryEvent>
+    <bpmn:serviceTask id="Task_ScheduleRetry" name="Запланировать идемпотентный повтор">
+      <bpmn:incoming>G_Timeout</bpmn:incoming>
+      <bpmn:outgoing>G_Retry</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_NormalizeQuality" name="Нормализовать, классифицировать и сверить">
+      <bpmn:incoming>G02</bpmn:incoming>
+      <bpmn:outgoing>G03</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:exclusiveGateway id="Gateway_Calculable" name="Нет блокирующих нарушений и Δ = 0?">
+      <bpmn:incoming>G03</bpmn:incoming>
+      <bpmn:outgoing>G04_Yes</bpmn:outgoing>
+      <bpmn:outgoing>G04_No</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:serviceTask id="Task_Calculate" name="Классифицировать и рассчитать">
+      <bpmn:incoming>G04_Yes</bpmn:incoming>
+      <bpmn:outgoing>G05</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_PublishReport" name="Опубликовать полную или ограниченную версию">
+      <bpmn:incoming>G05</bpmn:incoming>
+      <bpmn:outgoing>G06</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:serviceTask id="Task_BlockPublication" name="Сохранить непубликуемую версию и сигнал">
+      <bpmn:incoming>G04_No</bpmn:incoming>
+      <bpmn:outgoing>G07</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="End_Grafio">
+      <bpmn:incoming>G06</bpmn:incoming>
+      <bpmn:incoming>G07</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:association id="Association_Raw" sourceRef="Task_RequestData" targetRef="DataRef_Raw"/>
+    <bpmn:association id="Association_Operations" sourceRef="Task_NormalizeQuality" targetRef="DataRef_Operations"/>
+    <bpmn:association id="Association_Report" sourceRef="Task_PublishReport" targetRef="DataRef_ReportVersion"/>
+    <bpmn:sequenceFlow id="G01" sourceRef="Start_Grafio" targetRef="Task_RequestData"/>
+    <bpmn:sequenceFlow id="G02" sourceRef="Task_RequestData" targetRef="Task_NormalizeQuality"/>
+    <bpmn:sequenceFlow id="G_Timeout" sourceRef="Boundary_WBTimeout" targetRef="Task_ScheduleRetry"/>
+    <bpmn:sequenceFlow id="G_Retry" sourceRef="Task_ScheduleRetry" targetRef="Task_RequestData"/>
+    <bpmn:sequenceFlow id="G03" sourceRef="Task_NormalizeQuality" targetRef="Gateway_Calculable"/>
+    <bpmn:sequenceFlow id="G04_Yes" name="да" sourceRef="Gateway_Calculable" targetRef="Task_Calculate"/>
+    <bpmn:sequenceFlow id="G04_No" name="нет" sourceRef="Gateway_Calculable" targetRef="Task_BlockPublication"/>
+    <bpmn:sequenceFlow id="G05" sourceRef="Task_Calculate" targetRef="Task_PublishReport"/>
+    <bpmn:sequenceFlow id="G06" sourceRef="Task_PublishReport" targetRef="End_Grafio"/>
+    <bpmn:sequenceFlow id="G07" sourceRef="Task_BlockPublication" targetRef="End_Grafio"/>
+  </bpmn:process>
+  <bpmn:process id="Process_Admin" name="Admin Console" isExecutable="false">
+    <bpmn:startEvent id="Start_Admin" name="Получен клиентский кейс">
+      <bpmn:outgoing>A01</bpmn:outgoing>
+      <bpmn:messageEventDefinition/>
+    </bpmn:startEvent>
+    <bpmn:userTask id="Task_Investigate" name="Исследовать кейс и область воздействия">
+      <bpmn:incoming>A01</bpmn:incoming>
+      <bpmn:outgoing>A02</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:exclusiveGateway id="Gateway_MethodChange" name="Нужна новая методика?">
+      <bpmn:incoming>A02</bpmn:incoming>
+      <bpmn:outgoing>A03_Yes</bpmn:outgoing>
+      <bpmn:outgoing>A03_No</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:subProcess id="SubProcess_PublishMethodology" name="Проверить и опубликовать методику (BPMN-03)">
+      <bpmn:incoming>A03_Yes</bpmn:incoming>
+      <bpmn:outgoing>A04</bpmn:outgoing>
+    </bpmn:subProcess>
+    <bpmn:userTask id="Task_SendResolution" name="Подготовить ответ клиенту">
+      <bpmn:incoming>A03_No</bpmn:incoming>
+      <bpmn:incoming>A04</bpmn:incoming>
+      <bpmn:outgoing>A05</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:endEvent id="End_Admin" name="Ответ клиенту отправлен">
+      <bpmn:incoming>A05</bpmn:incoming>
+      <bpmn:messageEventDefinition id="Definition_End_Admin" messageRef="Message_AdminResolution"/>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="A01" sourceRef="Start_Admin" targetRef="Task_Investigate"/>
+    <bpmn:sequenceFlow id="A02" sourceRef="Task_Investigate" targetRef="Gateway_MethodChange"/>
+    <bpmn:sequenceFlow id="A03_Yes" name="да" sourceRef="Gateway_MethodChange" targetRef="SubProcess_PublishMethodology"/>
+    <bpmn:sequenceFlow id="A03_No" name="нет" sourceRef="Gateway_MethodChange" targetRef="Task_SendResolution"/>
+    <bpmn:sequenceFlow id="A04" sourceRef="SubProcess_PublishMethodology" targetRef="Task_SendResolution"/>
+    <bpmn:sequenceFlow id="A05" sourceRef="Task_SendResolution" targetRef="End_Admin"/>
+  </bpmn:process>
+  <bpmn:process id="Process_WB" name="Wildberries API" isExecutable="false">
+    <bpmn:startEvent id="Start_WB" name="Запрос данных">
+      <bpmn:outgoing>W01</bpmn:outgoing>
+      <bpmn:messageEventDefinition/>
+    </bpmn:startEvent>
+    <bpmn:serviceTask id="Task_ReturnWBData" name="Вернуть финансовые данные">
+      <bpmn:incoming>W01</bpmn:incoming>
+      <bpmn:outgoing>W02</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:endEvent id="End_WB" name="Ответ API">
+      <bpmn:incoming>W02</bpmn:incoming>
+      <bpmn:messageEventDefinition/>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="W01" sourceRef="Start_WB" targetRef="Task_ReturnWBData"/>
+    <bpmn:sequenceFlow id="W02" sourceRef="Task_ReturnWBData" targetRef="End_WB"/>
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram_ToBeCollaboration">
+    <bpmndi:BPMNPlane id="Plane_ToBeCollaboration" bpmnElement="Collaboration_ToBe">
+      <bpmndi:BPMNShape id="Participant_Client_di" bpmnElement="Participant_Client" isHorizontal="true">
+        <dc:Bounds x="60" y="660" width="2600" height="210"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Grafio_di" bpmnElement="Participant_Grafio" isHorizontal="true">
+        <dc:Bounds x="60" y="270" width="2600" height="350"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_Admin_di" bpmnElement="Participant_Admin" isHorizontal="true">
+        <dc:Bounds x="60" y="910" width="2600" height="210"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Participant_WB_di" bpmnElement="Participant_WB" isHorizontal="true">
+        <dc:Bounds x="60" y="80" width="2600" height="150"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Start_Client_di" bpmnElement="Start_Client">
+        <dc:Bounds x="132" y="747" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RequestReport_di" bpmnElement="Task_RequestReport">
+        <dc:Bounds x="230" y="722" width="145" height="86"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Catch_Report_di" bpmnElement="Catch_Report">
+        <dc:Bounds x="1249" y="747" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Explore_di" bpmnElement="Task_Explore">
+        <dc:Bounds x="1340" y="722" width="155" height="86"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Problem_di" bpmnElement="Gateway_Problem" isMarkerVisible="true">
+        <dc:Bounds x="1545" y="740" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_CreateCase_di" bpmnElement="Task_CreateCase">
+        <dc:Bounds x="1650" y="722" width="180" height="86"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Catch_AdminResult_di" bpmnElement="Catch_AdminResult">
+        <dc:Bounds x="2429" y="747" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_Client_di" bpmnElement="End_Client">
+        <dc:Bounds x="2572" y="747" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Start_Grafio_di" bpmnElement="Start_Grafio">
+        <dc:Bounds x="282" y="372" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_RequestData_di" bpmnElement="Task_RequestData">
+        <dc:Bounds x="385" y="347" width="155" height="86"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Boundary_WBTimeout_di" bpmnElement="Boundary_WBTimeout">
+        <dc:Bounds x="488" y="418" width="30" height="30"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ScheduleRetry_di" bpmnElement="Task_ScheduleRetry">
+        <dc:Bounds x="385" y="485" width="155" height="40"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_NormalizeQuality_di" bpmnElement="Task_NormalizeQuality">
+        <dc:Bounds x="625" y="347" width="175" height="86"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_Calculable_di" bpmnElement="Gateway_Calculable" isMarkerVisible="true">
+        <dc:Bounds x="850" y="365" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Calculate_di" bpmnElement="Task_Calculate">
+        <dc:Bounds x="960" y="335" width="155" height="86"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_PublishReport_di" bpmnElement="Task_PublishReport">
+        <dc:Bounds x="1190" y="335" width="155" height="86"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_BlockPublication_di" bpmnElement="Task_BlockPublication">
+        <dc:Bounds x="960" y="475" width="190" height="60"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_Grafio_di" bpmnElement="End_Grafio">
+        <dc:Bounds x="1412" y="372" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_Raw_di" bpmnElement="DataRef_Raw">
+        <dc:Bounds x="560" y="545" width="36" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_Operations_di" bpmnElement="DataRef_Operations">
+        <dc:Bounds x="805" y="545" width="36" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="DataRef_ReportVersion_di" bpmnElement="DataRef_ReportVersion">
+        <dc:Bounds x="1320" y="545" width="36" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Start_Admin_di" bpmnElement="Start_Admin">
+        <dc:Bounds x="1722" y="997" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_Investigate_di" bpmnElement="Task_Investigate">
+        <dc:Bounds x="1810" y="972" width="175" height="86"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_MethodChange_di" bpmnElement="Gateway_MethodChange" isMarkerVisible="true">
+        <dc:Bounds x="2025" y="990" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="SubProcess_PublishMethodology_di" bpmnElement="SubProcess_PublishMethodology" isExpanded="false">
+        <dc:Bounds x="2120" y="972" width="195" height="86"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_SendResolution_di" bpmnElement="Task_SendResolution">
+        <dc:Bounds x="2370" y="972" width="155" height="86"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_Admin_di" bpmnElement="End_Admin">
+        <dc:Bounds x="2572" y="997" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Start_WB_di" bpmnElement="Start_WB">
+        <dc:Bounds x="452" y="137" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Task_ReturnWBData_di" bpmnElement="Task_ReturnWBData">
+        <dc:Bounds x="590" y="112" width="155" height="86"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_WB_di" bpmnElement="End_WB">
+        <dc:Bounds x="802" y="137" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="W01_di" bpmnElement="W01">
+        <di:waypoint x="488" y="155"/>
+        <di:waypoint x="590" y="155"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="W02_di" bpmnElement="W02">
+        <di:waypoint x="745" y="155"/>
+        <di:waypoint x="802" y="155"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="G01_di" bpmnElement="G01">
+        <di:waypoint x="318" y="390"/>
+        <di:waypoint x="385" y="390"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="G02_di" bpmnElement="G02">
+        <di:waypoint x="540" y="390"/>
+        <di:waypoint x="625" y="390"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="G_Timeout_di" bpmnElement="G_Timeout">
+        <di:waypoint x="503" y="448"/>
+        <di:waypoint x="503" y="465"/>
+        <di:waypoint x="555" y="465"/>
+        <di:waypoint x="555" y="505"/>
+        <di:waypoint x="540" y="505"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="G_Retry_di" bpmnElement="G_Retry">
+        <di:waypoint x="445" y="485"/>
+        <di:waypoint x="445" y="433"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="G03_di" bpmnElement="G03">
+        <di:waypoint x="800" y="390"/>
+        <di:waypoint x="850" y="390"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="G04_Yes_di" bpmnElement="G04_Yes">
+        <di:waypoint x="900" y="390"/>
+        <di:waypoint x="960" y="378"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="G04_No_di" bpmnElement="G04_No">
+        <di:waypoint x="875" y="415"/>
+        <di:waypoint x="875" y="505"/>
+        <di:waypoint x="960" y="505"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="G05_di" bpmnElement="G05">
+        <di:waypoint x="1115" y="378"/>
+        <di:waypoint x="1190" y="378"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="G06_di" bpmnElement="G06">
+        <di:waypoint x="1345" y="378"/>
+        <di:waypoint x="1412" y="390"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="G07_di" bpmnElement="G07">
+        <di:waypoint x="1150" y="505"/>
+        <di:waypoint x="1430" y="505"/>
+        <di:waypoint x="1430" y="408"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="C01_di" bpmnElement="C01">
+        <di:waypoint x="168" y="765"/>
+        <di:waypoint x="230" y="765"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="C02_di" bpmnElement="C02">
+        <di:waypoint x="375" y="765"/>
+        <di:waypoint x="1249" y="765"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="C03_di" bpmnElement="C03">
+        <di:waypoint x="1285" y="765"/>
+        <di:waypoint x="1340" y="765"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="C04_di" bpmnElement="C04">
+        <di:waypoint x="1495" y="765"/>
+        <di:waypoint x="1545" y="765"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="C05_Yes_di" bpmnElement="C05_Yes">
+        <di:waypoint x="1595" y="765"/>
+        <di:waypoint x="1650" y="765"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="C05_No_di" bpmnElement="C05_No">
+        <di:waypoint x="1570" y="740"/>
+        <di:waypoint x="1570" y="685"/>
+        <di:waypoint x="2590" y="685"/>
+        <di:waypoint x="2590" y="747"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="C06_di" bpmnElement="C06">
+        <di:waypoint x="1830" y="765"/>
+        <di:waypoint x="2429" y="765"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="C07_di" bpmnElement="C07">
+        <di:waypoint x="2465" y="765"/>
+        <di:waypoint x="2572" y="765"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="A01_di" bpmnElement="A01">
+        <di:waypoint x="1758" y="1015"/>
+        <di:waypoint x="1810" y="1015"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="A02_di" bpmnElement="A02">
+        <di:waypoint x="1985" y="1015"/>
+        <di:waypoint x="2025" y="1015"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="A03_Yes_di" bpmnElement="A03_Yes">
+        <di:waypoint x="2075" y="1015"/>
+        <di:waypoint x="2120" y="1015"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="A03_No_di" bpmnElement="A03_No">
+        <di:waypoint x="2050" y="1040"/>
+        <di:waypoint x="2050" y="1090"/>
+        <di:waypoint x="2447" y="1090"/>
+        <di:waypoint x="2447" y="1058"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="A04_di" bpmnElement="A04">
+        <di:waypoint x="2315" y="1015"/>
+        <di:waypoint x="2370" y="1015"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="A05_di" bpmnElement="A05">
+        <di:waypoint x="2525" y="1015"/>
+        <di:waypoint x="2572" y="1015"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Message_RequestReport_di" bpmnElement="Message_RequestReport">
+        <di:waypoint x="300" y="722"/>
+        <di:waypoint x="300" y="408"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Message_RequestWB_di" bpmnElement="Message_RequestWB">
+        <di:waypoint x="460" y="347"/>
+        <di:waypoint x="460" y="235"/>
+        <di:waypoint x="470" y="235"/>
+        <di:waypoint x="470" y="173"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Message_WBResponse_di" bpmnElement="Message_WBResponse">
+        <di:waypoint x="820" y="173"/>
+        <di:waypoint x="820" y="245"/>
+        <di:waypoint x="520" y="245"/>
+        <di:waypoint x="520" y="347"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Message_PublishedReport_di" bpmnElement="Message_PublishedReport">
+        <di:waypoint x="1267" y="421"/>
+        <di:waypoint x="1267" y="747"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Message_QualityIssue_di" bpmnElement="Message_QualityIssue">
+        <di:waypoint x="1070" y="535"/>
+        <di:waypoint x="1070" y="640"/>
+        <di:waypoint x="1252" y="640"/>
+        <di:waypoint x="1252" y="747"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Message_Case_di" bpmnElement="Message_Case">
+        <di:waypoint x="1740" y="808"/>
+        <di:waypoint x="1740" y="997"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Message_AdminResult_di" bpmnElement="Message_AdminResult">
+        <di:waypoint x="2590" y="997"/>
+        <di:waypoint x="2590" y="890"/>
+        <di:waypoint x="2447" y="890"/>
+        <di:waypoint x="2447" y="783"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_Raw_di" bpmnElement="Association_Raw">
+        <di:waypoint x="540" y="420"/>
+        <di:waypoint x="578" y="545"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_Operations_di" bpmnElement="Association_Operations">
+        <di:waypoint x="770" y="433"/>
+        <di:waypoint x="823" y="545"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_Report_di" bpmnElement="Association_Report">
+        <di:waypoint x="1320" y="421"/>
+        <di:waypoint x="1338" y="545"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

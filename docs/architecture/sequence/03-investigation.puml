@@ -1,0 +1,49 @@
+@startuml
+title Последовательность 03б — расследование и проект правила
+autonumber
+hide footbox
+
+skinparam defaultFontName Arial
+skinparam defaultFontSize 14
+skinparam sequence {
+  ArrowColor #526274
+  LifeLineBorderColor #94A3B8
+  ParticipantBackgroundColor #EAF2FC
+  ParticipantBorderColor #5289C2
+  GroupBorderColor #64748B
+  GroupHeaderBackgroundColor #EAF2FC
+}
+
+actor "Администратор Grafio" as Admin
+boundary "Admin Console" as UI
+control "API Grafio: методика" as Rules
+database "PostgreSQL" as DB
+
+Admin -> UI : Открывает очередь расследований
+UI -> Rules : GET /admin/investigations
+Rules -> DB : Прочитать доступные запросы
+DB --> Rules : Список расследований
+Rules --> UI : 200: очередь
+
+Admin -> UI : Выбирает запрос
+UI -> Rules : GET /admin/investigations/{investigationId}
+Rules -> DB : Прочитать кейс, операции,\nдоказательства и действующие правила
+DB --> Rules : Контекст расследования
+Rules --> UI : 200: карточка
+UI --> Admin : Показывает источник и доказательства
+
+break Не хватает данных клиента
+  Admin -> UI : Запрашивает уточнение
+  UI -> Rules : PATCH /admin/investigations/\n{investigationId}: нужны данные
+  Rules -> DB : Перевести кейс в «Нужны данные»;\nзаписать причину и событие
+  Rules --> UI : Ожидание ответа клиента
+  UI --> Admin : Запрос уточнения сохранён
+end
+
+Admin -> UI : Подтверждает причину и область;\nсоздаёт проект правила
+UI -> Rules : POST /admin/investigations/\n{investigationId}/rule-drafts
+Rules -> DB : Сохранить черновик,\nпериод и обоснование исключения
+DB --> Rules : ruleDraftId
+Rules --> UI : 201: ruleDraftId
+UI --> Admin : Проект готов к проверке
+@enduml

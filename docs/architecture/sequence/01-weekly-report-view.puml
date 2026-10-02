@@ -1,35 +1,72 @@
 @startuml
 title Последовательность — просмотр недельного финансового отчёта
 autonumber
+hide footbox
 
-actor "Финансист / аналитик" as User
+skinparam defaultFontName Arial
+skinparam defaultFontSize 14
+skinparam sequence {
+  ArrowColor #526274
+  LifeLineBorderColor #94A3B8
+  ParticipantBackgroundColor #EAF2FC
+  ParticipantBorderColor #5289C2
+  GroupBorderColor #64748B
+  GroupHeaderBackgroundColor #EAF2FC
+}
+
+actor "Пользователь клиента" as User
 boundary "Клиентское приложение" as UI
-control "Идентификация и доступ" as Access
 control "Расчёт и отчётность" as Reports
+control "Идентификация и доступ" as Access
 database "PostgreSQL" as DB
 
-User -> UI : Выбирает организацию, кабинет и завершённую неделю
-UI -> Access : Проверка токена, роли и области доступа
-Access --> UI : Доступ разрешён
-UI -> Reports : GET /reports/weekly
-Reports -> DB : Найти последнюю опубликованную\nверсию в выбранной области
-DB --> Reports : Версия, показатели, качество, методика
-Reports --> UI : Отчёт или ограниченный отчёт
+User -> UI : Выбирает организацию, юрлицо,\nкабинет и завершённую неделю
+UI -> Reports : GET /reports/weekly\n?legalEntityId=…&accountId=…&weekStart=…
+Reports -> Access : Проверить JWT, роль и область\nюрлица и кабинета
+Access --> Reports : Доступ разрешён или отказ
+break Нет доступа к выбранной области
+  Reports --> UI : 403 Forbidden
+  UI --> User : Доступ к кабинету закрыт
+end
+Reports -> DB : Найти последнюю опубликованную\nверсию за неделю в доступной области
+DB --> Reports : Версия или отсутствие версии
+break Опубликованной версии нет
+  Reports --> UI : 404 Not Found
+  UI --> User : Отчёт пока не опубликован
+end
+Reports --> UI : 200: reportVersionId, publicationStatus,\nqualityLevel, показатели и причины отсутствия
+UI --> User : Отчёт: значения или «Не рассчитывается»\nс причиной, без подмены нулём
 
-alt Показатель доступен
+opt Пользователь открывает рассчитанный показатель
   User -> UI : Открывает статью или точку графика
-  UI -> Reports : GET /metrics/{metricCode}/details
-  Reports -> DB : Получить разрешённые товары и операции
+  UI -> Reports : GET /reports/weekly/{reportVersionId}/\nmetrics/{metricCode}/details?page=1
+  Reports -> Access : Повторно проверить JWT\nи область версии отчёта
+  Access --> Reports : Доступ разрешён
+  Reports -> DB : Получить доступные товары и операции
   DB --> Reports : Страница детализации
-  Reports --> UI : Детализация
-else Показатель не рассчитан
-  UI -> User : Причина и состояние показателя\nбез подмены нулём
+  Reports --> UI : 200: страница детализации,\nвключая операции без привязки к товару
+  UI --> User : Показывает детализацию показателя
 end
 
 opt Пользователь открывает историю
-  UI -> Reports : GET /versions или /comparison
-  Reports -> DB : Получить версии и различия
-  DB --> Reports : История и объяснение изменения
-  Reports --> UI : Версии отчёта
+  User -> UI : Открывает историю версий
+  UI -> Reports : GET /reports/weekly/{reportVersionId}/versions
+  Reports -> Access : Повторно проверить JWT\nи область версии отчёта
+  Access --> Reports : Доступ разрешён
+  Reports -> DB : Найти опубликованные версии недели
+  DB --> Reports : Версии и их методики
+  Reports --> UI : 200: история версий
+  UI --> User : Показывает список версий
+
+  opt Пользователь сравнивает две версии
+    User -> UI : Выбирает вторую версию
+    UI -> Reports : GET /reports/weekly/{reportVersionId}/comparison\n?withReportVersionId=…
+    Reports -> Access : Проверить доступ к обеим версиям
+    Access --> Reports : Доступ разрешён
+    Reports -> DB : Прочитать показатели обеих версий
+    DB --> Reports : Показатели и версии методики
+    Reports --> UI : 200: различия и объяснение изменения
+    UI --> User : Показывает сравнение версий
+  end
 end
 @enduml

@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2235" height="640" viewBox="0 0 2235 640" role="img" aria-label="Публикация методики">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9 z" fill="#52647a"/></marker></defs>
+<rect width="100%" height="100%" fill="#fff"/>
+<style>text{font-family:Arial,Segoe UI,sans-serif}.lane{fill:#f8fafc;stroke:#9aabc0;stroke-width:1.3}.shape{fill:#fff;stroke:#34465c;stroke-width:1.8}.edge{fill:none;stroke:#52647a;stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round}</style>
+<text x="60" y="35" font-size="24" font-weight="700" fill="#111827">Публикация методики</text>
+<rect class="lane" x="60" y="60" width="2110" height="280"/>
+<rect x="60" y="60" width="38" height="280" fill="#e9eef5" stroke="#9aabc0" stroke-width="1"/>
+<text x="79" y="200.0" transform="rotate(-90 79 200.0)" text-anchor="middle" dominant-baseline="middle" font-size="14" font-weight="600" fill="#34465c">Администратор Grafio</text>
+<rect class="lane" x="60" y="340" width="2110" height="230"/>
+<rect x="60" y="340" width="38" height="230" fill="#e9eef5" stroke="#9aabc0" stroke-width="1"/>
+<text x="79" y="455.0" transform="rotate(-90 79 455.0)" text-anchor="middle" dominant-baseline="middle" font-size="14" font-weight="600" fill="#34465c">Контур расчёта Grafio</text>
+<path class="edge" d="M 206 190 L 250 190" marker-end="url(#arrow)"/>
+<path class="edge" d="M 405 190 L 445 190" marker-end="url(#arrow)"/>
+<path class="edge" d="M 625 190 L 650 190" marker-end="url(#arrow)"/>
+<path class="edge" d="M 675 215 L 675 287 L 700 287" marker-end="url(#arrow)"/>
+<text x="683" y="245" font-size="13" fill="#34465c" stroke="#f8fafc" stroke-width="5" paint-order="stroke">нет</text>
+<path class="edge" d="M 855 287 L 900 287" marker-end="url(#arrow)"/>
+<path class="edge" d="M 700 190 L 790 190" marker-end="url(#arrow)"/>
+<text x="728" y="177" font-size="13" fill="#34465c" stroke="#f8fafc" stroke-width="5" paint-order="stroke">да</text>
+<path class="edge" d="M 960 190 L 985 190 L 985 432 L 1010 432" marker-end="url(#arrow)"/>
+<path class="edge" d="M 1200 432 L 1250 432" marker-end="url(#arrow)"/>
+<path class="edge" d="M 1275 408 L 1275 282 L 1265 282" marker-end="url(#arrow)"/>
+<text x="1284" y="345" font-size="13" fill="#34465c" stroke="#f8fafc" stroke-width="5" paint-order="stroke">нет</text>
+<path class="edge" d="M 1172 245 L 1172 100 L 875 100 L 875 148" marker-end="url(#arrow)"/>
+<path class="edge" d="M 1300 433 L 1350 433 L 1350 190 L 1400 190" marker-end="url(#arrow)"/>
+<text x="1315" y="420" font-size="13" fill="#34465c" stroke="#f8fafc" stroke-width="5" paint-order="stroke">да</text>
+<path class="edge" d="M 1580 190 L 1605 190 L 1605 433 L 1630 433" marker-end="url(#arrow)"/>
+<path class="edge" d="M 1680 433 L 1740 433" marker-end="url(#arrow)"/>
+<text x="1700" y="418" font-size="13" fill="#34465c" stroke="#f8fafc" stroke-width="5" paint-order="stroke">да</text>
+<path class="edge" d="M 1655 458 L 1655 518 L 1740 518" marker-end="url(#arrow)"/>
+<text x="1664" y="480" font-size="13" fill="#34465c" stroke="#f8fafc" stroke-width="5" paint-order="stroke">нет</text>
+<path class="edge" d="M 1925 433 L 1950 433 L 1950 455 L 1980 455" marker-end="url(#arrow)"/>
+<path class="edge" d="M 1925 518 L 2005 518 L 2005 480" marker-end="url(#arrow)"/>
+<path class="edge" d="M 2030 455 L 2090 455" marker-end="url(#arrow)"/>
+<circle cx="188.0" cy="190.0" r="16.0" fill="#fff" stroke="#34465c" stroke-width="1.8"/>
+<text text-anchor="middle" font-size="12" font-weight="400" fill="#172033"><tspan x="188.0" y="230.0">Системный сигнал или</tspan><tspan x="188.0" y="244.0">клиентский кейс</tspan></text>
+<rect class="shape" x="250" y="148" width="155" height="84" rx="8"/>
+<circle cx="268" cy="165" r="4" fill="none" stroke="#34465c" stroke-width="1.3"/><path d="M259 179 Q268 169 277 179" fill="none" stroke="#34465c" stroke-width="1.3"/>
+<text text-anchor="middle" font-size="14" font-weight="400" fill="#172033"><tspan x="327.5" y="192.0">Подтвердить</tspan><tspan x="327.5" y="208.0">область и период</tspan></text>
+<rect class="shape" x="445" y="148" width="180" height="84" rx="8"/>
+<circle cx="463" cy="165" r="4" fill="none" stroke="#34465c" stroke-width="1.3"/><path d="M454 179 Q463 169 472 179" fill="none" stroke="#34465c" stroke-width="1.3"/>
+<text text-anchor="middle" font-size="14" font-weight="400" fill="#172033"><tspan x="535.0" y="184.0">Исследовать</tspan><tspan x="535.0" y="200.0">структуру, операции</tspan><tspan x="535.0" y="216.0">и правило</tspan></text>
+<path class="shape" d="M675.0 165 L700 190.0 L675.0 215 L650 190.0 Z"/>
+<path d="M666.0 181.0 L684.0 199.0 M684.0 181.0 L666.0 199.0" stroke="#34465c" stroke-width="2.5"/>
+<text text-anchor="middle" font-size="13" font-weight="600" fill="#172033"><tspan x="675.0" y="133.0">Нужно менять методику?</tspan></text>
+<rect class="shape" x="700" y="252" width="155" height="70" rx="8"/>
+<circle cx="718" cy="269" r="4" fill="none" stroke="#34465c" stroke-width="1.3"/><path d="M709 283 Q718 273 727 283" fill="none" stroke="#34465c" stroke-width="1.3"/>
+<text text-anchor="middle" font-size="14" font-weight="400" fill="#172033"><tspan x="777.5" y="281.0">Зафиксировать</tspan><tspan x="777.5" y="297.0">решение без</tspan><tspan x="777.5" y="313.0">нового правила</tspan></text>
+<circle cx="918.0" cy="287.0" r="16.0" fill="#fff" stroke="#34465c" stroke-width="3"/>
+<text text-anchor="middle" font-size="12" font-weight="400" fill="#172033"><tspan x="918.0" y="334.0">Закрыто</tspan></text>
+<rect class="shape" x="790" y="148" width="170" height="84" rx="8"/>
+<circle cx="808" cy="165" r="4" fill="none" stroke="#34465c" stroke-width="1.3"/><path d="M799 179 Q808 169 817 179" fill="none" stroke="#34465c" stroke-width="1.3"/>
+<text text-anchor="middle" font-size="14" font-weight="400" fill="#172033"><tspan x="875.0" y="184.0">Подготовить проект</tspan><tspan x="875.0" y="200.0">правила и способ</tspan><tspan x="875.0" y="216.0">применения</tspan></text>
+<rect class="shape" x="1010" y="390" width="190" height="85" rx="8"/>
+<circle cx="1028" cy="408" r="8" fill="none" stroke="#34465c" stroke-width="1.3"/><circle cx="1028" cy="408" r="3" fill="none" stroke="#34465c" stroke-width="1.3"/>
+<text text-anchor="middle" font-size="14" font-weight="400" fill="#172033"><tspan x="1105.0" y="434.5">Проверить проект</tspan><tspan x="1105.0" y="450.5">расчётом и сверкой</tspan></text>
+<path class="shape" d="M1275.0 408 L1300 433.0 L1275.0 458 L1250 433.0 Z"/>
+<path d="M1266.0 424.0 L1284.0 442.0 M1284.0 424.0 L1266.0 442.0" stroke="#34465c" stroke-width="2.5"/>
+<text text-anchor="middle" font-size="13" font-weight="600" fill="#172033"><tspan x="1275.0" y="376.0">Проверки пройдены и Δ = 0?</tspan></text>
+<rect class="shape" x="1080" y="245" width="185" height="75" rx="8"/>
+<circle cx="1098" cy="262" r="4" fill="none" stroke="#34465c" stroke-width="1.3"/><path d="M1089 276 Q1098 266 1107 276" fill="none" stroke="#34465c" stroke-width="1.3"/>
+<text text-anchor="middle" font-size="14" font-weight="400" fill="#172033"><tspan x="1172.5" y="284.5">Доработать проект</tspan><tspan x="1172.5" y="300.5">правила</tspan></text>
+<rect class="shape" x="1400" y="148" width="180" height="84" rx="8"/>
+<circle cx="1418" cy="165" r="4" fill="none" stroke="#34465c" stroke-width="1.3"/><path d="M1409 179 Q1418 169 1427 179" fill="none" stroke="#34465c" stroke-width="1.3"/>
+<text text-anchor="middle" font-size="14" font-weight="400" fill="#172033"><tspan x="1490.0" y="192.0">Опубликовать версию</tspan><tspan x="1490.0" y="208.0">методики</tspan></text>
+<path class="shape" d="M1655.0 408 L1680 433.0 L1655.0 458 L1630 433.0 Z"/>
+<path d="M1646.0 424.0 L1664.0 442.0 M1664.0 424.0 L1646.0 442.0" stroke="#34465c" stroke-width="2.5"/>
+<text text-anchor="middle" font-size="13" font-weight="600" fill="#172033"><tspan x="1655.0" y="376.0">Выбран пересчёт истории?</tspan></text>
+<rect class="shape" x="1740" y="370" width="185" height="80" rx="8"/>
+<circle cx="1758" cy="388" r="8" fill="none" stroke="#34465c" stroke-width="1.3"/><circle cx="1758" cy="388" r="3" fill="none" stroke="#34465c" stroke-width="1.3"/>
+<text text-anchor="middle" font-size="14" font-weight="400" fill="#172033"><tspan x="1832.5" y="412.0">Создать новые версии</tspan><tspan x="1832.5" y="428.0">затронутых недель</tspan></text>
+<rect class="shape" x="1740" y="480" width="185" height="75" rx="8"/>
+<circle cx="1758" cy="498" r="8" fill="none" stroke="#34465c" stroke-width="1.3"/><circle cx="1758" cy="498" r="3" fill="none" stroke="#34465c" stroke-width="1.3"/>
+<text text-anchor="middle" font-size="14" font-weight="400" fill="#172033"><tspan x="1832.5" y="519.5">Применить методику с</tspan><tspan x="1832.5" y="535.5">выбранной даты</tspan></text>
+<path class="shape" d="M2005.0 430 L2030 455.0 L2005.0 480 L1980 455.0 Z"/>
+<path d="M1996.0 446.0 L2014.0 464.0 M2014.0 446.0 L1996.0 464.0" stroke="#34465c" stroke-width="2.5"/>
+<text text-anchor="middle" font-size="13" font-weight="600" fill="#172033"><tspan x="2005.0" y="398.0"></tspan></text>
+<circle cx="2108.0" cy="455.0" r="16.0" fill="#fff" stroke="#34465c" stroke-width="3"/>
+<text text-anchor="middle" font-size="12" font-weight="400" fill="#172033"><tspan x="2108.0" y="502.0">Методика применена</tspan></text>
+</svg>

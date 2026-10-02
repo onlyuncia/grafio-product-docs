@@ -1,0 +1,65 @@
+@startuml
+title Последовательность 03а — клиентский кейс
+autonumber
+hide footbox
+
+skinparam defaultFontName Arial
+skinparam defaultFontSize 14
+skinparam sequence {
+  ArrowColor #526274
+  LifeLineBorderColor #94A3B8
+  ParticipantBackgroundColor #EAF2FC
+  ParticipantBorderColor #5289C2
+  GroupBorderColor #64748B
+  GroupHeaderBackgroundColor #EAF2FC
+}
+
+actor "Пользователь клиента" as Client
+boundary "Клиентское приложение" as UI
+control "Контроль расчётов" as Cases
+database "PostgreSQL" as DB
+control "Диспетчер outbox" as Relay
+queue "Очередь заданий" as Queue
+
+Client -> UI : Открывает расхождение или неизвестную операцию
+UI -> Cases : POST /calculation-cases
+Cases -> Cases : Проверить доступ, период, кабинет,\nсумму и затронутые показатели
+Cases -> DB : Создать кейс «Новая»
+DB --> Cases : caseId
+Cases --> UI : 201: caseId и статус
+
+opt Клиент дополняет кейс
+  Client -> UI : Добавляет комментарий и доказательства
+  UI -> Cases : POST /calculation-cases/{caseId}/comments
+  Cases -> DB : Сохранить комментарий, автора и время
+  DB --> Cases : Комментарий сохранён
+  Cases --> UI : 201: commentId
+  UI -> Cases : POST /calculation-cases/{caseId}/evidence
+  Cases -> DB : Сохранить доказательство, автора и время
+  DB --> Cases : Доказательство сохранено
+  Cases --> UI : 201: evidenceId
+end
+
+Client -> UI : Отправляет кейс в Grafio
+UI -> Cases : POST /calculation-cases/{caseId}/submit
+Cases -> DB : Прочитать контекст и доказательства
+DB --> Cases : Содержимое кейса
+Cases -> Cases : Проверить полноту для отправки
+alt Контекста достаточно
+  Cases -> DB : Статус «Отправлена Grafio»,\nзадание, аудит и событие outbox
+  DB --> Cases : jobId и correlationId
+  Cases --> UI : 202: jobId, correlationId,\nstatus=accepted
+  UI --> Client : Кейс передан на рассмотрение
+  Relay -> DB : Прочитать событие outbox
+  DB --> Relay : Задание расследования
+  Relay ->> Queue : Поставить задание
+else Не хватает данных
+  Cases -> DB : Статус «Нужны данные» и причина
+  Cases --> UI : 409: чего не хватает
+  UI --> Client : Дополнить кейс и отправить повторно
+end
+
+note over Cases, DB
+  Клиентский кейс не изменяет опубликованную методику.
+end note
+@enduml

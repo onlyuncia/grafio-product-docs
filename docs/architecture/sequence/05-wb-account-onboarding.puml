@@ -1,36 +1,44 @@
 @startuml
-title Последовательность — подключение организации и кабинета WB
+title Последовательность 05а — регистрация организации и кабинета WB
 autonumber
+hide footbox
+
+skinparam defaultFontName Arial
+skinparam defaultFontSize 14
+skinparam sequence {
+  ArrowColor #526274
+  LifeLineBorderColor #94A3B8
+  ParticipantBackgroundColor #EAF2FC
+  ParticipantBorderColor #5289C2
+  GroupBorderColor #64748B
+  GroupHeaderBackgroundColor #EAF2FC
+}
 
 actor "Владелец организации" as Owner
 boundary "Клиентское приложение" as UI
 control "Организации и кабинеты" as Org
 database "Хранилище секретов" as Secrets
-queue "Redis / очередь" as Queue
-control "Worker загрузки" as Worker
-entity "Wildberries API" as WB
 database "PostgreSQL" as DB
 
 Owner -> UI : Создаёт организацию и юридическое лицо
-UI -> Org : POST /organization, POST /legal-entities
-Org -> DB : Сохранить организацию и юрлицо
-Org --> UI : Контекст создан
+UI -> Org : POST /organization
+Org -> DB : Сохранить организацию
+DB --> Org : organizationId
+Org --> UI : 201: организация
+UI -> Org : POST /organization/legal-entities
+Org -> DB : Сохранить юридическое лицо
+DB --> Org : legalEntityId
+Org --> UI : 201: юридическое лицо
 Owner -> UI : Вводит идентификатор кабинета и токен WB
 UI -> Org : POST /marketplace-accounts
-Org -> Secrets : Сохранить токен, вернуть secret_ref
-Org -> DB : Создать кабинет в статусе draft
-Org -> Queue : Поставить проверку доступа
-Org --> UI : 202 Accepted: jobId
-Queue -> Worker : Получить проверку кабинета
-Worker -> Secrets : Получить токен по secret_ref
-Worker -> WB : Проверить доступ и запросить первую загрузку
-
-alt Доступ подтверждён
-  WB --> Worker : Данные доступны
-  Worker -> DB : Статус active, создать первую загрузку
-  Worker -> Queue : Поставить загрузку источников
-else Токен неверен или доступ закрыт
-  WB --> Worker : Ошибка доступа
-  Worker -> DB : Статус needs_fix и безопасная причина
-end
+Org -> Secrets : Сохранить токен
+Secrets --> Org : secret_ref
+Org -> DB : Создать кабинет «Черновик» и завершить\nзадание регистрации подключения
+DB --> Org : jobId
+Org --> UI : 202: jobId
+UI -> Org : GET /jobs/{jobId} после завершения
+Org -> DB : Прочитать результат задания
+DB --> Org : job.result.accountId
+Org --> UI : 200: завершено, result.accountId
+UI --> Owner : Кабинет создан; запускается проверка доступа
 @enduml

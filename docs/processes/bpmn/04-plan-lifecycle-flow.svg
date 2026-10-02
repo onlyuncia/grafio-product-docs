@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1655" height="690" viewBox="0 0 1655 690" role="img" aria-label="Жизненный цикл плана">
+<defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M1 1 L9 5 L1 9 z" fill="#52647a"/></marker></defs>
+<rect width="100%" height="100%" fill="#fff"/>
+<style>text{font-family:Arial,Segoe UI,sans-serif}.lane{fill:#f8fafc;stroke:#9aabc0;stroke-width:1.3}.shape{fill:#fff;stroke:#34465c;stroke-width:1.8}.edge{fill:none;stroke:#52647a;stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round}</style>
+<text x="60" y="35" font-size="24" font-weight="700" fill="#111827">Жизненный цикл плана</text>
+<rect class="lane" x="60" y="60" width="1530" height="265"/>
+<rect x="60" y="60" width="38" height="265" fill="#e9eef5" stroke="#9aabc0" stroke-width="1"/>
+<text x="79" y="192.5" transform="rotate(-90 79 192.5)" text-anchor="middle" dominant-baseline="middle" font-size="14" font-weight="600" fill="#34465c">Владелец / аналитик</text>
+<rect class="lane" x="60" y="325" width="1530" height="295"/>
+<rect x="60" y="325" width="38" height="295" fill="#e9eef5" stroke="#9aabc0" stroke-width="1"/>
+<text x="79" y="472.5" transform="rotate(-90 79 472.5)" text-anchor="middle" dominant-baseline="middle" font-size="14" font-weight="600" fill="#34465c">Grafio</text>
+<path class="edge" d="M 156 163 L 205 163" marker-end="url(#arrow)"/>
+<path class="edge" d="M 370 163 L 400 163 L 400 423 L 430 423" marker-end="url(#arrow)"/>
+<path class="edge" d="M 620 423 L 675 423" marker-end="url(#arrow)"/>
+<path class="edge" d="M 725 423 L 750 423 L 750 275 L 790 275" marker-end="url(#arrow)"/>
+<text x="734" y="399" font-size="13" fill="#34465c" stroke="#f8fafc" stroke-width="5" paint-order="stroke">нет</text>
+<path class="edge" d="M 875 315 L 875 535 L 525 535 L 525 466" marker-end="url(#arrow)"/>
+<path class="edge" d="M 700 398 L 700 163 L 790 163" marker-end="url(#arrow)"/>
+<text x="709" y="247" font-size="13" fill="#34465c" stroke="#f8fafc" stroke-width="5" paint-order="stroke">да</text>
+<path class="edge" d="M 960 163 L 1005 163 L 1005 423 L 1025 423" marker-end="url(#arrow)"/>
+<path class="edge" d="M 1205 423 L 1230 423 L 1230 163 L 1260 163" marker-end="url(#arrow)"/>
+<path class="edge" d="M 1310 163 L 1410 163" marker-end="url(#arrow)"/>
+<text x="1345" y="149" font-size="13" fill="#34465c" stroke="#f8fafc" stroke-width="5" paint-order="stroke">нет</text>
+<path class="edge" d="M 1285 188 L 1285 423 L 1370 423" marker-end="url(#arrow)"/>
+<text x="1293" y="225" font-size="13" fill="#34465c" stroke="#f8fafc" stroke-width="5" paint-order="stroke">да</text>
+<path class="edge" d="M 1465 466 L 1465 580 L 980 580 L 980 275 L 960 275" marker-end="url(#arrow)"/>
+<circle cx="138.0" cy="163.0" r="16.0" fill="#fff" stroke="#34465c" stroke-width="1.8"/>
+<text text-anchor="middle" font-size="12" font-weight="400" fill="#172033"><tspan x="138.0" y="210.0">Нужен план</tspan></text>
+<rect class="shape" x="205" y="120" width="165" height="86" rx="8"/>
+<circle cx="223" cy="137" r="4" fill="none" stroke="#34465c" stroke-width="1.3"/><path d="M214 151 Q223 141 232 151" fill="none" stroke="#34465c" stroke-width="1.3"/>
+<text text-anchor="middle" font-size="14" font-weight="400" fill="#172033"><tspan x="287.5" y="165.0">Создать черновик</tspan><tspan x="287.5" y="181.0">плана</tspan></text>
+<rect class="shape" x="430" y="380" width="190" height="86" rx="8"/>
+<circle cx="448" cy="398" r="8" fill="none" stroke="#34465c" stroke-width="1.3"/><circle cx="448" cy="398" r="3" fill="none" stroke="#34465c" stroke-width="1.3"/>
+<text text-anchor="middle" font-size="14" font-weight="400" fill="#172033"><tspan x="525.0" y="417.0">Проверить область,</tspan><tspan x="525.0" y="433.0">период, единицу и</tspan><tspan x="525.0" y="449.0">методику</tspan></text>
+<path class="shape" d="M700.0 398 L725 423.0 L700.0 448 L675 423.0 Z"/>
+<path d="M691.0 414.0 L709.0 432.0 M709.0 414.0 L691.0 432.0" stroke="#34465c" stroke-width="2.5"/>
+<text text-anchor="middle" font-size="13" font-weight="600" fill="#172033"><tspan x="700.0" y="366.0">План совместим с фактом?</tspan></text>
+<rect class="shape" x="790" y="235" width="170" height="80" rx="8"/>
+<circle cx="808" cy="252" r="4" fill="none" stroke="#34465c" stroke-width="1.3"/><path d="M799 266 Q808 256 817 266" fill="none" stroke="#34465c" stroke-width="1.3"/>
+<text text-anchor="middle" font-size="14" font-weight="400" fill="#172033"><tspan x="875.0" y="285.0">Исправить черновик</tspan></text>
+<rect class="shape" x="790" y="120" width="170" height="86" rx="8"/>
+<circle cx="808" cy="137" r="4" fill="none" stroke="#34465c" stroke-width="1.3"/><path d="M799 151 Q808 141 817 151" fill="none" stroke="#34465c" stroke-width="1.3"/>
+<text text-anchor="middle" font-size="14" font-weight="400" fill="#172033"><tspan x="875.0" y="165.0">Активировать</tspan><tspan x="875.0" y="181.0">версию плана</tspan></text>
+<rect class="shape" x="1025" y="380" width="180" height="86" rx="8"/>
+<circle cx="1043" cy="398" r="8" fill="none" stroke="#34465c" stroke-width="1.3"/><circle cx="1043" cy="398" r="3" fill="none" stroke="#34465c" stroke-width="1.3"/>
+<text text-anchor="middle" font-size="14" font-weight="400" fill="#172033"><tspan x="1115.0" y="425.0">Сопоставить факт и</tspan><tspan x="1115.0" y="441.0">план</tspan></text>
+<path class="shape" d="M1285.0 138 L1310 163.0 L1285.0 188 L1260 163.0 Z"/>
+<path d="M1276.0 154.0 L1294.0 172.0 M1294.0 154.0 L1276.0 172.0" stroke="#34465c" stroke-width="2.5"/>
+<text text-anchor="middle" font-size="13" font-weight="600" fill="#172033"><tspan x="1285.0" y="106.0">План нужно изменить?</tspan></text>
+<rect class="shape" x="1370" y="380" width="190" height="86" rx="8"/>
+<circle cx="1388" cy="398" r="8" fill="none" stroke="#34465c" stroke-width="1.3"/><circle cx="1388" cy="398" r="3" fill="none" stroke="#34465c" stroke-width="1.3"/>
+<text text-anchor="middle" font-size="14" font-weight="400" fill="#172033"><tspan x="1465.0" y="425.0">Создать черновик</tspan><tspan x="1465.0" y="441.0">новой версии</tspan></text>
+<circle cx="1428.0" cy="163.0" r="16.0" fill="#fff" stroke="#34465c" stroke-width="3"/>
+<text text-anchor="middle" font-size="12" font-weight="400" fill="#172033"><tspan x="1428.0" y="203.0">Активный план</tspan><tspan x="1428.0" y="217.0">используется</tspan></text>
+</svg>

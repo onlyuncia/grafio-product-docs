@@ -1,5 +1,13 @@
 @startuml
 left to right direction
+skinparam defaultFontName Arial
+skinparam defaultFontSize 14
+skinparam packageStyle rectangle
+skinparam ArrowColor #526274
+skinparam usecaseBackgroundColor #EAF2FC
+skinparam usecaseBorderColor #5289C2
+skinparam rectangleBackgroundColor #F8FAFC
+skinparam rectangleBorderColor #94A3B8
 actor "Владелец организации" as Owner
 actor "Сотрудник" as Employee
 actor "Wildberries API" as WB
@@ -12,20 +20,20 @@ rectangle "Grafio: организация и безопасность" {
   usecase "Настроить 2FA" as UO6
   usecase "Отозвать доступ\nи завершить сессии" as UO7
   usecase "Закрыть\nорганизацию" as UO8
-  usecase "Получить выгрузку\nи применить хранение" as UO9
+  usecase "Применить политику\nхранения и удаления" as UO9
+  usecase "Получить выгрузку\nданных" as UO10
   UO1 .> UO2 : <<include>>
   UO1 .> UO3 : <<include>>
   UO4 .> UO5 : <<include>>
-  UO5 .> UO6 : <<extend>>
   UO8 .> UO9 : <<include>>
   UO8 .> UO7 : <<include>>
 }
-Owner --> UO1
-Owner --> UO4
-Owner --> UO5
-Owner --> UO7
-Owner --> UO8
-Employee --> UO6
-WB --> UO2
-WB --> UO3
+Owner -- UO1
+Owner -- UO4
+Owner -- UO7
+Owner -- UO8
+Owner -- UO10
+Employee -- UO6
+UO2 -- WB
+UO3 -- WB
 @enduml

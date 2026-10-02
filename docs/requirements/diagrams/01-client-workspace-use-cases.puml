@@ -1,11 +1,18 @@
 @startuml
 left to right direction
+skinparam defaultFontName Arial
+skinparam defaultFontSize 14
 skinparam packageStyle rectangle
+skinparam ArrowColor #526274
+skinparam usecaseBackgroundColor #EAF2FC
+skinparam usecaseBorderColor #5289C2
+skinparam rectangleBackgroundColor #F8FAFC
+skinparam rectangleBorderColor #94A3B8
 actor "Владелец клиента" as Owner
 actor "Финансист" as Finance
 actor "Аналитик" as Analyst
 actor "Менеджер" as Manager
-actor "Просмотр" as Viewer
+actor "Наблюдатель" as Viewer
 rectangle "Grafio: клиентское рабочее пространство" {
   usecase "Просмотреть\nнедельный отчёт" as UC1
   usecase "Проверить качество,\nсверку и методику" as UC2
@@ -16,20 +23,15 @@ rectangle "Grafio: клиентское рабочее пространство"
   usecase "Настроить\nличный дашборд" as UC7
   usecase "Работать с\nназначенной задачей" as UC8
   UC1 .> UC2 : <<include>>
-  UC1 .> UC3 : <<extend>>
-  UC3 .> UC4 : <<extend>>
-  UC5 .> UC6 : <<include>>
+  UC3 .> UC1 : <<extend>>
 }
-Owner --> UC1
-Owner --> UC4
-Owner --> UC5
-Finance --> UC1
-Finance --> UC3
-Finance --> UC4
-Analyst --> UC1
-Analyst --> UC3
-Analyst --> UC5
-Analyst --> UC7
-Manager --> UC8
-Viewer --> UC1
+Owner -- UC4
+Owner -- UC5
+Finance -- UC1
+Finance -- UC4
+Analyst -- UC1
+Analyst -- UC6
+Analyst -- UC7
+Manager -- UC8
+Viewer -- UC1
 @enduml

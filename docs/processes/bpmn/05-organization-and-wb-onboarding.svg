@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2145" height="605" viewBox="0 0 2145 605" role="img" aria-label="Подключение организации и кабинета WB">
+<defs><marker id="seq-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M 1 1 L 9 5 L 1 9 z" fill="#516173"/></marker>
+<marker id="msg-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto"><path d="M 1 1 L 9 5 L 1 9" fill="none" stroke="#636b76" stroke-width="1.5"/></marker></defs>
+<rect width="100%" height="100%" fill="#ffffff"/>
+<style>text{font-family:Arial,Segoe UI,sans-serif} .edge{fill:none;stroke:#516173;stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round} .lane{fill:#f8fafc;stroke:#94a3b8;stroke-width:1.3} .shape{fill:#ffffff;stroke:#334155;stroke-width:1.7}</style>
+<text x="60" y="35" font-size="23" font-weight="700" fill="#111827">Подключение организации и кабинета WB</text>
+<rect class="lane" x="60.0" y="60.0" width="2020.0" height="150.0"/>
+<rect x="60.0" y="60.0" width="38" height="150.0" fill="#e9eef5" stroke="#94a3b8" stroke-width="1"/>
+<text x="79.0" y="135.0" transform="rotate(-90 79.0 135.0)" text-anchor="middle" dominant-baseline="middle" font-size="14" font-weight="600" fill="#334155">Владелец клиента</text>
+<rect class="lane" x="60.0" y="210.0" width="2020.0" height="160.0"/>
+<rect x="60.0" y="210.0" width="38" height="160.0" fill="#e9eef5" stroke="#94a3b8" stroke-width="1"/>
+<text x="79.0" y="290.0" transform="rotate(-90 79.0 290.0)" text-anchor="middle" dominant-baseline="middle" font-size="14" font-weight="600" fill="#334155">Grafio</text>
+<rect class="lane" x="60.0" y="370.0" width="2020.0" height="150.0"/>
+<rect x="60.0" y="370.0" width="38" height="150.0" fill="#e9eef5" stroke="#94a3b8" stroke-width="1"/>
+<text x="79.0" y="445.0" transform="rotate(-90 79.0 445.0)" text-anchor="middle" dominant-baseline="middle" font-size="14" font-weight="600" fill="#334155">Интеграция Grafio с WB</text>
+<path class="edge" d="M 156 135 L 200 135" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 360 135 L 420 135" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 580 135 L 610 135 L 610 290 L 640 290" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 815 290 L 842.5 290 L 842.5 445 L 870 445" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 1030 445 L 1060 445 L 1060 290 L 1090 290" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 1500 92 L 1500 75 L 500 75 L 500 92" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 1250 290 L 1310 290" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 1360 290 L 1410 290" marker-end="url(#seq-arrow)"/>
+<text x="1415" y="281" font-size="11" fill="#475569" stroke="#fff" stroke-width="4" paint-order="stroke">да</text>
+<path class="edge" d="M 1335 265 L 1335 135 L 1410 135" marker-end="url(#seq-arrow)"/>
+<text x="1340" y="126" font-size="11" fill="#475569" stroke="#fff" stroke-width="4" paint-order="stroke">нет</text>
+<path class="edge" d="M 1500 333 L 1500 402" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 1590 445 L 1615 445 L 1615 290 L 1640 290" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 1820 290 L 1870 290" marker-end="url(#seq-arrow)"/>
+<path class="edge" d="M 1895 265 L 1895 135 L 1970 135" marker-end="url(#seq-arrow)"/>
+<text x="1900" y="126" font-size="11" fill="#475569" stroke="#fff" stroke-width="4" paint-order="stroke">да</text>
+<path class="edge" d="M 1895 315 L 1895 440 L 1970 440" marker-end="url(#seq-arrow)"/>
+<text x="1900" y="431" font-size="11" fill="#475569" stroke="#fff" stroke-width="4" paint-order="stroke">нет</text>
+<circle cx="138" cy="135" r="16" fill="white" stroke="#334155" stroke-width="1.8"/>
+<text x="138.0" y="165.2" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="500" fill="#1f2937"><tspan x="138.0" dy="0.0">Организация готова</tspan><tspan x="138.0" dy="13.5">подключиться</tspan></text>
+<rect class="shape" x="200" y="92" width="160" height="86" rx="9"/>
+<circle cx="217" cy="107" r="4" fill="none" stroke="#334155" stroke-width="1.3"/><path d="M208 121 Q217 112 226 121" fill="none" stroke="#334155" stroke-width="1.3"/>
+<text x="280.0" y="128.2" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="500" fill="#1f2937"><tspan x="280.0" dy="0.0">Создать</tspan><tspan x="280.0" dy="14.8">организацию и</tspan><tspan x="280.0" dy="14.8">юрлицо</tspan></text>
+<rect class="shape" x="420" y="92" width="160" height="86" rx="9"/>
+<circle cx="437" cy="107" r="4" fill="none" stroke="#334155" stroke-width="1.3"/><path d="M428 121 Q437 112 446 121" fill="none" stroke="#334155" stroke-width="1.3"/>
+<text x="500.0" y="135.6" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="500" fill="#1f2937"><tspan x="500.0" dy="0.0">Указать кабинет</tspan><tspan x="500.0" dy="14.8">WB и токен</tspan></text>
+<rect class="shape" x="640" y="247" width="175" height="86" rx="9"/>
+<circle cx="658" cy="265" r="8" fill="none" stroke="#334155" stroke-width="1.4"/><circle cx="658" cy="265" r="3" fill="none" stroke="#334155" stroke-width="1.2"/>
+<path d="M666.0 265.0 L669.0 265.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M663.7 270.7 L665.8 272.8" stroke="#334155" stroke-width="1.5"/>
+<path d="M658.0 273.0 L658.0 276.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M652.3 270.7 L650.2 272.8" stroke="#334155" stroke-width="1.5"/>
+<path d="M650.0 265.0 L647.0 265.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M652.3 259.3 L650.2 257.2" stroke="#334155" stroke-width="1.5"/>
+<path d="M658.0 257.0 L658.0 254.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M663.7 259.3 L665.8 257.2" stroke="#334155" stroke-width="1.5"/>
+<text x="727.5" y="283.2" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="500" fill="#1f2937"><tspan x="727.5" dy="0.0">Сохранить токен в</tspan><tspan x="727.5" dy="14.8">защищённом</tspan><tspan x="727.5" dy="14.8">хранилище</tspan></text>
+<rect class="shape" x="870" y="402" width="160" height="86" rx="9"/>
+<circle cx="888" cy="420" r="8" fill="none" stroke="#334155" stroke-width="1.4"/><circle cx="888" cy="420" r="3" fill="none" stroke="#334155" stroke-width="1.2"/>
+<path d="M896.0 420.0 L899.0 420.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M893.7 425.7 L895.8 427.8" stroke="#334155" stroke-width="1.5"/>
+<path d="M888.0 428.0 L888.0 431.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M882.3 425.7 L880.2 427.8" stroke="#334155" stroke-width="1.5"/>
+<path d="M880.0 420.0 L877.0 420.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M882.3 414.3 L880.2 412.2" stroke="#334155" stroke-width="1.5"/>
+<path d="M888.0 412.0 L888.0 409.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M893.7 414.3 L895.8 412.2" stroke="#334155" stroke-width="1.5"/>
+<text x="950.0" y="445.6" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="500" fill="#1f2937"><tspan x="950.0" dy="0.0">Проверить токен</tspan><tspan x="950.0" dy="14.8">и доступ</tspan></text>
+<rect class="shape" x="1090" y="247" width="160" height="86" rx="9"/>
+<circle cx="1108" cy="265" r="8" fill="none" stroke="#334155" stroke-width="1.4"/><circle cx="1108" cy="265" r="3" fill="none" stroke="#334155" stroke-width="1.2"/>
+<path d="M1116.0 265.0 L1119.0 265.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M1113.7 270.7 L1115.8 272.8" stroke="#334155" stroke-width="1.5"/>
+<path d="M1108.0 273.0 L1108.0 276.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M1102.3 270.7 L1100.2 272.8" stroke="#334155" stroke-width="1.5"/>
+<path d="M1100.0 265.0 L1097.0 265.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M1102.3 259.3 L1100.2 257.2" stroke="#334155" stroke-width="1.5"/>
+<path d="M1108.0 257.0 L1108.0 254.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M1113.7 259.3 L1115.8 257.2" stroke="#334155" stroke-width="1.5"/>
+<text x="1170.0" y="290.6" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="500" fill="#1f2937"><tspan x="1170.0" dy="0.0">Проверить ответ</tspan><tspan x="1170.0" dy="14.8">WB и кабинет</tspan></text>
+<path class="shape" d="M1335 265 L1360 290 L1335 315 L1310 290 Z"/>
+<path d="M1326 281 L1344 299 M1344 281 L1326 299" stroke="#334155" stroke-width="2.5"/>
+<text x="1335.0" y="241.0" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="600" fill="#1f2937"><tspan x="1335.0" dy="0.0">Доступ подтверждён?</tspan></text>
+<rect class="shape" x="1410" y="92" width="180" height="86" rx="9"/>
+<circle cx="1427" cy="107" r="4" fill="none" stroke="#334155" stroke-width="1.3"/><path d="M1418 121 Q1427 112 1436 121" fill="none" stroke="#334155" stroke-width="1.3"/>
+<text x="1500.0" y="128.2" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="500" fill="#1f2937"><tspan x="1500.0" dy="0.0">Показать причину и</tspan><tspan x="1500.0" dy="14.8">запросить</tspan><tspan x="1500.0" dy="14.8">исправление</tspan></text>
+<rect class="shape" x="1410" y="247" width="180" height="86" rx="9"/>
+<circle cx="1428" cy="265" r="8" fill="none" stroke="#334155" stroke-width="1.4"/><circle cx="1428" cy="265" r="3" fill="none" stroke="#334155" stroke-width="1.2"/>
+<path d="M1436.0 265.0 L1439.0 265.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M1433.7 270.7 L1435.8 272.8" stroke="#334155" stroke-width="1.5"/>
+<path d="M1428.0 273.0 L1428.0 276.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M1422.3 270.7 L1420.2 272.8" stroke="#334155" stroke-width="1.5"/>
+<path d="M1420.0 265.0 L1417.0 265.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M1422.3 259.3 L1420.2 257.2" stroke="#334155" stroke-width="1.5"/>
+<path d="M1428.0 257.0 L1428.0 254.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M1433.7 259.3 L1435.8 257.2" stroke="#334155" stroke-width="1.5"/>
+<text x="1500.0" y="283.2" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="500" fill="#1f2937"><tspan x="1500.0" dy="0.0">Активировать</tspan><tspan x="1500.0" dy="14.8">кабинет и область</tspan><tspan x="1500.0" dy="14.8">доступа</tspan></text>
+<rect class="shape" x="1410" y="402" width="180" height="86" rx="9"/>
+<circle cx="1428" cy="420" r="8" fill="none" stroke="#334155" stroke-width="1.4"/><circle cx="1428" cy="420" r="3" fill="none" stroke="#334155" stroke-width="1.2"/>
+<path d="M1436.0 420.0 L1439.0 420.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M1433.7 425.7 L1435.8 427.8" stroke="#334155" stroke-width="1.5"/>
+<path d="M1428.0 428.0 L1428.0 431.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M1422.3 425.7 L1420.2 427.8" stroke="#334155" stroke-width="1.5"/>
+<path d="M1420.0 420.0 L1417.0 420.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M1422.3 414.3 L1420.2 412.2" stroke="#334155" stroke-width="1.5"/>
+<path d="M1428.0 412.0 L1428.0 409.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M1433.7 414.3 L1435.8 412.2" stroke="#334155" stroke-width="1.5"/>
+<text x="1500.0" y="445.6" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="500" fill="#1f2937"><tspan x="1500.0" dy="0.0">Получить первый</tspan><tspan x="1500.0" dy="14.8">финансовый отчёт</tspan></text>
+<rect class="shape" x="1640" y="247" width="180" height="86" rx="9"/>
+<circle cx="1658" cy="265" r="8" fill="none" stroke="#334155" stroke-width="1.4"/><circle cx="1658" cy="265" r="3" fill="none" stroke="#334155" stroke-width="1.2"/>
+<path d="M1666.0 265.0 L1669.0 265.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M1663.7 270.7 L1665.8 272.8" stroke="#334155" stroke-width="1.5"/>
+<path d="M1658.0 273.0 L1658.0 276.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M1652.3 270.7 L1650.2 272.8" stroke="#334155" stroke-width="1.5"/>
+<path d="M1650.0 265.0 L1647.0 265.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M1652.3 259.3 L1650.2 257.2" stroke="#334155" stroke-width="1.5"/>
+<path d="M1658.0 257.0 L1658.0 254.0" stroke="#334155" stroke-width="1.5"/>
+<path d="M1663.7 259.3 L1665.8 257.2" stroke="#334155" stroke-width="1.5"/>
+<text x="1730.0" y="283.2" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="500" fill="#1f2937"><tspan x="1730.0" dy="0.0">Загрузить и</tspan><tspan x="1730.0" dy="14.8">проверить первый</tspan><tspan x="1730.0" dy="14.8">отчёт</tspan></text>
+<path class="shape" d="M1895 265 L1920 290 L1895 315 L1870 290 Z"/>
+<path d="M1886 281 L1904 299 M1904 281 L1886 299" stroke="#334155" stroke-width="2.5"/>
+<text x="1895.0" y="241.0" text-anchor="middle" dominant-baseline="middle" font-size="12" font-weight="600" fill="#1f2937"><tspan x="1895.0" dy="0.0">Отчёт готов?</tspan></text>
+<circle cx="1988" cy="135" r="16" fill="white" stroke="#334155" stroke-width="3.2"/>
+<text x="1988.0" y="165.2" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="500" fill="#1f2937"><tspan x="1988.0" dy="0.0">Кабинет готов к</tspan><tspan x="1988.0" dy="13.5">работе</tspan></text>
+<circle cx="1988" cy="440" r="16" fill="white" stroke="#334155" stroke-width="3.2"/>
+<text x="1988.0" y="470.2" text-anchor="middle" dominant-baseline="middle" font-size="11" font-weight="500" fill="#1f2937"><tspan x="1988.0" dy="0.0">Ожидание готовности</tspan><tspan x="1988.0" dy="13.5">данных</tspan></text>
+</svg>
