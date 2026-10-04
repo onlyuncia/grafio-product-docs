@@ -1,11 +1,10 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "Целевой API Grafio",
-    "version": "3.0.1-target",
-    "description": "Целевой контракт API. Он фиксирует планируемые эндпоинты и не подтверждает их реализацию в текущей версии сервиса."
+    "title": "API Grafio",
+    "version": "1.0.0",
   },
-  "servers": [{ "url": "https://api.grafio.example/v1", "description": "Целевой базовый URL производственной среды" }],
+  "servers": [{ "url": "https://api.grafio/v1", "description": "Базовый URL" }],
   "security": [{ "bearerAuth": [] }],
   "tags": [
     { "name": "Отчёты" }, { "name": "Финансовые настройки" }, { "name": "Контроль расчётов" }, { "name": "Администрирование методики" },
