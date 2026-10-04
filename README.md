@@ -1,4 +1,4 @@
-# Grafio — аналитика для продавцов маркетплейсов
+# Grafio — BI-платформа для продавцов маркетплейсов
 
 **Кейс бизнес и системного анализа · проектирование сервиса с нуля**
 
@@ -57,5 +57,3 @@
 **API и прототип**
 
 [![Swagger — опубликованная версия контракта](assets/badges/swagger.svg)](https://portal.swaggerhub.com/apis/grafio/api-grafio/1.0.0) [![Postman — проверка локального API](assets/badges/postman.svg)](docs/api/contracts.md) [![HTML, CSS и JavaScript — прототип](assets/badges/html-css-js.svg)](prototype/README.md)
-
-BPMN 2.0 задаёт нотацию процессов, OpenAPI 3.1 — формат API-контракта. Use Case и sequence выполнены в PlantUML, C4 — с библиотекой C4-PlantUML; ERD и статусные модели — в Mermaid. Postman применялся для проверки реализованного локального API.
