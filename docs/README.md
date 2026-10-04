@@ -8,7 +8,7 @@
 2. **Ожидаемое поведение:** [SRS](requirements/srs.md) и [критерии приёмки](requirements/acceptance-criteria.md).
 3. **Работа участников:** [BPMN-процессы](processes/bpmn-index.md).
 4. **Смысл чисел:** [паспорта показателей](data/metric-passports.md) и [ERD](data/target-erd.md).
-5. **Устройство сервиса:** [архитектура Grafio](architecture/README.md) и [целевой OpenAPI](api/openapi.json).
+5. **Устройство сервиса:** [архитектура Grafio](architecture/README.md) и [OpenAPI](api/openapi.json).
 6. **Интерфейс:** [кликабельный прототип](../prototype/README.md) и [экраны](../screenshots/README.md).
 
 ## Найти конкретный документ
