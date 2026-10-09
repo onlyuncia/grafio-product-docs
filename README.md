@@ -54,10 +54,10 @@
 
 **Модели и контракты**
 
-[![BPMN 2.0 — процессы](assets/badges/bpmn-2.0.svg)](docs/processes/bpmn-index.md) [![PlantUML — C4 и sequence](assets/badges/plantuml.svg)](docs/architecture/c4-model.md) [![Mermaid — ERD и статусы](assets/badges/mermaid.svg)](docs/data/target-erd.md) [![OpenAPI 3.1 — целевой контракт](assets/badges/openapi-3.1.svg)](docs/api/openapi.json)
+[![BPMN 2.0 — процессы](assets/badges/bpmn-2.0.svg?v=0aa6630)](docs/processes/bpmn-index.md) [![PlantUML — C4 и sequence](assets/badges/plantuml.svg?v=0aa6630)](docs/architecture/c4-model.md) [![Mermaid — ERD и статусы](assets/badges/mermaid.svg?v=0aa6630)](docs/data/target-erd.md) [![OpenAPI 3.1 — целевой контракт](assets/badges/openapi-3.1.svg?v=0aa6630)](docs/api/openapi.json)
 
 **API и прототип**
 
-[![Swagger — опубликованная версия контракта](assets/badges/swagger.svg)](https://portal.swaggerhub.com/apis/grafio/api-grafio/1.0.0) [![Postman — проверка локального API](assets/badges/postman.svg)](https://documenter.getpostman.com/view/58718596/2sBYHNXiHD) [![HTML, CSS и JavaScript — прототип](assets/badges/html-css-js.svg)](prototype/README.md)
+[![Swagger — опубликованная версия контракта](assets/badges/swagger.svg?v=0aa6630)](https://portal.swaggerhub.com/apis/grafio/api-grafio/1.0.0) [![Postman — проверка локального API](assets/badges/postman.svg?v=0aa6630)](https://documenter.getpostman.com/view/58718596/2sBYHNXiHD) [![HTML, CSS и JavaScript — прототип](assets/badges/html-css-js.svg?v=0aa6630)](prototype/README.md)
 
 <img src="assets/divider.webp" alt="" width="100%" />
