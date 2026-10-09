@@ -59,3 +59,5 @@
 **API и прототип**
 
 [![Swagger — опубликованная версия контракта](assets/badges/swagger.svg)](https://portal.swaggerhub.com/apis/grafio/api-grafio/1.0.0) [![Postman — проверка локального API](assets/badges/postman.svg)](https://documenter.getpostman.com/view/58718596/2sBYHNXiHD) [![HTML, CSS и JavaScript — прототип](assets/badges/html-css-js.svg)](prototype/README.md)
+
+<img src="assets/ui/divider.webp" alt="" width="100%" />
