@@ -11,11 +11,12 @@ const elements = {
   number: document.getElementById('detailNumber'), kind: document.getElementById('detailKind'),
   title: document.getElementById('detailTitle'), text: document.getElementById('detailText'),
   condition: document.getElementById('detailCondition'), progress: document.getElementById('detailProgress'),
-  glyph: document.getElementById('detailGlyph'), track: document.getElementById('trackProgress'),
+  position: document.getElementById('cyclePosition'), track: document.getElementById('trackProgress'),
   detail: document.getElementById('detail'), toggle: document.getElementById('toggle'),
   toggleIcon: document.querySelector('.toggle-icon'), toggleLabel: document.querySelector('.toggle-label')
 };
-const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const motionPreference = window.matchMedia('(prefers-reduced-motion: reduce)');
+let reduceMotion = motionPreference.matches;
 let current = 0;
 let playing = !reduceMotion;
 let timer;
@@ -37,9 +38,9 @@ function render(index, announce = false) {
   elements.text.textContent = step.text;
   elements.condition.textContent = step.condition;
   elements.progress.textContent = `${String(index + 1).padStart(2, '0')} / 05`;
-  elements.glyph.textContent = step.glyph;
+  elements.position.textContent = elements.progress.textContent;
   if (wrapping) elements.track.style.transition = 'none';
-  elements.track.style.width = `${index * 25}%`;
+  elements.track.style.setProperty('--progress', `${index * 25}%`);
   if (wrapping) window.requestAnimationFrame(() => elements.track.style.removeProperty('transition'));
 }
 
@@ -51,7 +52,7 @@ function updateControls() {
 
 function schedule() {
   window.clearInterval(timer);
-  if (playing) timer = window.setInterval(() => render((current + 1) % steps.length), 2400);
+  if (playing && !document.hidden) timer = window.setInterval(() => render((current + 1) % steps.length), 3000);
   updateControls();
 }
 
@@ -64,6 +65,19 @@ elements.toggle.addEventListener('click', () => {
   playing = !playing;
   schedule();
 });
+cards.forEach((card, index) => card.addEventListener('keydown', event => {
+  let next;
+  if (event.key === 'ArrowRight' || event.key === 'ArrowDown') next = (index + 1) % cards.length;
+  else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') next = (index + cards.length - 1) % cards.length;
+  else if (event.key === 'Home') next = 0;
+  else if (event.key === 'End') next = cards.length - 1;
+  else return;
+  event.preventDefault();
+  playing = false;
+  cards[next].focus();
+  render(next, true);
+  schedule();
+}));
 document.getElementById('restart').addEventListener('click', () => {
   render(0, true);
   playing = !reduceMotion;
@@ -75,4 +89,9 @@ document.addEventListener('visibilitychange', () => {
 });
 
 render(0);
+motionPreference.addEventListener('change', event => {
+  reduceMotion = event.matches;
+  if (reduceMotion) playing = false;
+  schedule();
+});
 schedule();
