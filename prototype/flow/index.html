@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101214">
+  <meta name="description" content="Анимированная схема финансового пути данных WB в Grafio — от получения операций до версии недельного отчёта.">
+  <title>Путь данных — Grafio</title>
+  <link rel="icon" href="../favicon.ico?v=20261014" sizes="16x16 32x32 48x48 64x64">
+  <link rel="icon" type="image/png" href="../favicon-32.png?v=20261014" sizes="32x32">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg?v=20261014" sizes="any">
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png?v=20261014" sizes="180x180">
+  <link rel="stylesheet" href="flow.css">
+</head>
+<body>
+  <main class="page">
+    <header class="topbar">
+      <a class="brand" href="../" aria-label="Открыть прототип Grafio"><span class="brand-mark" aria-hidden="true">G</span><span>GRAFIO</span></a>
+      <a class="back-link" href="../">Открыть прототип <span aria-hidden="true">↗</span></a>
+    </header>
+
+    <section class="hero" aria-labelledby="page-title">
+      <p class="eyebrow"><span class="eyebrow-dot" aria-hidden="true"></span> СХЕМА ДАННЫХ / WB</p>
+      <h1 id="page-title">От операции маркетплейса<br><span>до отчёта, которому можно доверять.</span></h1>
+      <p class="intro">Пять шагов финансового пути Grafio. Выберите этап, чтобы увидеть его результат и условие перехода дальше.</p>
+    </section>
+
+    <section class="flow" aria-label="Финансовый путь данных WB">
+      <div class="flow-head">
+        <div class="flow-caption"><span class="flow-caption-line" aria-hidden="true"></span> ФИНАНСОВЫЕ ОПЕРАЦИИ WB</div>
+        <div class="controls">
+          <button id="restart" class="control secondary" type="button" aria-label="Начать анимацию сначала">↺ <span>Сначала</span></button>
+          <button id="toggle" class="control primary" type="button" aria-label="Остановить анимацию"><span class="toggle-icon" aria-hidden="true">Ⅱ</span><span class="toggle-label">Пауза</span></button>
+        </div>
+      </div>
+
+      <div class="stages" id="stages">
+        <div class="track" aria-hidden="true"><div class="track-progress" id="trackProgress"></div></div>
+        <button class="stage is-active" type="button" data-step="0" aria-current="step">
+          <span class="stage-index">01 / ИСТОЧНИК</span><span class="stage-icon" aria-hidden="true">↗</span>
+          <strong>WB API</strong><small>Операции кабинета</small><span class="stage-node" aria-hidden="true"></span>
+        </button>
+        <button class="stage" type="button" data-step="1">
+          <span class="stage-index">02 / ЗАГРУЗКА</span><span class="stage-icon" aria-hidden="true">↓</span>
+          <strong>Синхронизация</strong><small>Worker и raw-ответ</small><span class="stage-node" aria-hidden="true"></span>
+        </button>
+        <button class="stage" type="button" data-step="2">
+          <span class="stage-index">03 / КАЧЕСТВО</span><span class="stage-icon" aria-hidden="true">◇</span>
+          <strong>Проверка</strong><small>Нормализация и сигналы</small><span class="stage-node" aria-hidden="true"></span>
+        </button>
+        <button class="stage" type="button" data-step="3">
+          <span class="stage-index">04 / МЕТОДИКА</span><span class="stage-icon" aria-hidden="true">∑</span>
+          <strong>Расчёт</strong><small>Правила и сверка</small><span class="stage-node" aria-hidden="true"></span>
+        </button>
+        <button class="stage" type="button" data-step="4">
+          <span class="stage-index">05 / РЕЗУЛЬТАТ</span><span class="stage-icon" aria-hidden="true">▤</span>
+          <strong>Отчёт</strong><small>Опубликованная версия</small><span class="stage-node" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <div class="detail" id="detail" aria-live="off">
+        <div class="detail-kicker"><span id="detailNumber">01</span><span class="detail-divider"></span><span id="detailKind">ВНЕШНИЙ ИСТОЧНИК</span></div>
+        <div class="detail-main"><div><h2 id="detailTitle">Финансовые операции WB</h2><p id="detailText">Grafio запрашивает данные подключённого кабинета. Исходное значение каждой операции остаётся доступным для проверки.</p></div><span class="detail-glyph" id="detailGlyph" aria-hidden="true">↗</span></div>
+        <div class="detail-footer"><span id="detailCondition">Следующий шаг: ответ получен и сохранён.</span><span class="detail-progress" id="detailProgress">01 / 05</span></div>
+      </div>
+    </section>
+
+    <aside class="scope" aria-label="Граница схемы"><span class="scope-mark" aria-hidden="true">i</span><p>Анимация показывает <strong>спроектированный финансовый поток WB</strong>. Синхронизация Ozon входит в сервис Grafio, но финансовая методика для неё здесь не задана. При нарушении качества или сверки новая версия отчёта не публикуется.</p></aside>
+    <footer class="footer"><span>GRAFIO / DATA FLOW</span><a href="https://github.com/onlyuncia/grafio-product-docs/blob/main/docs/architecture/README.md">Архитектура и статусы решений ↗</a></footer>
+  </main>
+  <script src="flow.js"></script>
+</body>
+</html>

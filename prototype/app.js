@@ -8710,7 +8710,8 @@ function renderDatePicker() {
   // В РНП период может быть длиннее недели, поэтому там тот же триггер работает как диапазон
   // (два клика) и показывает все быстрые пресеты.
   const weekOnly = activeDatePickerTarget.id === 'periodTrigger' && !shell.classList.contains('is-rnp')
-  const months = kind === 'range' ? [datePickerMonth, new Date(datePickerMonth.getFullYear(), datePickerMonth.getMonth() + 1, 1)] : [datePickerMonth]
+  const twoMonths = kind === 'range' && !window.matchMedia('(max-width: 600px)').matches
+  const months = twoMonths ? [datePickerMonth, new Date(datePickerMonth.getFullYear(), datePickerMonth.getMonth() + 1, 1)] : [datePickerMonth]
   calendarMonths.innerHTML = months.map(month => renderCalendarMonth(month, dateDraftFrom, dateDraftTo, kind)).join('')
   const draftTitle = dateDraftTo ? 'Выберите период' : dateDraftFrom ? 'Выберите дату окончания' : 'Выберите дату начала'
   datePickerTitle.textContent = kind === 'range' ? (weekOnly ? 'Выберите неделю' : draftTitle) : 'Дата начала'
@@ -8728,7 +8729,8 @@ function positionDatePicker(trigger) {
     ? { left: 0, top: 0, width: window.innerWidth, height: window.innerHeight }
     : document.querySelector('.workspace').getBoundingClientRect()
   const bounds = trigger.getBoundingClientRect()
-  const width = activeDatePickerTarget.dataset.calendar === 'range' ? 560 : 270
+  const preferredWidth = activeDatePickerTarget.dataset.calendar === 'range' ? 560 : 270
+  const width = Math.min(preferredWidth, workspace.width - 24)
   const height = activeDatePickerTarget.dataset.calendar === 'range' ? 330 : 285
   const anchorLeft = trigger.id === 'periodTrigger'
     ? bounds.left - workspace.left + (bounds.width / 2) - (width / 2)
